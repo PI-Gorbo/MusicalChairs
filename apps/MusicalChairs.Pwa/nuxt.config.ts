@@ -8,7 +8,6 @@ export default defineNuxtConfig({
         client: {
             installPrompt: true,
         },
-        strategies: 'injectManifest',
         registerType: 'autoUpdate',
         manifest: {
             name: 'Musical Chairs',
