@@ -1,5 +1,6 @@
 <template>
-  <IonApp>
-    <IonRouterOutlet />
-  </IonApp>
+    <NuxtPwaManifest />
+    <IonApp>
+        <IonRouterOutlet />
+    </IonApp>
 </template>
