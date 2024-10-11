@@ -15,5 +15,8 @@
     "nuxt": "^3.13.0",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "vite-plugin-pwa": "^0.20.5"
   }
 }
