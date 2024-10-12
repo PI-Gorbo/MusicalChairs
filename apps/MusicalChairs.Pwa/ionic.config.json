@@ -1,0 +1,7 @@
+{
+  "name": "Telescope",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}

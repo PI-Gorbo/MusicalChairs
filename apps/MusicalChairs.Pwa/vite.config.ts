@@ -1,18 +1,21 @@
-import { fileURLToPath, URL } from 'node:url'
+/// <reference types="vitest" />
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { VitePWA } from 'vite-plugin-pwa'
+import legacy from "@vitejs/plugin-legacy";
+import vue from "@vitejs/plugin-vue";
+import path from "path";
+import { defineConfig } from "vite";
+import { VitePWA } from "vite-plugin-pwa";
 
-// https://vite.dev/config/
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), VitePWA({ registerType: 'autoUpdate' })],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    plugins: [vue(), legacy(), VitePWA({ registerType: "autoUpdate" })],
+    resolve: {
+        alias: {
+            "@": path.resolve(__dirname, "./src"),
+        },
     },
-  },
-  server: {
-    port: 3000,
-  },
-})
+    test: {
+        globals: true,
+        environment: "jsdom",
+    },
+});
