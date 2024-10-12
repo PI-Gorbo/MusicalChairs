@@ -1,4 +1,5 @@
 <template>
+    <NuxtPwaManifest />
   <div>
     <NuxtRouteAnnouncer />
     <NuxtWelcome />
