@@ -6,5 +6,19 @@ export default defineNuxtConfig({
     pwa: {
         registerType: "autoUpdate",
         registerWebManifestInRouteRules: true,
+        manifest: {
+            name: "musical chairs",
+            short_name: "musical chairs",
+            description: "An app about musical chairs...",
+            lang: "en",
+            orientation: "portrait",
+            icons: [
+                {
+                    src: "chromecast.png",
+                    sizes: "32x32",
+                    type: "image/png",
+                },
+            ],
+        },
     },
 });
