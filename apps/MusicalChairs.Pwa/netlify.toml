@@ -1,6 +1,6 @@
 [build]
   publish = "dist"
-  command = "bun run generate"
+  command = "bun run build"
 
 [[headers]]
   for = "/manifest.webmanifest"
