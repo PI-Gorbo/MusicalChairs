@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
     compatibilityDate: "2024-04-03",
     devtools: { enabled: true },
-    modules: ["@vite-pwa/nuxt"],
+    modules: ["@vite-pwa/nuxt", "@nuxtjs/ionic"],
     pwa: {
         registerType: "autoUpdate",
         registerWebManifestInRouteRules: true,

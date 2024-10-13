@@ -1,9 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div>
-        <VitePwaManifest />
-        <NuxtRouteAnnouncer />
-        <NuxtWelcome />
-    </div>
+    <VitePwaManifest />
+    <IonApp>
+        <IonRouterOutlet />
+    </IonApp>
 </template>
