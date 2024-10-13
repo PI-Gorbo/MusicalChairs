@@ -14,8 +14,8 @@ export default defineNuxtConfig({
             orientation: "portrait",
             icons: [
                 {
-                    src: "chromecast.png",
-                    sizes: "32x32",
+                    src: "band.png",
+                    sizes: "512x512",
                     type: "image/png",
                 },
             ],
