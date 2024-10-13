@@ -1,6 +1,10 @@
+<script setup lang="ts">
+
+</script>
+
 <template>
-    <NuxtPwaManifest />
-  <div>
+    <div>
+    <VitePwaManifest />
     <NuxtRouteAnnouncer />
     <NuxtWelcome />
   </div>
