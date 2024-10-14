@@ -21,4 +21,5 @@ export default defineNuxtConfig({
             ],
         },
     },
+    css: ["@ionic/vue/css/palettes/dark.always.css"],
 });

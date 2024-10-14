@@ -1,0 +1,9 @@
+{
+    "name": "musicalchairs",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "api": "cd apps/MusicalChairs.Api && dotnet watch run",
+        "pwa": "cd apps/MusicalChairs.Pwa && bun run dev"
+    }
+}
