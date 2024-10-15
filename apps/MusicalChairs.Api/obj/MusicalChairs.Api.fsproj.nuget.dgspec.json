@@ -46,9 +46,19 @@
               "version": "[8.0.102, )",
               "generatePathProperty": true
             },
+            "FSharp.SystemTextJson": {
+              "target": "Package",
+              "version": "[1.3.13, )"
+            },
+            "FsToolkit.ErrorHandling.TaskResult": {
+              "target": "Package",
+              "version": "[4.17.0, )",
+              "generatePathProperty": true
+            },
             "Marten": {
               "target": "Package",
-              "version": "[7.30.1, )"
+              "version": "[7.30.1, )",
+              "generatePathProperty": true
             },
             "Microsoft.AspNetCore.Identity": {
               "target": "Package",

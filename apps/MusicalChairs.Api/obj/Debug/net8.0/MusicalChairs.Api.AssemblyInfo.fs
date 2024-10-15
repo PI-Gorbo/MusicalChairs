@@ -10,7 +10,7 @@ open System.Reflection
 [<assembly: System.Reflection.AssemblyCompanyAttribute("MusicalChairs.Api")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
-[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4184b3d631f9ad2479fe4a00052a5ce06e0888cb")>]
+[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+26664fd9c5aeaaa14b22942c31884b450640b12c")>]
 [<assembly: System.Reflection.AssemblyProductAttribute("MusicalChairs.Api")>]
 [<assembly: System.Reflection.AssemblyTitleAttribute("MusicalChairs.Api")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]
