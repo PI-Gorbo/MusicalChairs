@@ -80,7 +80,7 @@ module Program =
 
         app.UseHttpsRedirection()
         app.UseAuthorization()
-        app.UseCors(Action<CorsPolicyBuilder>(fun (builder) -> builder.AllowAnyOrigin() |> ignore))
+        app.UseCors(fun (builder) -> builder.AllowAnyOrigin() |> ignore)
         app.RegisterRoutes() |> ignore
 
         app.Run()
