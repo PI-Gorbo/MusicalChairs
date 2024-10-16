@@ -10,13 +10,24 @@ open Marten
 open FsToolkit.ErrorHandling
 
 module Auth =
-
     type UserId = Guid
 
     [<AllowNullLiteral>]
     type User() =
         inherit IdentityUser<UserId>()
         member val JoinCode: string
+
+    type UserStore() =
+        interface IUserStore<User> with
+            member self.GetUserIdAsync (TUser user, CancellationToken cancellationToken) : Task<string> =
+                pass 
+            member Task SetNormalizedUserNameAsync(TUser user, string? normalizedName, CancellationToken cancellationToken);
+            member Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken);
+            member Task<IdentityResult> UpdateAsync(TUser user, CancellationToken cancellationToken);
+            member Task<IdentityResult> DeleteAsync(TUser user, CancellationToken cancellationToken);
+            member Task<TUser?> FindByIdAsync(string userId, CancellationToken cancellationToken);
+            member Task<TUser?> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken);
+        
 
     module GetUser = 
         type IGetUser = UserId -> Task<User>

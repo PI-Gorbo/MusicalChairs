@@ -2,30 +2,21 @@ namespace MusicalChairs.Api
 
 #nowarn "20"
 
+open MusicalChairs.Api.Router
+open System.Text.Json.Serialization
 open System
-open System.Collections.Generic
-open System.IO
-open System.Linq
 open System.Threading.Tasks
-open Microsoft.AspNetCore
+open Marten
 open Microsoft.AspNetCore.Builder
-open Microsoft.AspNetCore.Hosting
-open Microsoft.AspNetCore.HttpsPolicy
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
-open Microsoft.Extensions.Logging
-open MusicalChairs.Api.Router
-open Marten
+open Microsoft.AspNetCore.Authentication.Cookies
+open Microsoft.AspNetCore.Authentication
+open Microsoft.AspNetCore.Http
 
 module Program =
-    open Microsoft.AspNetCore.Cors.Infrastructure
-    open Microsoft.AspNetCore.Authentication.Cookies
-    open Microsoft.AspNetCore.Authentication
-    open Microsoft.AspNetCore.Http
-    open Weasel.Core
-    open System.Text.Json
-    open System.Text.Json.Serialization
+    open Microsoft.AspNetCore.Identity
 
     [<EntryPoint>]
     let main args =
@@ -33,19 +24,27 @@ module Program =
         let builder = WebApplication.CreateBuilder(args)
 
         builder.Services.AddMarten(
-            let storeOptions = StoreOptions()
+            let storeOptions = Marten.StoreOptions()
             storeOptions.UseSystemTextJsonForSerialization(
-                configure = fun opts -> 
-                    JsonFSharpOptions
-                        .Default()
-                        .WithUnionAdjacentTag()
-                        .WithUnionNamedFields()
-                        .AddToJsonSerializerOptions(opts)
+                configure =
+                    fun opts ->
+                        JsonFSharpOptions
+                            .Default()
+                            .WithUnionAdjacentTag()
+                            .WithUnionNamedFields()
+                            .AddToJsonSerializerOptions(opts)
             )
             storeOptions.Schema.For<Auth.User>()
-
             storeOptions
         )
+
+        builder.Services.AddIdentityApiEndpoints<Auth.User>(fun opts ->
+            opts.Password.RequireDigit <- true
+            opts.Password.RequiredLength <- 10
+            opts.Password.RequireLowercase <- true
+            opts.Password.RequireNonAlphanumeric <- true
+            opts.Password.RequireUppercase <- true)
+            .AddRoleStore()
 
         builder
             .Services
@@ -68,7 +67,9 @@ module Program =
 
                 opts.SlidingExpiration <- true
                 opts.ExpireTimeSpan <- TimeSpan.FromHours(24)
-                opts.Cookie.Domain <- builder.Configuration.GetValue<string>("MS:CookieDomain")
+
+                opts.Cookie.Domain <-
+                    builder.Configuration.GetValue<string>("MS:CookieDomain")
                     |> function
                         | x when String.IsNullOrEmpty x -> failwith "Cannot Locate the configuration MS:CookieDomain"
                         | x -> x
