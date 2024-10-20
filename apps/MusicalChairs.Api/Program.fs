@@ -16,15 +16,25 @@ open Microsoft.AspNetCore.Authentication
 open Microsoft.AspNetCore.Http
 
 module Program =
+    open MartenDbBootstrap
     open Microsoft.AspNetCore.Identity
+    open FluentValidation
 
     [<EntryPoint>]
     let main args =
 
         let builder = WebApplication.CreateBuilder(args)
 
+        // Set where configuration should be sourced from.
+        builder.Configuration.AddJsonFile("appsettings.json") 
+        builder.Configuration.AddJsonFile("appsettings.Development.json")
+        builder.Configuration.AddEnvironmentVariables()
+            
+
         builder.Services.AddMarten(
             let storeOptions = Marten.StoreOptions()
+            storeOptions.Connection(builder.Configuration.GetConnectionString("Marten"))
+
             storeOptions.UseSystemTextJsonForSerialization(
                 configure =
                     fun opts ->
@@ -34,55 +44,82 @@ module Program =
                             .WithUnionNamedFields()
                             .AddToJsonSerializerOptions(opts)
             )
-            storeOptions.Schema.For<Auth.User>()
+
+            storeOptions.Schema.For<User.User>()
+            storeOptions.Schema.For<User.UserRole>()
             storeOptions
-        )
+        ).UseIdentitySessions()
+        
+        let identityBuilder =
+            builder.Services.AddIdentityCore<User.User>(fun opts ->
+                opts.SignIn.RequireConfirmedAccount <- false
+                opts.User.RequireUniqueEmail <- true
+                opts.Password <-
+                    PasswordOptions(
+                        RequireDigit = true,
+                        RequiredLength = 6,
+                        RequireLowercase = true,
+                        RequireUppercase = true,
+                        RequireNonAlphanumeric = true
+                    ))
 
-        builder.Services.AddIdentityApiEndpoints<Auth.User>(fun opts ->
-            opts.Password.RequireDigit <- true
-            opts.Password.RequiredLength <- 10
-            opts.Password.RequireLowercase <- true
-            opts.Password.RequireNonAlphanumeric <- true
-            opts.Password.RequireUppercase <- true)
-            .AddRoleStore()
+        identityBuilder.AddRoles<User.UserRole>()
+        identityBuilder.AddRoleStore<RoleStore>()
+        identityBuilder.AddUserStore<UserStore>()
+        builder.Services.AddTransient<IUserStore<User.User>, UserStore>()
+        builder.Services.AddTransient<IRoleStore<User.UserRole>, RoleStore>()
+        identityBuilder.AddSignInManager()
+        identityBuilder.AddDefaultTokenProviders()
+        identityBuilder.AddApiEndpoints()
 
-        builder
-            .Services
-            .AddAuthentication(fun opts ->
+        builder.Services.AddCors()
+        builder.Services.AddAuthorization()
+
+        let authBuilder =
+            builder.Services.AddAuthentication(fun opts ->
                 opts.DefaultAuthenticateScheme <- CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(fun opts ->
-                opts.Events.OnRedirectToLogin <-
-                    fun (c: RedirectContext<CookieAuthenticationOptions>) ->
-                        task {
-                            c.Response.StatusCode <- StatusCodes.Status401Unauthorized
-                            return Task.CompletedTask
-                        }
 
-                opts.Events.OnRedirectToAccessDenied <-
-                    fun (c: RedirectContext<CookieAuthenticationOptions>) ->
-                        task {
-                            c.Response.StatusCode <- StatusCodes.Status401Unauthorized
-                            return Task.CompletedTask
-                        }
+        authBuilder.AddCookie(fun opts ->
+            opts.Events.OnRedirectToLogin <-
+                fun (c: RedirectContext<CookieAuthenticationOptions>) ->
+                    task {
+                        c.Response.StatusCode <- StatusCodes.Status401Unauthorized
+                        return Task.CompletedTask
+                    }
 
-                opts.SlidingExpiration <- true
-                opts.ExpireTimeSpan <- TimeSpan.FromHours(24)
+            opts.Events.OnRedirectToAccessDenied <-
+                fun (c: RedirectContext<CookieAuthenticationOptions>) ->
+                    task {
+                        c.Response.StatusCode <- StatusCodes.Status401Unauthorized
+                        return Task.CompletedTask
+                    }
 
-                opts.Cookie.Domain <-
-                    builder.Configuration.GetValue<string>("MS:CookieDomain")
-                    |> function
-                        | x when String.IsNullOrEmpty x -> failwith "Cannot Locate the configuration MS:CookieDomain"
-                        | x -> x
+            opts.SlidingExpiration <- true
+            opts.ExpireTimeSpan <- TimeSpan.FromHours(24)
 
-                ignore ())
-        |> ignore
+            opts.Cookie.Domain <-
+                builder.Configuration.GetValue<string>("MS:CookieDomain")
+                |> function
+                    | x when String.IsNullOrEmpty x -> failwith "Error" // Default to localhost.
+                    | x -> x)
+
+        builder.Services.AddEndpointsApiExplorer()
+        builder.Services.AddSwaggerGen()
+
+        builder.Services.AddValidatorsFromAssemblyContaining<Auth.RegisterUser.RegisterUserRequestValidator>()
 
         let app = builder.Build()
 
         app.UseHttpsRedirection()
         app.UseAuthorization()
+        app.UseAuthentication()
         app.UseCors(fun (builder) -> builder.AllowAnyOrigin() |> ignore)
         app.RegisterRoutes() |> ignore
+
+        if app.Environment.IsDevelopment() then
+            app.UseSwagger()
+            app.UseSwaggerUI()
+            |> ignore
 
         app.Run()
 
