@@ -1,6 +1,7 @@
 namespace MusicalChairs.Api
 
 open System
+open User
 open System.Security.Claims
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Http
@@ -8,14 +9,13 @@ open Microsoft.AspNetCore.Routing
 open Microsoft.AspNetCore.Builder
 open Marten
 open FsToolkit.ErrorHandling
+open FluentValidation
+open Microsoft.AspNetCore.Identity
+open Microsoft.AspNetCore.Authentication.Cookies
+open Microsoft.AspNetCore.Authentication
+open FluentValidation.Results
 
 module Auth =
-    open User
-    open FluentValidation
-    open Microsoft.AspNetCore.Identity
-    open Microsoft.AspNetCore.Authentication.Cookies
-    open Microsoft.AspNetCore.Authentication
-    open FluentValidation.Results
 
     let mapIdentityResult (res: Task<IdentityResult>) : Task<Result<unit, string>> =
         res
@@ -24,11 +24,12 @@ module Auth =
             if res.Succeeded then
                 TaskResult.ok ()
             else
-                (TaskResult.error (
+                let identityErrorsAsString =
                     res.Errors
                     |> Seq.map (fun x -> x.Description)
                     |> (fun x -> String.Join(", ", x))
-                )))
+
+                identityErrorsAsString |> TaskResult.error)
 
     let mapValidationResult (taskRes: Task<ValidationResult>) =
         taskRes
@@ -52,8 +53,14 @@ module Auth =
             inherit AbstractValidator<RegisterUserRequest>()
 
             do
-                base.RuleFor(fun x -> x.Email).NotEmpty().EmailAddress() |> ignore
-                base.RuleFor(fun x -> x.Password).NotEmpty() |> ignore
+                ``base``
+                    .RuleFor(fun x -> x.Email)
+                    .NotEmpty()
+                    .EmailAddress()
+                |> ignore
+
+                base.RuleFor(fun x -> x.Password).NotEmpty()
+                |> ignore
 
 
         let verifyPassword (userManager: UserManager<User>) (user: User) (password: string) =
@@ -77,12 +84,21 @@ module Auth =
 
             validator.ValidateAsync(req, cancellationToken)
             |> mapValidationResult
-            |> TaskResult.bind (fun _ -> userManager.FindByEmailAsync(req.Email) |> TaskResult.ofTask)
+            |> TaskResult.bind (fun _ ->
+                userManager.FindByEmailAsync(req.Email)
+                |> TaskResult.ofTask)
             |> TaskResult.bindRequireEqual null "Email already in use by another account."
             |> TaskResult.bind (fun _ -> verifyPassword userManager user req.Password)
-            |> TaskResult.bind (fun _ -> userManager.SetUserNameAsync(user, req.Email) |> mapIdentityResult)
-            |> TaskResult.bind (fun _ -> userManager.SetEmailAsync(user, req.Email) |> mapIdentityResult)
-            |> TaskResult.bind (fun _ -> userManager.CreateAsync(user) |> mapIdentityResult)
+            |> TaskResult.bind (fun _ ->
+                userManager.SetUserNameAsync(user, req.Email)
+                |> TaskResult.ofTask
+                |> TaskResult.ignore)
+            |> TaskResult.bind (fun _ ->
+                userManager.SetEmailAsync(user, req.Email)
+                |> TaskResult.ofTask
+                |> TaskResult.ignore)
+            |> TaskResult.bind (fun _ -> 
+                userManager.CreateAsync(user) |> mapIdentityResult)
             |> TaskResult.bind (fun _ ->
                 let claims =
                     [ Claim(ClaimTypes.Email, user.Email)
@@ -90,13 +106,14 @@ module Auth =
 
                 let claimsIdentity =
                     new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)
-                    
+
                 taskResult {
                     // TODO: For Now, On register automatically authenticates, but we need to follow the confirm email path.
-                    return! httpContext.SignInAsync(
-                        CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(claimsIdentity)
-                    )
+                    return!
+                        httpContext.SignInAsync(
+                            CookieAuthenticationDefaults.AuthenticationScheme,
+                            new ClaimsPrincipal(claimsIdentity)
+                        )
                 })
             |> TaskResult.foldResult (fun userDto -> Results.Ok userDto) (fun error -> Results.BadRequest(error))
 
@@ -121,8 +138,8 @@ module Auth =
                 | Some foundClaim ->
                     try
                         Ok(Guid.Parse(foundClaim.Value))
-                    with ex ->
-                        Error(Results.Unauthorized())
+                    with
+                    | ex -> Error(Results.Unauthorized())
                 | None -> Error(Results.Unauthorized())
 
         let FetchUserById (getUser: IGetUser) (userId: UserId) =
@@ -143,7 +160,9 @@ module Auth =
             |> TaskResult.foldResult (fun userDto -> Results.Ok userDto) (fun error -> error)
 
         let Apply (groupBuilder: RouteGroupBuilder) =
-            groupBuilder.MapGet("/user/", Func<_, _, _>(GetUser)).RequireAuthorization()
+            groupBuilder
+                .MapGet("/user/", Func<_, _, _>(GetUser))
+                .RequireAuthorization()
             |> ignore
 
             groupBuilder

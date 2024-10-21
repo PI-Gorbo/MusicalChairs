@@ -19,6 +19,7 @@ module Program =
     open MartenDbBootstrap
     open Microsoft.AspNetCore.Identity
     open FluentValidation
+    open Weasel.Core
 
     [<EntryPoint>]
     let main args =
@@ -26,35 +27,43 @@ module Program =
         let builder = WebApplication.CreateBuilder(args)
 
         // Set where configuration should be sourced from.
-        builder.Configuration.AddJsonFile("appsettings.json") 
+        builder.Configuration.AddJsonFile("appsettings.json")
         builder.Configuration.AddJsonFile("appsettings.Development.json")
         builder.Configuration.AddEnvironmentVariables()
-            
+
         // Add Marten ORM.
-        builder.Services.AddMarten(
-            let storeOptions = Marten.StoreOptions()
-            storeOptions.Connection(builder.Configuration.GetConnectionString("Marten"))
+        builder
+            .Services
+            .AddMarten(
+                let storeOptions = Marten.StoreOptions()
+                storeOptions.Connection(builder.Configuration.GetConnectionString("Marten"))
 
-            storeOptions.UseSystemTextJsonForSerialization(
-                configure =
-                    fun opts ->
-                        JsonFSharpOptions
-                            .Default()
-                            .WithUnionAdjacentTag()
-                            .WithUnionNamedFields()
-                            .AddToJsonSerializerOptions(opts)
+                storeOptions.UseSystemTextJsonForSerialization(
+                    configure =
+                        fun opts ->
+                            JsonFSharpOptions
+                                .Default()
+                                .WithUnionAdjacentTag()
+                                .WithUnionNamedFields()
+                                .AddToJsonSerializerOptions(opts)
+                )
+
+                storeOptions.Schema.For<User.User>()
+                storeOptions.Schema.For<User.UserRole>()
+
+                if builder.Environment.IsDevelopment() then
+                    storeOptions.AutoCreateSchemaObjects <- AutoCreate.All
+
+                storeOptions
             )
+            .UseIdentitySessions()
 
-            storeOptions.Schema.For<User.User>()
-            storeOptions.Schema.For<User.UserRole>()
-            storeOptions
-        ).UseIdentitySessions()
-        
         // Configure Identity
         let identityBuilder =
-            builder.Services.AddIdentityCore<User.User>(fun opts ->
+            builder.Services.AddIdentityCore<User.User> (fun opts ->
                 opts.SignIn.RequireConfirmedAccount <- false
                 opts.User.RequireUniqueEmail <- true
+
                 opts.Password <-
                     PasswordOptions(
                         RequireDigit = true,
@@ -78,10 +87,10 @@ module Program =
         builder.Services.AddAuthorization()
 
         let authBuilder =
-            builder.Services.AddAuthentication(fun opts ->
+            builder.Services.AddAuthentication (fun opts ->
                 opts.DefaultAuthenticateScheme <- CookieAuthenticationDefaults.AuthenticationScheme)
 
-        authBuilder.AddCookie(fun opts ->
+        authBuilder.AddCookie (fun opts ->
             opts.Events.OnRedirectToLogin <-
                 fun (c: RedirectContext<CookieAuthenticationOptions>) ->
                     task {
@@ -120,8 +129,7 @@ module Program =
 
         if app.Environment.IsDevelopment() then
             app.UseSwagger()
-            app.UseSwaggerUI()
-            |> ignore
+            app.UseSwaggerUI() |> ignore
 
         app.Run()
 

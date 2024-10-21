@@ -1,1 +1,0 @@
-docker run -p 5432:5432 --name musicalChairsDb -e POSTGRES_PASSWORD=postgres -d postgres
