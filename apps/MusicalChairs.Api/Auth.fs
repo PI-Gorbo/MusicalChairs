@@ -53,7 +53,7 @@ module Auth =
             inherit AbstractValidator<RegisterUserRequest>()
 
             do
-                ``base``
+                base
                     .RuleFor(fun x -> x.Email)
                     .NotEmpty()
                     .EmailAddress()
