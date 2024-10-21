@@ -30,7 +30,7 @@ module Program =
         builder.Configuration.AddJsonFile("appsettings.Development.json")
         builder.Configuration.AddEnvironmentVariables()
             
-
+        // Add Marten ORM.
         builder.Services.AddMarten(
             let storeOptions = Marten.StoreOptions()
             storeOptions.Connection(builder.Configuration.GetConnectionString("Marten"))
@@ -50,6 +50,7 @@ module Program =
             storeOptions
         ).UseIdentitySessions()
         
+        // Configure Identity
         let identityBuilder =
             builder.Services.AddIdentityCore<User.User>(fun opts ->
                 opts.SignIn.RequireConfirmedAccount <- false
@@ -67,6 +68,7 @@ module Program =
         identityBuilder.AddRoleStore<RoleStore>()
         identityBuilder.AddUserStore<UserStore>()
         builder.Services.AddTransient<IUserStore<User.User>, UserStore>()
+        builder.Services.AddTransient<IUserEmailStore<User.User>, UserStore>()
         builder.Services.AddTransient<IRoleStore<User.UserRole>, RoleStore>()
         identityBuilder.AddSignInManager()
         identityBuilder.AddDefaultTokenProviders()

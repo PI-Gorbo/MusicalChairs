@@ -50,10 +50,11 @@ module Auth =
 
         type RegisterUserRequestValidator() =
             inherit AbstractValidator<RegisterUserRequest>()
+
             do
                 base.RuleFor(fun x -> x.Email).NotEmpty().EmailAddress() |> ignore
                 base.RuleFor(fun x -> x.Password).NotEmpty() |> ignore
-                
+
 
         let verifyPassword (userManager: UserManager<User>) (user: User) (password: string) =
             userManager.PasswordValidators
@@ -76,25 +77,27 @@ module Auth =
 
             validator.ValidateAsync(req, cancellationToken)
             |> mapValidationResult
-            |> TaskResult.map (fun _ -> userManager.FindByEmailAsync(req.Email) |> TaskResult.ofTask)
+            |> TaskResult.bind (fun _ -> userManager.FindByEmailAsync(req.Email) |> TaskResult.ofTask)
             |> TaskResult.bindRequireEqual null "Email already in use by another account."
             |> TaskResult.bind (fun _ -> verifyPassword userManager user req.Password)
             |> TaskResult.bind (fun _ -> userManager.SetUserNameAsync(user, req.Email) |> mapIdentityResult)
             |> TaskResult.bind (fun _ -> userManager.SetEmailAsync(user, req.Email) |> mapIdentityResult)
             |> TaskResult.bind (fun _ -> userManager.CreateAsync(user) |> mapIdentityResult)
-            |> TaskResult.map (fun _ ->
+            |> TaskResult.bind (fun _ ->
                 let claims =
                     [ Claim(ClaimTypes.Email, user.Email)
                       Claim(ClaimTypes.Actor, user.Id.ToString()) ]
 
                 let claimsIdentity =
                     new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)
-
-                // TODO: For Now, On register automatically authenticates, but we need to follow the confirm email path.
-                httpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity)
-                ))
+                    
+                taskResult {
+                    // TODO: For Now, On register automatically authenticates, but we need to follow the confirm email path.
+                    return! httpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity)
+                    )
+                })
             |> TaskResult.foldResult (fun userDto -> Results.Ok userDto) (fun error -> Results.BadRequest(error))
 
         let Apply (groupBuilder: RouteGroupBuilder) =

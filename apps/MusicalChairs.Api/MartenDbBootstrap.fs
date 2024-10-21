@@ -86,7 +86,7 @@ module MartenDbBootstrap =
                 Task.CompletedTask
 
             member self.GetUserNameAsync(user: User, cancellationToken) : Task<string> =
-                Task.FromResult(user.NormalizedUserName)
+                Task.FromResult(user.UserName)
 
             member self.GetUserIdAsync(user, cancellationToken) : Task<string> = Task.FromResult(user.Id.ToString())
 
