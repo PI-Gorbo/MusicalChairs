@@ -20,6 +20,7 @@ module Program =
     open Microsoft.AspNetCore.Identity
     open FluentValidation
     open Weasel.Core
+    open Microsoft.AspNetCore.Authorization
 
     [<EntryPoint>]
     let main args =
@@ -84,13 +85,12 @@ module Program =
         identityBuilder.AddApiEndpoints()
 
         builder.Services.AddCors()
-        builder.Services.AddAuthorization()
 
+        // Authentication - "Who are you"
         let authBuilder =
             builder.Services.AddAuthentication (fun opts ->
                 opts.DefaultAuthenticateScheme <- CookieAuthenticationDefaults.AuthenticationScheme)
-
-        authBuilder.AddCookie (fun opts ->
+        authBuilder.AddCookie(fun opts ->
             opts.Events.OnRedirectToLogin <-
                 fun (c: RedirectContext<CookieAuthenticationOptions>) ->
                     task {
@@ -113,6 +113,15 @@ module Program =
                 |> function
                     | x when String.IsNullOrEmpty x -> failwith "Error" // Default to localhost.
                     | x -> x)
+
+        // Authorization - "Who has access to what"
+        builder.Services.AddSingleton<IAuthorizationHandler, AuthBootstrap.IsRegisteredUserAuthorizationHandler>()
+        builder.Services.AddAuthorization(fun cfg ->
+            cfg.AddPolicy("IsRegisteredUser", fun policyCfg -> 
+                policyCfg
+                    .RequireAuthenticatedUser()
+                    .AddRequirements(AuthBootstrap.IsRegisteredUserRequirement()) 
+                    |> ignore ))
 
         builder.Services.AddEndpointsApiExplorer()
         builder.Services.AddSwaggerGen()

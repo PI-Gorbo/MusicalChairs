@@ -14,6 +14,7 @@ open Microsoft.AspNetCore.Identity
 open Microsoft.AspNetCore.Authentication.Cookies
 open Microsoft.AspNetCore.Authentication
 open FluentValidation.Results
+open System.Threading
 
 module Auth =
 
@@ -45,7 +46,6 @@ module Auth =
                 ))
 
     module RegisterUser =
-        open System.Threading
 
         type RegisterUserRequest = { Email: string; Password: string }
 
