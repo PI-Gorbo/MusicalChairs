@@ -14,6 +14,3 @@ module Router =
                 |> Auth.GetUser.Apply
                 |> Auth.RegisterUser.Apply
                 |> ignore
-
-                
-            
