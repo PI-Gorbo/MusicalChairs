@@ -2,6 +2,7 @@ namespace MusicalChairs.Api
 
 #nowarn "20"
 
+open GP.MartenIdentity
 open MusicalChairs.Api.Router
 open System.Text.Json.Serialization
 open System
@@ -57,12 +58,12 @@ module Program =
                                 .AddToJsonSerializerOptions(opts)
                 )
 
-                storeOptions.Schema.For<User.User>()
-                storeOptions.Schema.For<User.UserRole>()
+                storeOptions.RegisterIdentityModels<User.User, User.UserRole>()
+                    |> ignore
 
                 if builder.Environment.IsDevelopment() then
                     storeOptions.AutoCreateSchemaObjects <- AutoCreate.All
-
+                
                 storeOptions
             )
             .UseIdentitySessions()
@@ -82,9 +83,9 @@ module Program =
                         RequireNonAlphanumeric = true
                     ))
 
-        identityBuilder.AddRoles<User.UserRole>()
+        identityBuilder.AddRoles<User.UserRole>
         identityBuilder.AddRoleStore<RoleStore>()
-        identityBuilder.AddUserStore<UserStore>()
+        identityBuilder.AddUserStore<MartenUserStore<User.User, User.UserRole>>()
         builder.Services.AddTransient<IUserStore<User.User>, UserStore>()
         builder.Services.AddTransient<IUserEmailStore<User.User>, UserStore>()
         builder.Services.AddTransient<IRoleStore<User.UserRole>, RoleStore>()
