@@ -32,6 +32,14 @@ module Program =
         builder.Configuration.AddJsonFile("appsettings.Development.json")
         builder.Configuration.AddEnvironmentVariables()
 
+        builder.Services.ConfigureHttpJsonOptions(fun opts -> 
+            JsonFSharpOptions
+                .Default()
+                .WithUnionAdjacentTag()
+                .WithUnionNamedFields()
+                .AddToJsonSerializerOptions(opts.SerializerOptions)
+        )
+
         // Add Marten ORM.
         builder
             .Services
@@ -82,13 +90,11 @@ module Program =
         builder.Services.AddTransient<IRoleStore<User.UserRole>, RoleStore>()
         identityBuilder.AddSignInManager()
         identityBuilder.AddDefaultTokenProviders()
-        identityBuilder.AddApiEndpoints()
-
         builder.Services.AddCors()
 
         // Authentication - "Who are you"
         let authBuilder =
-            builder.Services.AddAuthentication (fun opts ->
+            builder.Services.AddAuthentication(fun opts ->
                 opts.DefaultAuthenticateScheme <- CookieAuthenticationDefaults.AuthenticationScheme)
         authBuilder.AddCookie(fun opts ->
             opts.Events.OnRedirectToLogin <-
@@ -115,7 +121,7 @@ module Program =
                     | x -> x)
 
         // Authorization - "Who has access to what"
-        builder.Services.AddSingleton<IAuthorizationHandler, AuthBootstrap.IsRegisteredUserAuthorizationHandler>()
+        builder.Services.AddScoped<IAuthorizationHandler, AuthBootstrap.IsRegisteredUserAuthorizationHandler>()
         builder.Services.AddAuthorization(fun cfg ->
             cfg.AddPolicy("IsRegisteredUser", fun policyCfg -> 
                 policyCfg
@@ -123,9 +129,11 @@ module Program =
                     .AddRequirements(AuthBootstrap.IsRegisteredUserRequirement()) 
                     |> ignore ))
 
+        // Add Swagger - The OpenApi document generator.
         builder.Services.AddEndpointsApiExplorer()
         builder.Services.AddSwaggerGen()
 
+        // Register validators
         builder.Services.AddValidatorsFromAssemblyContaining<Auth.RegisterUser.RegisterUserRequestValidator>()
 
         let app = builder.Build()
