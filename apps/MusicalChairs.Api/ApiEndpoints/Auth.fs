@@ -53,7 +53,7 @@ module Auth =
             inherit AbstractValidator<RegisterUserRequest>()
 
             do
-                base
+                ``base``
                     .RuleFor(fun x -> x.Email)
                     .NotEmpty()
                     .EmailAddress()
@@ -97,8 +97,7 @@ module Auth =
                 userManager.SetEmailAsync(user, req.Email)
                 |> TaskResult.ofTask
                 |> TaskResult.ignore)
-            |> TaskResult.bind (fun _ -> 
-                userManager.CreateAsync(user) |> mapIdentityResult)
+            |> TaskResult.bind (fun _ -> userManager.CreateAsync(user) |> mapIdentityResult)
             |> TaskResult.bind (fun _ ->
                 let claims =
                     [ Claim(ClaimTypes.Email, user.Email)
@@ -121,6 +120,70 @@ module Auth =
             groupBuilder
                 .MapPost("/register", Func<_, _, _, _, _, Task<IResult>>(RegisterUser))
                 .AllowAnonymous()
+
+    module Login =
+
+        type LoginCode = 
+            | Hello of Property1: string * Property2: string
+            | World of Property2: int
+        type LoginRequest = { Email: string; Password: string; LoginCode: LoginCode }
+
+        type LoginRequestValidator() =
+            inherit AbstractValidator<LoginRequest>()
+
+            do
+                ``base``
+                    .RuleFor(fun x -> x.Email)
+                    .NotEmpty()
+                    .EmailAddress()
+                |> ignore
+
+                base.RuleFor(fun x -> x.Password).NotEmpty()
+                |> ignore
+
+        let Login
+            (httpContext: HttpContext)
+            (signInManager: SignInManager<User>)
+            (userManager: UserManager<User>)
+            (req: LoginRequest)
+            =
+            req
+            |> LoginRequestValidator().ValidateAsync
+            |> mapValidationResult
+            |> TaskResult.bind (fun _ -> userManager.FindByEmailAsync(req.Email) |> TaskResult.ofTask)
+            |> TaskResult.bindRequireNotNull "Invlaid username or Password"
+            |> TaskResult.bind (fun user ->
+                signInManager.CheckPasswordSignInAsync(user, req.Password, false)
+                |> TaskResult.ofTask
+                |> TaskResult.bind (fun res ->
+                    if res.Succeeded then
+                        TaskResult.ok ()
+                    else
+                        TaskResult.error "Invalid username or Password")
+                |> TaskResult.bind (fun _ ->
+                    let claims =
+                        [ Claim(ClaimTypes.Email, user.Email)
+                          Claim(ClaimTypes.Actor, user.Id.ToString()) ]
+
+                    let claimsIdentity =
+                        new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)
+
+                    taskResult {
+                        return!
+                            httpContext.SignInAsync(
+                                CookieAuthenticationDefaults.AuthenticationScheme,
+                                new ClaimsPrincipal(claimsIdentity)
+                            )
+                    }))
+            |> TaskResult.foldResult (fun _ -> Results.Ok()) Results.BadRequest
+
+        let Apply (groupBuilder: RouteGroupBuilder) =
+            groupBuilder
+                .MapPut("/login", Func<_, _, _, _, _>(Login))
+                .AllowAnonymous() 
+                |> ignore
+
+            groupBuilder
 
     module GetUser =
         type IGetUser = UserId -> Task<User>

@@ -12,5 +12,6 @@ module Router =
             self.MapGroup("/api/v1/auth")
                 .WithTags("Auth")
                 |> Auth.GetUser.Apply
+                |> Auth.Login.Apply
                 |> Auth.RegisterUser.Apply
                 |> ignore
