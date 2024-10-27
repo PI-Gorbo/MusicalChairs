@@ -83,12 +83,9 @@ module Program =
                         RequireNonAlphanumeric = true
                     ))
 
-        identityBuilder.AddRoles<User.UserRole>
-        identityBuilder.AddRoleStore<RoleStore>()
+        identityBuilder.AddRoles<User.UserRole>()
+        identityBuilder.AddRoleStore<MartenRoleStore<User.UserRole>>()
         identityBuilder.AddUserStore<MartenUserStore<User.User, User.UserRole>>()
-        builder.Services.AddTransient<IUserStore<User.User>, UserStore>()
-        builder.Services.AddTransient<IUserEmailStore<User.User>, UserStore>()
-        builder.Services.AddTransient<IRoleStore<User.UserRole>, RoleStore>()
         identityBuilder.AddSignInManager()
         identityBuilder.AddDefaultTokenProviders()
         builder.Services.AddCors()
