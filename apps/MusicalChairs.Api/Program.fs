@@ -17,7 +17,6 @@ open Microsoft.AspNetCore.Authentication
 open Microsoft.AspNetCore.Http
 
 module Program =
-    open MartenDbBootstrap
     open Microsoft.AspNetCore.Identity
     open FluentValidation
     open Weasel.Core
@@ -83,12 +82,8 @@ module Program =
                         RequireNonAlphanumeric = true
                     ))
 
-        identityBuilder.AddRoles<User.UserRole>
-        identityBuilder.AddRoleStore<RoleStore>()
         identityBuilder.AddUserStore<MartenUserStore<User.User, User.UserRole>>()
-        builder.Services.AddTransient<IUserStore<User.User>, UserStore>()
-        builder.Services.AddTransient<IUserEmailStore<User.User>, UserStore>()
-        builder.Services.AddTransient<IRoleStore<User.UserRole>, RoleStore>()
+        identityBuilder.AddRoleStore<MartenRoleStore<User.UserRole>>()
         identityBuilder.AddSignInManager()
         identityBuilder.AddDefaultTokenProviders()
         builder.Services.AddCors()
