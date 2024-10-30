@@ -14,4 +14,4 @@ module User =
     [<AllowNullLiteral>]
     type User() =
         inherit MartenIdentityUser<UserRole>() 
-        member val JoinCode: string 
+        member val JoinCode: string     

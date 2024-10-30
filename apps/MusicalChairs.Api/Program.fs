@@ -1,7 +1,7 @@
 namespace MusicalChairs.Api
 
 #nowarn "20"
-
+open Auth
 open GP.MartenIdentity
 open MusicalChairs.Api.Router
 open System.Text.Json.Serialization
@@ -81,7 +81,8 @@ module Program =
                         RequireUppercase = true,
                         RequireNonAlphanumeric = true
                     ))
-
+        
+        identityBuilder.AddRoles<User.UserRole>()
         identityBuilder.AddUserStore<MartenUserStore<User.User, User.UserRole>>()
         identityBuilder.AddRoleStore<MartenRoleStore<User.UserRole>>()
         identityBuilder.AddSignInManager()
@@ -130,7 +131,7 @@ module Program =
         builder.Services.AddSwaggerGen()
 
         // Register validators
-        builder.Services.AddValidatorsFromAssemblyContaining<Auth.RegisterUser.RegisterUserRequestValidator>()
+        builder.Services.AddValidatorsFromAssemblyContaining<ApiEnd.RegisterUser.RegisterUserRequestValidator>()
 
         let app = builder.Build()
 

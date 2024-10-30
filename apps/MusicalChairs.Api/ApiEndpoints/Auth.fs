@@ -1,50 +1,28 @@
 namespace MusicalChairs.Api
 
-open System
 open User
+open Marten
+open GP.IdentityEndpoints.Operations
+open GP.IdentityEndpoints.Utils
+open System
+open System.Threading
+open FsToolkit.ErrorHandling
+open FsToolkit.ErrorHandling.Operator.TaskResult
+open GP.IdentityEndpoints.Operations.RegisterEndpoint
 open System.Security.Claims
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Routing
 open Microsoft.AspNetCore.Builder
-open Marten
-open FsToolkit.ErrorHandling
 open FluentValidation
 open Microsoft.AspNetCore.Identity
-open Microsoft.AspNetCore.Authentication.Cookies
-open Microsoft.AspNetCore.Authentication
-open FluentValidation.Results
-open System.Threading
+open FSharp.MinimalApi
+open FSharp.MinimalApi.Builder
+open GP.IdentityEndpoints.Operations.CookieOperations
+
+open type TypedResults
 
 module Auth =
-
-    let mapIdentityResult (res: Task<IdentityResult>) : Task<Result<unit, string>> =
-        res
-        |> TaskResult.ofTask
-        |> TaskResult.bind (fun res ->
-            if res.Succeeded then
-                TaskResult.ok ()
-            else
-                let identityErrorsAsString =
-                    res.Errors
-                    |> Seq.map (fun x -> x.Description)
-                    |> (fun x -> String.Join(", ", x))
-
-                identityErrorsAsString |> TaskResult.error)
-
-    let mapValidationResult (taskRes: Task<ValidationResult>) =
-        taskRes
-        |> TaskResult.ofTask
-        |> TaskResult.bind (fun res ->
-            if res.IsValid then
-                TaskResult.ok ()
-            else
-                TaskResult.error (
-                    res.Errors
-                    |> Seq.map (fun err -> err.ErrorMessage)
-                    |> (fun errors -> String.Join(", ", errors))
-                ))
-
     module RegisterUser =
 
         type RegisterUserRequest = { Email: string; Password: string }
@@ -62,127 +40,77 @@ module Auth =
                 base.RuleFor(fun x -> x.Password).NotEmpty()
                 |> ignore
 
-
-        let verifyPassword (userManager: UserManager<User>) (user: User) (password: string) =
-            userManager.PasswordValidators
-            |> Seq.fold
-                (fun result passwordValidator ->
-                    result
-                    |> TaskResult.bind (fun _ ->
-                        passwordValidator.ValidateAsync(userManager, user, password)
-                        |> mapIdentityResult))
-                (TaskResult.ok ())
-
         let RegisterUser
             (cancellationToken: CancellationToken)
             (httpContext: HttpContext)
             (userManager: UserManager<User>)
             (validator: IValidator<RegisterUserRequest>)
             (req: RegisterUserRequest)
+            : Task<IResult>
             =
-            let user = User()
-
             validator.ValidateAsync(req, cancellationToken)
             |> mapValidationResult
-            |> TaskResult.bind (fun _ ->
-                userManager.FindByEmailAsync(req.Email)
-                |> TaskResult.ofTask)
-            |> TaskResult.bindRequireEqual null "Email already in use by another account."
-            |> TaskResult.bind (fun _ -> verifyPassword userManager user req.Password)
-            |> TaskResult.bind (fun _ ->
-                userManager.SetUserNameAsync(user, req.Email)
-                |> TaskResult.ofTask
-                |> TaskResult.ignore)
-            |> TaskResult.bind (fun _ ->
-                userManager.SetEmailAsync(user, req.Email)
-                |> TaskResult.ofTask
-                |> TaskResult.ignore)
-            |> TaskResult.bind (fun _ -> userManager.CreateAsync(user) |> mapIdentityResult)
-            |> TaskResult.bind (fun _ ->
-                let claims =
-                    [ Claim(ClaimTypes.Email, user.Email)
-                      Claim(ClaimTypes.Actor, user.Id.ToString()) ]
-
-                let claimsIdentity =
-                    new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)
-
-                taskResult {
-                    // TODO: For Now, On register automatically authenticates, but we need to follow the confirm email path.
-                    return!
-                        httpContext.SignInAsync(
-                            CookieAuthenticationDefaults.AuthenticationScheme,
-                            new ClaimsPrincipal(claimsIdentity)
-                        )
-                })
-            |> TaskResult.foldResult (fun userDto -> Results.Ok userDto) (fun error -> Results.BadRequest(error))
-
-        let Apply (groupBuilder: RouteGroupBuilder) =
-            groupBuilder
-                .MapPost("/register", Func<_, _, _, _, _, Task<IResult>>(RegisterUser))
-                .AllowAnonymous()
+            |> TaskResult.mapError (fun err -> BadRequest(err))
+            >>= fun _ ->
+                    Register
+                        { Email = req.Email
+                          Password = req.Password
+                          Username = req.Email }
+                        userManager
+                        (fun u -> u)
+                    |> TaskResult.mapError (fun err ->
+                        match err with
+                        | EmailAlreadyRegistered -> BadRequest("Email already registered.") 
+                        | UsernameAlreadyRegistered -> BadRequest("Email already registered.") 
+                        | PasswordInvalid errorMessage -> BadRequest($"Invalid Password. {errorMessage}") 
+                        | GeneralFailure errorMessage -> BadRequest($"Something went wrong! {errorMessage}") )
+            |> TaskResult.foldResult (fun _ -> Ok()) (fun err -> err)
 
     module Login =
-
-        type LoginCode = 
-            | Hello of Property1: string * Property2: string
-            | World of Property2: int
-        type LoginRequest = { Email: string; Password: string; LoginCode: LoginCode }
-
+    
+        type LoginRequest =
+            { Email: string
+              Password: string
+            }
+    
         type LoginRequestValidator() =
             inherit AbstractValidator<LoginRequest>()
-
+    
             do
-                ``base``
+                base
                     .RuleFor(fun x -> x.Email)
                     .NotEmpty()
                     .EmailAddress()
                 |> ignore
-
+    
                 base.RuleFor(fun x -> x.Password).NotEmpty()
                 |> ignore
-
+    
         let Login
             (httpContext: HttpContext)
             (signInManager: SignInManager<User>)
             (userManager: UserManager<User>)
+            (cancellationToken : CancellationToken)
+            (loginRequestValidator: IValidator<LoginRequest>)
             (req: LoginRequest)
             =
-            req
-            |> LoginRequestValidator().ValidateAsync
+            loginRequestValidator.ValidateAsync(req, cancellationToken) 
             |> mapValidationResult
-            |> TaskResult.bind (fun _ -> userManager.FindByEmailAsync(req.Email) |> TaskResult.ofTask)
-            |> TaskResult.bindRequireNotNull "Invlaid username or Password"
-            |> TaskResult.bind (fun user ->
-                signInManager.CheckPasswordSignInAsync(user, req.Password, false)
-                |> TaskResult.ofTask
-                |> TaskResult.bind (fun res ->
-                    if res.Succeeded then
-                        TaskResult.ok ()
-                    else
-                        TaskResult.error "Invalid username or Password")
-                |> TaskResult.bind (fun _ ->
-                    let claims =
-                        [ Claim(ClaimTypes.Email, user.Email)
-                          Claim(ClaimTypes.Actor, user.Id.ToString()) ]
-
-                    let claimsIdentity =
-                        new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme)
-
-                    taskResult {
-                        return!
-                            httpContext.SignInAsync(
-                                CookieAuthenticationDefaults.AuthenticationScheme,
-                                new ClaimsPrincipal(claimsIdentity)
-                            )
-                    }))
-            |> TaskResult.foldResult (fun _ -> Results.Ok()) Results.BadRequest
-
+            |> TaskResult.mapError (fun err -> !! BadRequest(err))
+            >>= fun _ ->
+                EmailPasswordLogin.login {Email = req.Email; Password = req.Password } userManager signInManager
+                |> TaskResult.mapError(fun err ->
+                    match err with
+                    | EmailPasswordLogin.LoginFailure.InvalidCredentiails -> (!! BadRequest("Invalid username or Password")))
+            |> TaskResult.bind (fun user -> taskResult { return! CookieOperations.AttachCookieToContext httpContext user.Id [] } ) 
+            |> TaskResult.foldResult (fun _ -> Results.Ok()) (fun err -> err)
+    
         let Apply (groupBuilder: RouteGroupBuilder) =
             groupBuilder
                 .MapPut("/login", Func<_, _, _, _, _>(Login))
-                .AllowAnonymous() 
-                |> ignore
-
+                .AllowAnonymous()
+            |> ignore
+    
             groupBuilder
 
     module GetUser =
@@ -194,32 +122,21 @@ module Auth =
               Name: string
               Email: string }
 
-        let GetUserIdFromClaim (c: ClaimsPrincipal) : Result<Guid, IResult> =
-            c.Claims
-            |> Seq.tryFind (fun c -> c.Type = ClaimTypes.Actor)
-            |> function
-                | Some foundClaim ->
-                    try
-                        Ok(Guid.Parse(foundClaim.Value))
-                    with
-                    | ex -> Error(Results.Unauthorized())
-                | None -> Error(Results.Unauthorized())
-
         let FetchUserById (getUser: IGetUser) (userId: UserId) =
             getUser userId
             |> TaskResult.ofTask
-            |> TaskResult.bindRequireNotNull ("There is no user with the provided id.")
+            |> TaskResult.bindRequireNotNull (!! BadRequest("There is no user with the provided id."))
             |> TaskResult.map (fun (user: User) ->
                 { Id = user.Id
                   Name = user.UserName
                   Email = user.Email })
-            |> TaskResult.mapError (fun err -> Results.BadRequest err)
+            |> TaskResult.mapError (fun err -> !! BadRequest(err))
 
         let GetUser (claim: ClaimsPrincipal) (session: IDocumentSession) =
-            claim
-            |> GetUserIdFromClaim
+            claim.GetUserId()
             |> Task.FromResult
-            |> TaskResult.bind (FetchUserById session.LoadAsync<User>)
+            |> TaskResult.mapError (fun err -> !! BadRequest(err))
+            >>= (FetchUserById session.LoadAsync<User>)
             |> TaskResult.foldResult (fun userDto -> Results.Ok userDto) (fun error -> error)
 
         let Apply (groupBuilder: RouteGroupBuilder) =
@@ -229,3 +146,10 @@ module Auth =
             |> ignore
 
             groupBuilder
+
+    let routes =
+        endpoints {
+            post "/register" RegisterUser.RegisterUser _.AllowAnonymous()
+        // put "/login" (fun)
+        // get "/user" (fun)
+        }
