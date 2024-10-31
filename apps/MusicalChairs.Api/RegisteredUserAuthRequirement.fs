@@ -1,6 +1,6 @@
 namespace MusicalChairs.Api
 
-module AuthBootstrap =
+module RegisteredUserAuthRequirement =
     open Microsoft.AspNetCore.Authorization
     open System.Threading.Tasks
     open Marten

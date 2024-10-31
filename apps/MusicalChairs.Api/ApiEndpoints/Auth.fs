@@ -1,10 +1,13 @@
 namespace MusicalChairs.Api
 
+open GP.IdentityEndpoints.Email
+open Microsoft.AspNetCore.Authentication.Cookies
+open Microsoft.AspNetCore.Authorization
+open Microsoft.AspNetCore.Http.HttpResults
 open User
 open Marten
 open GP.IdentityEndpoints.Operations
 open GP.IdentityEndpoints.Utils
-open System
 open System.Threading
 open FsToolkit.ErrorHandling
 open FsToolkit.ErrorHandling.Operator.TaskResult
@@ -12,144 +15,203 @@ open GP.IdentityEndpoints.Operations.RegisterEndpoint
 open System.Security.Claims
 open System.Threading.Tasks
 open Microsoft.AspNetCore.Http
-open Microsoft.AspNetCore.Routing
-open Microsoft.AspNetCore.Builder
 open FluentValidation
 open Microsoft.AspNetCore.Identity
-open FSharp.MinimalApi
 open FSharp.MinimalApi.Builder
 open GP.IdentityEndpoints.Operations.CookieOperations
 
 open type TypedResults
 
 module Auth =
-    module RegisterUser =
 
-        type RegisterUserRequest = { Email: string; Password: string }
+    type IGetUser = UserId -> Task<User>
 
-        type RegisterUserRequestValidator() =
-            inherit AbstractValidator<RegisterUserRequest>()
+    [<CLIMutable>]
+    type UserDto =
+        { Id: UserId
+          Name: string
+          Email: string }
 
-            do
-                ``base``
-                    .RuleFor(fun x -> x.Email)
-                    .NotEmpty()
-                    .EmailAddress()
-                |> ignore
-
-                base.RuleFor(fun x -> x.Password).NotEmpty()
-                |> ignore
-
-        let RegisterUser
-            (cancellationToken: CancellationToken)
-            (httpContext: HttpContext)
-            (userManager: UserManager<User>)
-            (validator: IValidator<RegisterUserRequest>)
-            (req: RegisterUserRequest)
-            : Task<IResult>
-            =
-            validator.ValidateAsync(req, cancellationToken)
-            |> mapValidationResult
-            |> TaskResult.mapError (fun err -> BadRequest(err))
-            >>= fun _ ->
-                    Register
-                        { Email = req.Email
-                          Password = req.Password
-                          Username = req.Email }
-                        userManager
-                        (fun u -> u)
-                    |> TaskResult.mapError (fun err ->
-                        match err with
-                        | EmailAlreadyRegistered -> BadRequest("Email already registered.") 
-                        | UsernameAlreadyRegistered -> BadRequest("Email already registered.") 
-                        | PasswordInvalid errorMessage -> BadRequest($"Invalid Password. {errorMessage}") 
-                        | GeneralFailure errorMessage -> BadRequest($"Something went wrong! {errorMessage}") )
-            |> TaskResult.foldResult (fun _ -> Ok()) (fun err -> err)
-
-    module Login =
-    
-        type LoginRequest =
-            { Email: string
-              Password: string
-            }
-    
-        type LoginRequestValidator() =
-            inherit AbstractValidator<LoginRequest>()
-    
-            do
-                base
-                    .RuleFor(fun x -> x.Email)
-                    .NotEmpty()
-                    .EmailAddress()
-                |> ignore
-    
-                base.RuleFor(fun x -> x.Password).NotEmpty()
-                |> ignore
-    
-        let Login
-            (httpContext: HttpContext)
-            (signInManager: SignInManager<User>)
-            (userManager: UserManager<User>)
-            (cancellationToken : CancellationToken)
-            (loginRequestValidator: IValidator<LoginRequest>)
-            (req: LoginRequest)
-            =
-            loginRequestValidator.ValidateAsync(req, cancellationToken) 
-            |> mapValidationResult
-            |> TaskResult.mapError (fun err -> !! BadRequest(err))
-            >>= fun _ ->
-                EmailPasswordLogin.login {Email = req.Email; Password = req.Password } userManager signInManager
-                |> TaskResult.mapError(fun err ->
-                    match err with
-                    | EmailPasswordLogin.LoginFailure.InvalidCredentiails -> (!! BadRequest("Invalid username or Password")))
-            |> TaskResult.bind (fun user -> taskResult { return! CookieOperations.AttachCookieToContext httpContext user.Id [] } ) 
-            |> TaskResult.foldResult (fun _ -> Results.Ok()) (fun err -> err)
-    
-        let Apply (groupBuilder: RouteGroupBuilder) =
-            groupBuilder
-                .MapPut("/login", Func<_, _, _, _, _>(Login))
-                .AllowAnonymous()
-            |> ignore
-    
-            groupBuilder
-
-    module GetUser =
-        type IGetUser = UserId -> Task<User>
-
-        [<CLIMutable>]
-        type UserDto =
-            { Id: UserId
-              Name: string
-              Email: string }
-
+    let getUser =
         let FetchUserById (getUser: IGetUser) (userId: UserId) =
             getUser userId
             |> TaskResult.ofTask
-            |> TaskResult.bindRequireNotNull (!! BadRequest("There is no user with the provided id."))
+            |> TaskResult.bindRequireNotNull "There is no user with the provided id."
             |> TaskResult.map (fun (user: User) ->
                 { Id = user.Id
                   Name = user.UserName
                   Email = user.Email })
-            |> TaskResult.mapError (fun err -> !! BadRequest(err))
 
-        let GetUser (claim: ClaimsPrincipal) (session: IDocumentSession) =
-            claim.GetUserId()
-            |> Task.FromResult
-            |> TaskResult.mapError (fun err -> !! BadRequest(err))
-            >>= (FetchUserById session.LoadAsync<User>)
-            |> TaskResult.foldResult (fun userDto -> Results.Ok userDto) (fun error -> error)
+        endpoints {
+            get
+                "/user"
+                produces<BadRequest<string>, Ok<UserDto>>
+                (fun (input: {| claim: ClaimsPrincipal
+                                session: IDocumentSession |}) ->
+                    input.claim.GetUserId()
+                    |> Task.FromResult
+                    |> TaskResult.mapError (fun err -> !! BadRequest("Failed to get user by Id"))
+                    >>= fun userId ->
+                            FetchUserById input.session.LoadAsync<User> userId
+                            |> TaskResult.mapError (fun err -> !! BadRequest(err))
+                    |> TaskResult.foldResult (fun userDto -> !! Ok(userDto)) (fun error -> error))
 
-        let Apply (groupBuilder: RouteGroupBuilder) =
-            groupBuilder
-                .MapGet("/user/", Func<_, _, _>(GetUser))
-                .RequireAuthorization()
+        }
+
+    type LoginRequest = { Email: string; Password: string }
+
+    type LoginRequestValidator() =
+        inherit AbstractValidator<LoginRequest>()
+
+        do
+            ``base``
+                .RuleFor(fun x -> x.Email)
+                .NotEmpty()
+                .EmailAddress()
             |> ignore
 
-            groupBuilder
+            base.RuleFor(fun x -> x.Password).NotEmpty()
+            |> ignore
 
-    let routes =
+    let login =
         endpoints {
-            post "/register" RegisterUser.RegisterUser _.AllowAnonymous()
-        // put "/login" (fun)
-        // get "/user" (fun)
+            post
+                "/login"
+                produces<BadRequest<string>, Ok>
+                (fun (input: {| httpContext: HttpContext
+                                signInManager: SignInManager<User>
+                                userManager: UserManager<User>
+                                loginRequestValidator: IValidator<LoginRequest>
+                                req: LoginRequest |}) ->
+                    input.loginRequestValidator.ValidateAsync(input.req)
+                    |> mapValidationResult
+                    |> TaskResult.mapError (fun err -> !! BadRequest(err))
+                    >>= fun _ ->
+                            EmailPasswordLogin.login
+                                { Email = input.req.Email
+                                  Password = input.req.Password }
+                                input.userManager
+                                input.signInManager
+                            |> TaskResult.mapError (fun err ->
+                                match err with
+                                | EmailPasswordLogin.LoginFailure.InvalidCredentiails ->
+                                    (!! BadRequest("Invalid username or Password")))
+                    |> TaskResult.bind (fun user ->
+                        taskResult { return! AttachCookieToContext input.httpContext user.Id [] })
+                    |> TaskResult.foldResult (fun _ -> !! Ok()) (fun err -> err))
+        }
+
+    type RegisterUserRequest = { Email: string; Password: string }
+
+    type RegisterUserRequestValidator() =
+        inherit AbstractValidator<RegisterUserRequest>()
+
+        do
+            ``base``
+                .RuleFor(fun x -> x.Email)
+                .NotEmpty()
+                .EmailAddress()
+            |> ignore
+
+            base.RuleFor(fun x -> x.Password).NotEmpty()
+            |> ignore
+
+
+    let register =
+        endpoints {
+            put
+                "/register"
+                produces<Ok, BadRequest<string>>
+                (fun (input: {| userManager: UserManager<User>
+                                validator: IValidator<RegisterUserRequest>
+                                req: RegisterUserRequest
+                                cancellationToken: CancellationToken |}) ->
+                    input.validator.ValidateAsync(input.req, input.cancellationToken)
+                    |> mapValidationResult
+                    |> TaskResult.mapError (fun err -> BadRequest(err))
+                    >>= fun _ ->
+                            Register
+                                { Email = input.req.Email
+                                  Password = input.req.Password
+                                  Username = input.req.Email }
+                                input.userManager
+                                (fun u -> u)
+                            |> TaskResult.mapError (fun err ->
+                                match err with
+                                | EmailAlreadyRegistered -> BadRequest("Email already registered.")
+                                | UsernameAlreadyRegistered -> BadRequest("Email already registered.")
+                                | PasswordInvalid errorMessage -> BadRequest($"Invalid Password. {errorMessage}")
+                                | GeneralFailure errorMessage -> BadRequest($"Something went wrong! {errorMessage}"))
+                    |> TaskResult.foldResult (fun _ -> !! Ok()) (fun err -> !!err))
+        }
+        
+    let resetPassword =
+        endpoints {
+            put
+                "/reset-password/send"
+                (fun (input : {| userManager: UserManager<User>; resetPasswordSender: IResetPasswordSender<User>; |}) ->
+                    
+                    
+                    ResetPassword.send
+                    
+                    
+                    
+                    )
+        }
+
+
+    let confirmEmail =
+        endpoints {
+            put
+                "/confirm-email/send"
+                produces<Ok, BadRequest<string>, UnauthorizedHttpResult>
+                (fun (input: {| userManager: UserManager<User>
+                                userIdentity: ClaimsPrincipal
+                                emailSender: IConfirmEmailSender<User> |}) ->
+                    input.userIdentity.GetUserId()
+                    |> TaskResult.ofResult
+                    |> TaskResult.mapError (fun _ -> !! Unauthorized())
+                    >>= (fun userId ->
+                        input.userManager.FindByIdAsync(userId.ToString())
+                        |> TaskResult.ofTask)
+                    >>= fun user ->
+                            ConfirmEmail.send input.userManager user input.emailSender
+                            |> TaskResult.mapError (fun err -> !! BadRequest(err))
+                    |> TaskResult.foldResult (fun _ -> !! Ok()) (fun error -> error))
+
+            put
+                "/confirm-email"
+                produces<Ok, UnauthorizedHttpResult, BadRequest<string>>
+                (fun (input: {| claims: ClaimsPrincipal
+                                userManager: UserManager<User>
+                                request: {| token: string |} |}) ->
+                    input.claims.GetUserId()
+                    |> TaskResult.ofResult
+                    |> TaskResult.mapError (fun _ -> !! Unauthorized())
+                    >>= fun userId ->
+                            ConfirmEmail.confirm
+                                input.userManager
+                                { userId = userId
+                                  ConfirmEmailToken = input.request.token }
+                            |> TaskResult.mapError (fun err ->
+                                match err with
+                                | ConfirmEmail.ConfirmEmailError.UserNotFound -> !! BadRequest("User not found")
+                                | ConfirmEmail.ConfirmEmailError.FailedToConfirm error ->
+                                    !! BadRequest($"Failed to send confirmation email. {error}"))
+                    |> TaskResult.foldResult (fun _ -> !! Ok()) (fun err -> err))
+        }
+
+    let endpoints =
+        endpoints {
+            endpoints {
+                requireAthorization "IsRegisteredUser"
+                confirmEmail
+                getUser
+            }
+
+            endpoints {
+                allowAnonymous
+                login
+                register
+            }
         }

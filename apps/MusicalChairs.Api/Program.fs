@@ -3,6 +3,8 @@ namespace MusicalChairs.Api
 #nowarn "20"
 open Auth
 open GP.MartenIdentity
+open GP.IdentityEndpoints.Extensions
+open MusicalChairs.Api.Email.IdentityEmailSenders
 open MusicalChairs.Api.Router
 open System.Text.Json.Serialization
 open System
@@ -87,9 +89,9 @@ module Program =
         identityBuilder.AddRoleStore<MartenRoleStore<User.UserRole>>()
         identityBuilder.AddSignInManager()
         identityBuilder.AddDefaultTokenProviders()
-        builder.Services.AddCors()
 
         // Authentication - "Who are you"
+        builder.Services.AddCors()
         let authBuilder =
             builder.Services.AddAuthentication(fun opts ->
                 opts.DefaultAuthenticateScheme <- CookieAuthenticationDefaults.AuthenticationScheme)
@@ -118,12 +120,12 @@ module Program =
                     | x -> x)
 
         // Authorization - "Who has access to what"
-        builder.Services.AddScoped<IAuthorizationHandler, AuthBootstrap.IsRegisteredUserAuthorizationHandler>()
+        builder.Services.AddScoped<IAuthorizationHandler, RegisteredUserAuthRequirement.IsRegisteredUserAuthorizationHandler>()
         builder.Services.AddAuthorization(fun cfg ->
             cfg.AddPolicy("IsRegisteredUser", fun policyCfg -> 
                 policyCfg
                     .RequireAuthenticatedUser()
-                    .AddRequirements(AuthBootstrap.IsRegisteredUserRequirement()) 
+                    .AddRequirements(RegisteredUserAuthRequirement.IsRegisteredUserRequirement()) 
                     |> ignore ))
 
         // Add Swagger - The OpenApi document generator.
@@ -131,7 +133,10 @@ module Program =
         builder.Services.AddSwaggerGen()
 
         // Register validators
-        builder.Services.AddValidatorsFromAssemblyContaining<ApiEnd.RegisterUser.RegisterUserRequestValidator>()
+        builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>()
+        
+        // Register Email Services.
+        builder.Services.RegisterIdentityEmailSenders<User.User, ConfirmEmailSender, ResetPasswordEmailSender>()
 
         let app = builder.Build()
 

@@ -11,7 +11,5 @@ module Router =
             // Custom Auth endpoints.
             self.MapGroup("/api/v1/auth")
                 .WithTags("Auth")
-                |> Auth.GetUser.Apply
-                |> Auth.Login.Apply
-                |> Auth.RegisterUser.Apply
+                |> Auth.endpoints.Apply
                 |> ignore
