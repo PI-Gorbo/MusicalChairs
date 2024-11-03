@@ -1,24 +1,22 @@
 namespace MusicalChairs.Api
 
-open GP.IdentityEndpoints.Email
-open Microsoft.AspNetCore.Authentication.Cookies
-open Microsoft.AspNetCore.Authorization
-open Microsoft.AspNetCore.Http.HttpResults
-open User
 open Marten
-open GP.IdentityEndpoints.Operations
-open GP.IdentityEndpoints.Utils
+open FluentValidation
 open System.Threading
-open FsToolkit.ErrorHandling
-open FsToolkit.ErrorHandling.Operator.TaskResult
-open GP.IdentityEndpoints.Operations.RegisterEndpoint
 open System.Security.Claims
 open System.Threading.Tasks
-open Microsoft.AspNetCore.Http
-open FluentValidation
-open Microsoft.AspNetCore.Identity
-open FSharp.MinimalApi.Builder
+open GP.IdentityEndpoints.Operations.RegisterEndpoint
+open GP.IdentityEndpoints.Email
 open GP.IdentityEndpoints.Operations.CookieOperations
+open GP.IdentityEndpoints.Operations
+open GP.IdentityEndpoints.Utils
+open FsToolkit.ErrorHandling
+open FsToolkit.ErrorHandling.Operator.TaskResult
+open Microsoft.AspNetCore.Identity
+open Microsoft.AspNetCore.Http
+open Microsoft.AspNetCore.Builder
+open Microsoft.AspNetCore.Http.HttpResults
+open FSharp.MinimalApi.Builder
 
 open type TypedResults
 
@@ -30,7 +28,8 @@ module Auth =
     type UserDto =
         { Id: UserId
           Name: string
-          Email: string }
+          Email: string
+          Roles: string seq }
 
     let getUser =
         let FetchUserById (getUser: IGetUser) (userId: UserId) =
@@ -40,7 +39,9 @@ module Auth =
             |> TaskResult.map (fun (user: User) ->
                 { Id = user.Id
                   Name = user.UserName
-                  Email = user.Email })
+                  Email = user.Email
+                  Roles = user.Roles
+                          |> Seq.map (_.Name) })
 
         endpoints {
             get
@@ -55,7 +56,7 @@ module Auth =
                             FetchUserById input.session.LoadAsync<User> userId
                             |> TaskResult.mapError (fun err -> !! BadRequest(err))
                     |> TaskResult.foldResult (fun userDto -> !! Ok(userDto)) (fun error -> error))
-
+                (fun (opts : RouteHandlerBuilder) -> opts.RequireAuthorization())
         }
 
     type LoginRequest = { Email: string; Password: string }
@@ -144,19 +145,45 @@ module Auth =
                                 | GeneralFailure errorMessage -> BadRequest($"Something went wrong! {errorMessage}"))
                     |> TaskResult.foldResult (fun _ -> !! Ok()) (fun err -> !!err))
         }
-        
+
     let resetPassword =
         endpoints {
             put
                 "/reset-password/send"
-                (fun (input : {| userManager: UserManager<User>; resetPasswordSender: IResetPasswordSender<User>; |}) ->
-                    
-                    
-                    ResetPassword.send
-                    
-                    
-                    
-                    )
+                produces<Ok, BadRequest<string>>
+                (fun (input: {| userManager: UserManager<User>
+                                resetPasswordSender: IResetPasswordSender<User>
+                                request: {| email: string |} |}) ->
+                    // Fetch user by email.
+                    input.userManager.FindByEmailAsync(input.request.email)
+                    |> TaskResult.ofTask
+                    |> TaskResult.bindRequireNotNull (!! BadRequest("There is no user with the provided email."))
+
+                    // Attempt to send a reset password email.
+                    >>= fun user ->
+                            ResetPassword.send input.userManager user input.resetPasswordSender
+                            |> TaskResult.mapError (fun err ->
+                                !! BadRequest($"Failed to send confirmation email. {err}"))
+                    |> TaskResult.foldResult (fun _ -> !! Ok()) (fun err -> err))
+
+            put
+                "/reset-password"
+                produces<Ok, BadRequest<string>>
+                (fun (input: {| userManager: UserManager<User>
+                                request: {| email: string
+                                            password: string
+                                            token: string |} |}) ->
+                    ResetPassword.reset
+                        input.userManager
+                        { email = input.request.email
+                          password = input.request.password
+                          token = input.request.token }
+                    |> TaskResult.mapError (fun err ->
+                        match err with
+                        | ResetPassword.ResetPasswordError.UserNotFound -> !! BadRequest("User not found")
+                        | ResetPassword.ResetPasswordError.FailedToSetPassword error ->
+                            !! BadRequest($"Something went wrong while trying to reset password. {error}"))
+                    |> TaskResult.foldResult (fun _ -> !! Ok()) (fun err -> err))
         }
 
 
@@ -205,13 +232,14 @@ module Auth =
         endpoints {
             endpoints {
                 requireAthorization "IsRegisteredUser"
-                confirmEmail
                 getUser
+                confirmEmail
             }
 
             endpoints {
                 allowAnonymous
                 login
                 register
+                resetPassword
             }
         }

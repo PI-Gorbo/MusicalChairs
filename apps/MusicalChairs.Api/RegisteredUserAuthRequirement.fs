@@ -1,14 +1,14 @@
 namespace MusicalChairs.Api
 
-module RegisteredUserAuthRequirement =
-    open Microsoft.AspNetCore.Authorization
-    open System.Threading.Tasks
-    open Marten
-    open System.Security.Claims
-    open System.Linq
-    open System
-    open FsToolkit.ErrorHandling
+open Marten
+open System.Linq
+open System.Security.Claims
+open System.Threading.Tasks
+open FsToolkit.ErrorHandling
+open GP.IdentityEndpoints.Operations.CookieOperations
+open Microsoft.AspNetCore.Authorization
 
+module RegisteredUserAuthRequirement =
     type IsRegisteredUserRequirement() =
         interface IAuthorizationRequirement
 
@@ -18,25 +18,22 @@ module RegisteredUserAuthRequirement =
         override self.HandleRequirementAsync(context, requirement) : Task =
             task {
                 return!
-                    context.User.Claims
-                    |> Seq.tryFind (fun x -> x.Type = ClaimTypes.Actor)
-                    |> function
-                        | None -> Error()
-                        | Some claim -> Ok claim
-                    |> Result.bind (fun claim ->
-                        try
-                            Guid.Parse(claim.Value) |> Ok
-                        with
-                        | ex -> Error())
+                    context.User.GetUserId()
                     |> TaskResult.ofResult
                     |> TaskResult.bind (fun potentialUserId ->
                         session
-                            .Query<User.User>()
+                            .Query<User>()
                             .Where(fun x -> x.Id = potentialUserId)
-                            .AnyAsync()
+                            .FirstOrDefaultAsync()
                         |> TaskResult.ofTask)
-                    |> TaskResult.bindRequireTrue ()
+                    |> TaskResult.bindRequireNotNull ()
+                    |> TaskResult.map (fun user ->
+                        (context.User.Identity :?> ClaimsIdentity)
+                            .AddClaims(
+                                user.Roles
+                                |> Seq.map (fun (role: UserRole) -> Claim(ClaimTypes.Role, role.Name))
+                            ))
                     |> TaskResult.foldResult
-                        (fun () -> ())
+                        (fun () -> context.Succeed(requirement))
                         (fun () -> context.Fail(AuthorizationFailureReason(self, "Unauthorized.")))
             }

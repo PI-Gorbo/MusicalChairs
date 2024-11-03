@@ -1,15 +1,18 @@
 namespace MusicalChairs.Api
 
 #nowarn "20"
+
 open Auth
+open System
+open Marten
+open Weasel.Core
+open FluentValidation
 open GP.MartenIdentity
 open GP.IdentityEndpoints.Extensions
 open MusicalChairs.Api.Email.IdentityEmailSenders
 open MusicalChairs.Api.Router
 open System.Text.Json.Serialization
-open System
 open System.Threading.Tasks
-open Marten
 open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.DependencyInjection
@@ -17,12 +20,10 @@ open Microsoft.Extensions.Hosting
 open Microsoft.AspNetCore.Authentication.Cookies
 open Microsoft.AspNetCore.Authentication
 open Microsoft.AspNetCore.Http
+open Microsoft.AspNetCore.Identity
+open Microsoft.AspNetCore.Authorization
 
 module Program =
-    open Microsoft.AspNetCore.Identity
-    open FluentValidation
-    open Weasel.Core
-    open Microsoft.AspNetCore.Authorization
 
     [<EntryPoint>]
     let main args =
@@ -34,13 +35,12 @@ module Program =
         builder.Configuration.AddJsonFile("appsettings.Development.json")
         builder.Configuration.AddEnvironmentVariables()
 
-        builder.Services.ConfigureHttpJsonOptions(fun opts -> 
+        builder.Services.ConfigureHttpJsonOptions (fun opts ->
             JsonFSharpOptions
                 .Default()
                 .WithUnionAdjacentTag()
                 .WithUnionNamedFields()
-                .AddToJsonSerializerOptions(opts.SerializerOptions)
-        )
+                .AddToJsonSerializerOptions(opts.SerializerOptions))
 
         // Add Marten ORM.
         builder
@@ -59,19 +59,18 @@ module Program =
                                 .AddToJsonSerializerOptions(opts)
                 )
 
-                storeOptions.RegisterIdentityModels<User.User, User.UserRole>()
-                    |> ignore
+                storeOptions.RegisterIdentityModels<User, UserRole>()
+                |> ignore
 
                 if builder.Environment.IsDevelopment() then
                     storeOptions.AutoCreateSchemaObjects <- AutoCreate.All
-                
+
                 storeOptions
             )
             .UseIdentitySessions()
 
         // Configure Identity
-        let identityBuilder =
-            builder.Services.AddIdentityCore<User.User> (fun opts ->
+        builder.Services.AddIdentityCore<User>(fun opts ->
                 opts.SignIn.RequireConfirmedAccount <- false
                 opts.User.RequireUniqueEmail <- true
 
@@ -82,51 +81,60 @@ module Program =
                         RequireLowercase = true,
                         RequireUppercase = true,
                         RequireNonAlphanumeric = true
-                    ))
-        
-        identityBuilder.AddRoles<User.UserRole>()
-        identityBuilder.AddUserStore<MartenUserStore<User.User, User.UserRole>>()
-        identityBuilder.AddRoleStore<MartenRoleStore<User.UserRole>>()
-        identityBuilder.AddSignInManager()
-        identityBuilder.AddDefaultTokenProviders()
+            ))
+            .AddRoles<UserRole>()
+            .AddUserStore<MartenUserStore<User, UserRole>>()
+            .AddRoleStore<MartenRoleStore<UserRole>>()
+            .AddSignInManager()
+            .AddDefaultTokenProviders()
 
         // Authentication - "Who are you"
-        builder.Services.AddCors()
-        let authBuilder =
-            builder.Services.AddAuthentication(fun opts ->
-                opts.DefaultAuthenticateScheme <- CookieAuthenticationDefaults.AuthenticationScheme)
-        authBuilder.AddCookie(fun opts ->
-            opts.Events.OnRedirectToLogin <-
-                fun (c: RedirectContext<CookieAuthenticationOptions>) ->
-                    task {
-                        c.Response.StatusCode <- StatusCodes.Status401Unauthorized
-                        return Task.CompletedTask
-                    }
+        builder
+            .Services
+            .AddAuthentication(fun opts ->
+                opts.DefaultAuthenticateScheme <- CookieAuthenticationDefaults.AuthenticationScheme
+                opts.DefaultChallengeScheme <- CookieAuthenticationDefaults.AuthenticationScheme
+                opts.DefaultScheme <- CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(fun opts ->
+                opts.Events.OnRedirectToLogin <-
+                    fun (c: RedirectContext<CookieAuthenticationOptions>) ->
+                        task {
+                            c.Response.StatusCode <- StatusCodes.Status401Unauthorized
+                            return Task.CompletedTask
+                        }
 
-            opts.Events.OnRedirectToAccessDenied <-
-                fun (c: RedirectContext<CookieAuthenticationOptions>) ->
-                    task {
-                        c.Response.StatusCode <- StatusCodes.Status401Unauthorized
-                        return Task.CompletedTask
-                    }
+                opts.Events.OnRedirectToAccessDenied <-
+                    fun (c: RedirectContext<CookieAuthenticationOptions>) ->
+                        task {
+                            c.Response.StatusCode <- StatusCodes.Status401Unauthorized
+                            return Task.CompletedTask
+                        }
 
-            opts.SlidingExpiration <- true
-            opts.ExpireTimeSpan <- TimeSpan.FromHours(24)
+                opts.SlidingExpiration <- true
+                opts.ExpireTimeSpan <- TimeSpan.FromHours(24)
 
-            opts.Cookie.Domain <-
-                builder.Configuration.GetValue<string>("MS:CookieDomain")
-                |> function
-                    | x when String.IsNullOrEmpty x -> failwith "Error" // Default to localhost.
-                    | x -> x)
-
+                if builder.Environment.IsDevelopment() then
+                    opts.Cookie.Domain <-
+                        builder.Configuration.GetValue<string>("MS:CookieDomain")
+                        |> function
+                            | x when String.IsNullOrEmpty x -> failwith "Error" // Default to localhost.
+                            | x -> x)
+            
         // Authorization - "Who has access to what"
-        builder.Services.AddScoped<IAuthorizationHandler, RegisteredUserAuthRequirement.IsRegisteredUserAuthorizationHandler>()
+        builder.Services.AddScoped<IAuthorizationHandler, RegisteredUserAuthRequirement.IsRegisteredUserAuthorizationHandler>
+            ()
         builder.Services.AddAuthorization(fun cfg ->
-            cfg.AddPolicy("IsRegisteredUser", fun policyCfg -> 
-                policyCfg
-                    .RequireAuthenticatedUser()
-                    .AddRequirements(RegisteredUserAuthRequirement.IsRegisteredUserRequirement()) 
-                    |> ignore ))
+            cfg.AddPolicy(
+                "IsRegisteredUser",
+                fun policyCfg ->
+                    policyCfg
+                        .RequireAuthenticatedUser()
+                        .AddRequirements(RegisteredUserAuthRequirement.IsRegisteredUserRequirement())
+                    |> ignore)
+            )
+        
+        // Cors - "Where are you making a request from"
+        // builder.Services.AddCors()
 
         // Add Swagger - The OpenApi document generator.
         builder.Services.AddEndpointsApiExplorer()
@@ -134,17 +142,17 @@ module Program =
 
         // Register validators
         builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>()
-        
+
         // Register Email Services.
-        builder.Services.RegisterIdentityEmailSenders<User.User, ConfirmEmailSender, ResetPasswordEmailSender>()
-
+        builder.Services.RegisterIdentityEmailSenders<User, ConfirmEmailSender, ResetPasswordEmailSender>()
+        
         let app = builder.Build()
-
         app.UseHttpsRedirection()
-        app.UseAuthorization()
         app.UseAuthentication()
-        app.UseCors(fun (builder) -> builder.AllowAnyOrigin() |> ignore)
-        app.RegisterRoutes() |> ignore
+        app.UseAuthorization()
+        // app.UseCors(fun (builder) -> builder.AllowAnyOrigin() |> ignore)
+
+        app.RegisterRoutes()
 
         if app.Environment.IsDevelopment() then
             app.UseSwagger()
