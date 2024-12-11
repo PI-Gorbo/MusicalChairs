@@ -3,9 +3,10 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="User.fs" />
-    <Compile Include="Email.fs" />
-    <Compile Include="Callouts\Callout.fs" />
+    <Compile Include="Domain\User.fs" />
+    <Compile Include="Domain\Email.fs" />
+    <Compile Include="Domain\Job.fs" />
+    <Compile Include="Domain\JobEngine.fs" />
     <Compile Include="RegisteredUserAuthRequirement.fs" />
     <Compile Include="Services/IdentityEmailSenders.fs" />
     <Compile Include="ApiEndpoints/Auth.fs" />

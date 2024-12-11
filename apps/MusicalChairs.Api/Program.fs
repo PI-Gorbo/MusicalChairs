@@ -5,11 +5,12 @@ namespace MusicalChairs.Api
 open Auth
 open System
 open Marten
+open MusicalChairs.Api.Domain
+open MusicalChairs.Api.Services.Email.IdentityEmailSenders
 open Weasel.Core
 open FluentValidation
 open GP.MartenIdentity
 open GP.IdentityEndpoints.Extensions
-open MusicalChairs.Api.Email.IdentityEmailSenders
 open MusicalChairs.Api.Router
 open System.Text.Json.Serialization
 open System.Threading.Tasks
@@ -73,7 +74,6 @@ module Program =
         builder.Services.AddIdentityCore<User>(fun opts ->
                 opts.SignIn.RequireConfirmedAccount <- false
                 opts.User.RequireUniqueEmail <- true
-
                 opts.Password <-
                     PasswordOptions(
                         RequireDigit = true,

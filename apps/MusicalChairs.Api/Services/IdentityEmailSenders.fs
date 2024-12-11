@@ -1,10 +1,11 @@
-﻿namespace MusicalChairs.Api.Email
+﻿namespace MusicalChairs.Api.Services.Email
 
 open FsToolkit.ErrorHandling
 open GP.IdentityEndpoints.Email
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.Logging
 open MusicalChairs.Api
+open MusicalChairs.Api.Domain
 
 module IdentityEmailSenders =
 
