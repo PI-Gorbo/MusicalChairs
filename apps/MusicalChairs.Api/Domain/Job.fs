@@ -3,36 +3,29 @@
 open System
 
 // Contact Method
+type EmailDetails = { EmailAddress: string }
+type ContactMethod = Email of EmailDetails
 type TemplateStyle = Email of EmailTemplate
 
-type EmailDetails =
-    {
-        EmailAddress: string
-        TemplateId: Guid
-    }
-
-type ContactMethod = Email of EmailDetails
+type Template =
+    { TemplateId: Guid
+      TemplateDetails: TemplateStyle }
 
 // Planned Jobs
 type PlannedContact =
-    {
-        Name: string
-        ContactMethods: ContactMethod list
-    }
+    { Name: string
+      UserId: Guid Option
+      ContactMethods: ContactMethod list }
 
 type PlannedPosition =
-    {
-        PositionName: string
-        PositionsAvailable: uint
-        Contacts: PlannedContact list
-    }
+    { PositionName: string
+      PositionsAvailable: uint
+      Contacts: PlannedContact list }
 
 type PlannedJob =
-    {
-        CreatorId: Guid
-        BaseEmailTemplate: EmailTemplate
-        Positions: PlannedPosition list
-    }
+    { CreatorId: Guid
+      Templates: Template list
+      Positions: PlannedPosition list }
 
 // Jobs
 type ContactOutcome =
@@ -45,59 +38,37 @@ type ContactOutcome =
 
 type ContactState =
     | NotContacted
-    | CompletedBeforeContact
+    | JobCompletedBeforeContact
     | Contacted of ContactOutcome
 
 type Contact =
-    {
-        ContactId: Guid
-        UserId: Guid
-        ContactMethods: ContactMethod list
-        State: ContactState
-    }
+    { UserId: Guid
+      ContactMethods: ContactMethod list
+      State: ContactState }
 
-type Template =
-    {
-        TemplateId: Guid
-        TemplateStyle: TemplateStyle
-    }
+type Position =
+    { PositionName: string
+      PositionsAvailable: uint
+      Contacts: Contact list }
+
+type JobState =
+    | Started
+    | Complete
 
 type Job =
-    {
-        CreatorId: Guid
-        Templates: Template list
-        Positions: PlannedPosition list
-    }
+    { CreatorId: Guid
+      Templates: Template list
+      Positions: Position list
+      JobState: JobState }
 
-module Sample =
-    let plannedJob: PlannedJob =
-        {
-            CreatorId = Guid.NewGuid()
-            BaseEmailTemplate =
-                {
-                    templatedHtml =
-                        Raw
-                            """
-This is a sample email template.
-Hi {{name}}, im looking for  a {{position}} for Friday the 16th, a church gig.
-"""
-                    schema = [ "name"; "position" ]
-                }
-            Positions =
-                [
-                    {
-                        PositionName = "Tenor"
-                        PositionsAvailable = uint 1
-                        Contacts =
-                            [
-                                {
-                                    Name = "Alex Gorbatov"
-                                    ContactMethods =
-                                        [
-                                            ContactMethod.Email { EmailAddress = "alex@gorbatov.com" }
-                                        ]
-                                }
-                            ]
-                    }
-                ]
-        }
+// Job Events
+type IJobEvent = interface end
+
+type JobStarted(userId: Guid, creatorId: Guid, templates: Template list, positions: Position list) =
+    member _.UserId = userId
+    member _.CreatorId = creatorId
+    member _.Templates = templates
+    member _.Positions = positions
+    interface IJobEvent
+
+// type JobContacted

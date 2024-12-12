@@ -6,12 +6,12 @@ type EmailAddress = string
 
 type HtmlData =
     | Raw of string
-    | Reference of bucketReference: string
+    | Reference of BucketReference: string
 
 type EmailTemplate =
     {
-        schema: string list
-        templatedHtml: HtmlData
+        Schema: string list
+        TemplatedHtml: HtmlData
     }
 
 type EmailSource =

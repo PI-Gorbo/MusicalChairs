@@ -20,7 +20,7 @@ module IdentityEmailSenders =
 
     type ResetPasswordEmailSender(hostingEnvironment: IHostEnvironment, logger: ILogger<ResetPasswordEmailSender>) =
         interface IResetPasswordSender<User> with
-            member this.SendEmail dto =
+            member this.SendEmail dto  =
                 if hostingEnvironment.IsDevelopment() then
                     logger.LogInformation $"Confirm email for user {dto.user.Email} is {dto.token}"
                     TaskResult.ok ()
