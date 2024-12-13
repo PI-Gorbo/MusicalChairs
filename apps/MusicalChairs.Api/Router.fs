@@ -6,10 +6,10 @@ module Router =
     open Microsoft.AspNetCore.Http
 
     type WebApplication with
-        member self.RegisterRoutes() = 
+        member self.RegisterRoutes() =
 
             // Custom Auth endpoints.
             self.MapGroup("/api/v1/auth")
                 .WithTags("Auth")
-                |> Auth.endpoints.Apply
+                // |> Auth.endpoints.Apply
                 |> ignore

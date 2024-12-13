@@ -7,6 +7,7 @@ open System.Threading.Tasks
 open FsToolkit.ErrorHandling
 open GP.IdentityEndpoints.Operations.CookieOperations
 open Microsoft.AspNetCore.Authorization
+open MusicalChairs.Api.Domain
 
 module RegisteredUserAuthRequirement =
     type IsRegisteredUserRequirement() =

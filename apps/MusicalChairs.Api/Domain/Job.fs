@@ -1,31 +1,40 @@
-﻿namespace MusicalChairs.Api.Domain
+﻿namespace MusicalChairs.Api.Domain.Job
 
 open System
+open MusicalChairs.Api.Domain.Email
 
 // Contact Method
 type EmailDetails = { EmailAddress: string }
+type TemplateContactMethod = EmailTemplate of EmailTemplate
 type ContactMethod = Email of EmailDetails
-type TemplateStyle = Email of EmailTemplate
 
 type Template =
-    { TemplateId: Guid
-      TemplateDetails: TemplateStyle }
+    {
+        TemplateId: Guid
+        TemplateDetails: TemplateContactMethod
+    }
 
 // Planned Jobs
 type PlannedContact =
-    { Name: string
-      UserId: Guid Option
-      ContactMethods: ContactMethod list }
+    {
+        Name: string
+        UserId: Guid Option
+        ContactMethods: ContactMethod list
+    }
 
 type PlannedPosition =
-    { PositionName: string
-      PositionsAvailable: uint
-      Contacts: PlannedContact list }
+    {
+        PositionName: string
+        PositionsAvailable: uint
+        Contacts: PlannedContact list
+    }
 
 type PlannedJob =
-    { CreatorId: Guid
-      Templates: Template list
-      Positions: PlannedPosition list }
+    {
+        CreatorId: Guid
+        Templates: Template list
+        Positions: PlannedPosition list
+    }
 
 // Jobs
 type ContactOutcome =
@@ -42,33 +51,58 @@ type ContactState =
     | Contacted of ContactOutcome
 
 type Contact =
-    { UserId: Guid
-      ContactMethods: ContactMethod list
-      State: ContactState }
+    {
+        ContactId: Guid
+        UserId: Guid
+        ContactMethods: ContactMethod list
+        State: ContactState
+    }
 
 type Position =
-    { PositionName: string
-      PositionsAvailable: uint
-      Contacts: Contact list }
+    {
+        PositionId: Guid
+        PositionName: string
+        PositionsAvailable: uint
+        Contacts: Contact list
+    }
 
 type JobState =
     | Started
     | Complete
 
 type Job =
-    { CreatorId: Guid
-      Templates: Template list
-      Positions: Position list
-      JobState: JobState }
+    {
+        Id: Guid
+        CreatorId: Guid
+        Templates: Template list
+        Positions: Position list
+        JobState: JobState
+    }
 
-// Job Events
-type IJobEvent = interface end
+// Job Facts
+type IJobFact =
+    interface
+    end
 
-type JobStarted(userId: Guid, creatorId: Guid, templates: Template list, positions: Position list) =
-    member _.UserId = userId
-    member _.CreatorId = creatorId
-    member _.Templates = templates
-    member _.Positions = positions
-    interface IJobEvent
+type JobStartedFact =
+    {
+        UserId: Guid
+        CreatorId: Guid
+        Templates: Template List
+        Positions: Position List
+    }
+    interface IJobFact
 
-// type JobContacted
+
+// Job Commands
+type IJobCommand =
+    interface
+    end
+
+type StartContactCommand =
+    {
+        JobId: Guid
+        PositionId: Guid
+        ContactId: Guid
+    }
+    interface IJobCommand

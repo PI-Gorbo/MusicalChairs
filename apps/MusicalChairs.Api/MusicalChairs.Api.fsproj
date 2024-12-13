@@ -1,12 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Domain\User.fs" />
     <Compile Include="Domain\Email.fs" />
     <Compile Include="Domain\Job.fs" />
-    <Compile Include="Domain\JobEngine.fs" />
+    <Compile Include="Domain\JobDecisionEngine.fs" />
+    <Compile Include="Domain\JobFactEngine.fs" />
+    <Compile Include="Domain\JobCommandEngine.fs" />
     <Compile Include="RegisteredUserAuthRequirement.fs" />
     <Compile Include="Services/IdentityEmailSenders.fs" />
     <Compile Include="ApiEndpoints/Auth.fs" />

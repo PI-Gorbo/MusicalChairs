@@ -2,7 +2,7 @@ namespace MusicalChairs.Api
 
 #nowarn "20"
 
-open Auth
+// open Auth
 open System
 open Marten
 open MusicalChairs.Api.Domain
@@ -141,7 +141,7 @@ module Program =
         builder.Services.AddSwaggerGen()
 
         // Register validators
-        builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>()
+        // builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>()
 
         // Register Email Services.
         builder.Services.RegisterIdentityEmailSenders<User, ConfirmEmailSender, ResetPasswordEmailSender>()
