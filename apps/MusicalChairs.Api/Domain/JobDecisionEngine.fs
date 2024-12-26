@@ -1,22 +1,13 @@
-﻿namespace MusicalChairs.Api.Domain.JobDecisionEngine
+﻿namespace MusicalChairs.Api.Domain
 
 open System
 
 open FsToolkit.ErrorHandling
-open MusicalChairs.Api.Domain
+open FsToolkit.ErrorHandling.Operator.TaskResult
 open MusicalChairs.Api.Domain.Job
+open MusicalChairs.Api.Domain.MessageEngine
 
 module JobDecisionEngine =
-
-    type JobDecisions =
-        {
-            Events: IJobFact List
-            Commands: IJobCommand List
-        }
-
-    type IStartJobDependencies =
-        abstract generateGuid: Unit -> Guid
-        abstract createExternalUsers: PlannedContact list -> TaskResult<List<Guid>, string>
 
     let tryFindContactables (position: Position) : Contact List Option =
         // If the number of positions available is equal to the number of people currently contacted and not passed on, then
@@ -48,7 +39,7 @@ module JobDecisionEngine =
             |> Seq.toList
             |> Some
 
-    let generateNextContacts jobId (positions: Position List) : StartContactCommand List =
+    let generateNextContacts jobId (positions: Position List) : CreateContactMessageCommand List =
         positions
         |> List.choose (fun position -> // List.choose takes only Some values from the List<Option>
             position
@@ -57,18 +48,24 @@ module JobDecisionEngine =
         |> List.map (fun (position, contactables) ->
             contactables
             |> List.map (fun contact -> // Map all containable individuals to a start contact command.
-                {
-                    StartContactCommand.JobId = jobId
-                    PositionId = position.PositionId
-                    ContactId = contact.ContactId
-                }))
+                { ContactId = contact.ContactId }))
         |> List.concat
+
+    type JobDecisions =
+        {
+            Facts: JobFact List
+            Commands: JobCommand List
+        }
 
     type StartJobDto =
         {
             JobId: Guid
             Decisions: JobDecisions
         }
+
+    type IStartJobDependencies =
+        abstract generateGuid: Unit -> Guid
+        abstract createExternalUsers: PlannedContact list -> TaskResult<List<Guid>, string>
 
     let StartJob (deps: IStartJobDependencies) userId (plannedJob: PlannedJob) : TaskResult<StartJobDto, string> =
         taskResult {
@@ -92,7 +89,7 @@ module JobDecisionEngine =
                 |> deps.createExternalUsers
 
             // Now we can create positions from planned positions.
-            // Create a new list of Contacts with the newly indentified contacts.
+            // Create a new list of Contacts with the newly identified contacts.
             let positions: Position List =
                 mappedContacts
                 |> List.mapi (fun index userId -> (userId, unidentifiedContacts[index]))
@@ -109,8 +106,8 @@ module JobDecisionEngine =
                                 {
                                     ContactId = deps.generateGuid ()
                                     UserId = userId
-                                    ContactMethods = plannedContact.ContactMethods
-                                    State = NotContacted
+                                    ContactMethod = plannedContact.ContactMethod
+                                    State = NotContacted NotActioned
                                 })
                     })
 
@@ -121,21 +118,71 @@ module JobDecisionEngine =
                     StartJobDto.JobId = jobId
                     StartJobDto.Decisions =
                         {
-                            Events =
+                            Facts =
                                 [
-                                    {
-                                        JobStartedFact.UserId = userId
-                                        CreatorId = plannedJob.CreatorId
-                                        Templates = plannedJob.Templates
-                                        Positions = positions
-                                    }
+                                    JobStarted
+                                        {
+                                            UserId = userId
+                                            CreatorId = plannedJob.CreatorId
+                                            Templates = plannedJob.Templates
+                                            Positions = positions
+                                        }
                                 ]
                             Commands =
                                 nextContacts
-                                |> List.map(fun x -> upcast x)
+                                |> List.map (fun command -> CreateContactMessage command)
 
                         }
                 }
         }
 
-    let stepJob (job: Job) : TaskResult<JobDecisions, string> = TaskResult.error "AHHH"
+    type IGenerateMessageForContactDependencies =
+        abstract generateMessage: Job -> Position -> Contact -> TaskResult<JobMessage, string>
+
+    type GenerateMessageForContactError =
+        | NoContactFound of ContactId: Guid
+        | FailedToGenerateMessage of ErrorMessage: string
+
+    let GenerateMessageForContact
+        (deps: IGenerateMessageForContactDependencies)
+        (job: Job)
+        (command: CreateContactMessageCommand)
+        : TaskResult<JobDecisions, GenerateMessageForContactError> =
+
+        // Get the contact
+        job.Positions
+        |> Seq.map (fun pos ->
+            pos.Contacts
+            |> Seq.ofList
+            |> Seq.tryFind (fun contact -> contact.ContactId = command.ContactId)
+            |> Option.map (fun contact -> pos, contact))
+        |> Seq.choose id
+        |> Seq.tryHead
+        // return an error result if the contact is not found.
+        |> Option.either
+            (fun pair -> TaskResult.ok pair)
+            (fun () -> TaskResult.error (NoContactFound command.ContactId))
+        >>= fun (position, contact) ->
+                // Generate the message
+                deps.generateMessage job position contact
+                |> TaskResult.mapError FailedToGenerateMessage
+                |> TaskResult.map (fun jobMsg -> contact, jobMsg)
+        |> TaskResult.map (fun (contact, jobMsg) ->
+            {
+                Facts =
+                    [
+                        CreatedContactMessage
+                            {
+                                MessageId = jobMsg.GetId()
+                                ContactId = contact.ContactId
+                                Message = jobMsg
+                            }
+                    ]
+                Commands =
+                    [
+                        match jobMsg with
+                        | JobMessage.Email emailMessage ->
+                            SendContactMessage(SendContactMessageCommand.Email emailMessage.Id)
+                    ]
+            })
+

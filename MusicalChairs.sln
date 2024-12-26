@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{8412F5E4-8
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MusicalChairs.Api", "apps\MusicalChairs.Api\MusicalChairs.Api.fsproj", "{6B01856A-096F-474B-A114-7CC419E75046}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MusicalChairs.Api.Tests", "apps\MusicalChairs.Api.Tests\MusicalChairs.Api.Tests.fsproj", "{5CDD206E-9D32-4E93-B46E-52C9C1E02909}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MusicalChairs.Api.Tests", "apps\MusicalChairs.Api.Tests\MusicalChairs.Api.Tests.fsproj", "{A45698CC-0C5E-476E-A041-22F93B516D9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,13 +22,13 @@ Global
 		{6B01856A-096F-474B-A114-7CC419E75046}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B01856A-096F-474B-A114-7CC419E75046}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B01856A-096F-474B-A114-7CC419E75046}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5CDD206E-9D32-4E93-B46E-52C9C1E02909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5CDD206E-9D32-4E93-B46E-52C9C1E02909}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5CDD206E-9D32-4E93-B46E-52C9C1E02909}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5CDD206E-9D32-4E93-B46E-52C9C1E02909}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A45698CC-0C5E-476E-A041-22F93B516D9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A45698CC-0C5E-476E-A041-22F93B516D9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A45698CC-0C5E-476E-A041-22F93B516D9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A45698CC-0C5E-476E-A041-22F93B516D9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6B01856A-096F-474B-A114-7CC419E75046} = {8412F5E4-887F-46FC-B5AF-A76BDE51C145}
-		{5CDD206E-9D32-4E93-B46E-52C9C1E02909} = {8412F5E4-887F-46FC-B5AF-A76BDE51C145}
+		{A45698CC-0C5E-476E-A041-22F93B516D9A} = {8412F5E4-887F-46FC-B5AF-A76BDE51C145}
 	EndGlobalSection
 EndGlobal

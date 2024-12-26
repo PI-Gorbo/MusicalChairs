@@ -15,7 +15,7 @@ type EmailTemplate =
     }
 
 type EmailSource =
-    | Callout of CalloutId: Guid * ContactId: Guid
+    | Contact of JobId: Guid * ContactId: Guid
     | ConfirmEmail of UserId: Guid
     | ResetPassword of UserId: Guid
 

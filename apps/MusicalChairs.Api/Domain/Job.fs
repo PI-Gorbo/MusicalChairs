@@ -1,7 +1,9 @@
 ﻿namespace MusicalChairs.Api.Domain.Job
 
 open System
+open MusicalChairs.Api.Domain
 open MusicalChairs.Api.Domain.Email
+open MusicalChairs.Api.Domain.MessageEngine
 
 // Contact Method
 type EmailDetails = { EmailAddress: string }
@@ -19,7 +21,7 @@ type PlannedContact =
     {
         Name: string
         UserId: Guid Option
-        ContactMethods: ContactMethod list
+        ContactMethod: ContactMethod
     }
 
 type PlannedPosition =
@@ -37,24 +39,33 @@ type PlannedJob =
     }
 
 // Jobs
-type ContactOutcome =
+type ContactedOutcome =
     | Failed
-    | PendingContactResponse
-    | ContactRequestedDelay of DelayUntil: DateTimeOffset
-    | Delayed of DelayUntil: DateTimeOffset
     | ContactPassed
     | ContactConfirmed
 
+type ContactingOutcome =
+    | GeneratedMessage
+    | Queued
+    | PendingInteraction
+    | ContactRequestedDelay of DelayUntil: DateTimeOffset
+    | Delayed of DelayUntil: DateTimeOffset
+
+type NotContactedReason =
+    | NotActioned
+    | PositionFilled
+
 type ContactState =
-    | NotContacted
-    | JobCompletedBeforeContact
-    | Contacted of ContactOutcome
+    | NotContacted of NotContactedReason
+    | Queued
+    | Contacting of ContactingOutcome
+    | Contacted of ContactedOutcome
 
 type Contact =
     {
         ContactId: Guid
         UserId: Guid
-        ContactMethods: ContactMethod list
+        ContactMethod: ContactMethod
         State: ContactState
     }
 
@@ -80,10 +91,6 @@ type Job =
     }
 
 // Job Facts
-type IJobFact =
-    interface
-    end
-
 type JobStartedFact =
     {
         UserId: Guid
@@ -91,18 +98,21 @@ type JobStartedFact =
         Templates: Template List
         Positions: Position List
     }
-    interface IJobFact
 
+type CreatedContactMessageFact =
+    {
+        ContactId: Guid
+        MessageId: Guid
+        Message: JobMessage
+    }
+
+type JobFact =
+    | JobStarted of JobStartedFact
+    | CreatedContactMessage of CreatedContactMessageFact
 
 // Job Commands
-type IJobCommand =
-    interface
-    end
+type CreateContactMessageCommand = { ContactId: Guid; }
 
-type StartContactCommand =
-    {
-        JobId: Guid
-        PositionId: Guid
-        ContactId: Guid
-    }
-    interface IJobCommand
+type JobCommand =
+    | CreateContactMessage of CreateContactMessageCommand
+    | SendContactMessage of SendContactMessageCommand

@@ -6,7 +6,7 @@ namespace MusicalChairs.Api
 open System
 open Marten
 open MusicalChairs.Api.Domain
-open MusicalChairs.Api.Services.Email.IdentityEmailSenders
+// open MusicalChairs.Api.Services.Email.IdentityEmailSenders
 open Weasel.Core
 open FluentValidation
 open GP.MartenIdentity
@@ -60,8 +60,8 @@ module Program =
                                 .AddToJsonSerializerOptions(opts)
                 )
 
-                storeOptions.RegisterIdentityModels<User, UserRole>()
-                |> ignore
+                // storeOptions.RegisterIdentityModels<User, UserRole>()
+                // |> ignore
 
                 if builder.Environment.IsDevelopment() then
                     storeOptions.AutoCreateSchemaObjects <- AutoCreate.All
@@ -71,22 +71,22 @@ module Program =
             .UseIdentitySessions()
 
         // Configure Identity
-        builder.Services.AddIdentityCore<User>(fun opts ->
-                opts.SignIn.RequireConfirmedAccount <- false
-                opts.User.RequireUniqueEmail <- true
-                opts.Password <-
-                    PasswordOptions(
-                        RequireDigit = true,
-                        RequiredLength = 6,
-                        RequireLowercase = true,
-                        RequireUppercase = true,
-                        RequireNonAlphanumeric = true
-            ))
-            .AddRoles<UserRole>()
-            .AddUserStore<MartenUserStore<User, UserRole>>()
-            .AddRoleStore<MartenRoleStore<UserRole>>()
-            .AddSignInManager()
-            .AddDefaultTokenProviders()
+        // builder.Services.AddIdentityCore<User>(fun opts ->
+        //         opts.SignIn.RequireConfirmedAccount <- false
+        //         opts.User.RequireUniqueEmail <- true
+        //         opts.Password <-
+        //             PasswordOptions(
+        //                 RequireDigit = true,
+        //                 RequiredLength = 6,
+        //                 RequireLowercase = true,
+        //                 RequireUppercase = true,
+        //                 RequireNonAlphanumeric = true
+        //     ))
+        //     .AddRoles<UserRole>()
+        //     .AddUserStore<MartenUserStore<User, UserRole>>()
+        //     .AddRoleStore<MartenRoleStore<UserRole>>()
+        //     .AddSignInManager()
+        //     .AddDefaultTokenProviders()
 
         // Authentication - "Who are you"
         builder
@@ -121,17 +121,17 @@ module Program =
                             | x -> x)
             
         // Authorization - "Who has access to what"
-        builder.Services.AddScoped<IAuthorizationHandler, RegisteredUserAuthRequirement.IsRegisteredUserAuthorizationHandler>
-            ()
-        builder.Services.AddAuthorization(fun cfg ->
-            cfg.AddPolicy(
-                "IsRegisteredUser",
-                fun policyCfg ->
-                    policyCfg
-                        .RequireAuthenticatedUser()
-                        .AddRequirements(RegisteredUserAuthRequirement.IsRegisteredUserRequirement())
-                    |> ignore)
-            )
+        // builder.Services.AddScoped<IAuthorizationHandler, RegisteredUserAuthRequirement.IsRegisteredUserAuthorizationHandler>
+        //     ()
+        // builder.Services.AddAuthorization(fun cfg ->
+        //     cfg.AddPolicy(
+        //         "IsRegisteredUser",
+        //         fun policyCfg ->
+        //             policyCfg
+        //                 .RequireAuthenticatedUser()
+        //                 .AddRequirements(RegisteredUserAuthRequirement.IsRegisteredUserRequirement())
+        //             |> ignore)
+        //     )
         
         // Cors - "Where are you making a request from"
         // builder.Services.AddCors()
@@ -144,7 +144,7 @@ module Program =
         // builder.Services.AddValidatorsFromAssemblyContaining<LoginRequestValidator>()
 
         // Register Email Services.
-        builder.Services.RegisterIdentityEmailSenders<User, ConfirmEmailSender, ResetPasswordEmailSender>()
+        // builder.Services.RegisterIdentityEmailSenders<User, ConfirmEmailSender, ResetPasswordEmailSender>()
         
         let app = builder.Build()
         app.UseHttpsRedirection()
