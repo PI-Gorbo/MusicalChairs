@@ -12,15 +12,13 @@ module JobFactEngine =
 
     let start (deps: IStartJobDeps) (fact: JobStartedFact) : TaskResult<Job, string> =
         TaskResult.ok
-            {
-                Id = deps.JobId()
-                CreatorId = fact.CreatorId
-                Positions = fact.Positions
-                Templates = fact.Templates
-                JobState = JobState.Started
-            }
+            { Id = deps.JobId()
+              CreatorId = fact.CreatorId
+              Positions = fact.Positions
+              Templates = fact.Templates
+              JobState = JobState.Started }
 
-    let apply (fact: JobFact) (job: Job) : TaskResult<Job, string> =
+    let applyFact (fact: JobFact) (job: Job) : TaskResult<Job, string> =
         match fact with
         | JobStarted _ ->
             failwith
@@ -37,9 +35,9 @@ module JobFactEngine =
                                     |> List.map (fun contact ->
                                         if contact.ContactId = messageGeneratedForContactFact.ContactId then
                                             { contact with
-                                                State = ContactState.Contacting ContactingOutcome.GeneratedMessage
-                                            }
+                                                State = ContactState.Contacting ContactingOutcome.GeneratedMessage }
                                         else
-                                            contact)
-                            })
-                }
+                                            contact) }) }
+
+    let applyFacts (job: Job) (facts: JobFact seq) : TaskResult<Job, string> =
+        facts |> Seq.fold (fun seed fact -> seed >>= applyFact fact) (TaskResult.ok job)

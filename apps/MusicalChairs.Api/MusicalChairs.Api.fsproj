@@ -10,6 +10,7 @@
     <Compile Include="Domain\Job.fs" />
     <Compile Include="Domain\JobDecisionEngine.fs" />
     <Compile Include="Domain\JobFactEngine.fs" />
+    <Compile Include="Domain\JobDecisionEngineV2.fs" />
     <Compile Include="RegisteredUserAuthRequirement.fs" />
     <Compile Include="Services/IdentityEmailSenders.fs" />
     <Compile Include="ApiEndpoints/Auth.fs" />

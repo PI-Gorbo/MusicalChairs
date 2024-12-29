@@ -21,6 +21,7 @@ type PlannedContact =
     {
         Name: string
         UserId: Guid Option
+        TemplateId: Guid
         ContactMethod: ContactMethod
     }
 
@@ -91,6 +92,9 @@ type Job =
     }
 
 // Job Facts
+
+type IJobFact =
+    abstract member Id: Guid
 type JobStartedFact =
     {
         UserId: Guid
@@ -106,9 +110,12 @@ type CreatedContactMessageFact =
         Message: JobMessage
     }
 
+
+
 type JobFact =
     | JobStarted of JobStartedFact
     | CreatedContactMessage of CreatedContactMessageFact
+    | ContactMessageActioned of MessageFact
 
 // Job Commands
 type CreateContactMessageCommand = { ContactId: Guid; }

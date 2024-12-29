@@ -10,7 +10,6 @@ type HtmlData =
 
 type EmailTemplate =
     {
-        Schema: string list
         TemplatedHtml: HtmlData
     }
 

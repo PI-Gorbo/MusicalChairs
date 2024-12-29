@@ -24,18 +24,16 @@ module JobDecisionEngine =
             |> Seq.length
 
         let notYetContacted =
-            position.Contacts
-            |> Seq.filter (fun x -> x.State.IsNotContacted)
+            position.Contacts |> Seq.filter (fun x -> x.State.IsNotContacted)
 
-        if currentlyContacted = int position.PositionsAvailable
-           || Seq.isEmpty notYetContacted then
+        if
+            currentlyContacted = int position.PositionsAvailable
+            || Seq.isEmpty notYetContacted
+        then
             None
         else
             notYetContacted
-            |> Seq.take (
-                int position.PositionsAvailable
-                - currentlyContacted
-            )
+            |> Seq.take (int position.PositionsAvailable - currentlyContacted)
             |> Seq.toList
             |> Some
 
@@ -52,16 +50,11 @@ module JobDecisionEngine =
         |> List.concat
 
     type JobDecisions =
-        {
-            Facts: JobFact List
-            Commands: JobCommand List
-        }
+        { Facts: JobFact List
+          Commands: JobCommand List }
 
     type StartJobDto =
-        {
-            JobId: Guid
-            Decisions: JobDecisions
-        }
+        { JobId: Guid; Decisions: JobDecisions }
 
     type IStartJobDependencies =
         abstract generateGuid: Unit -> Guid
@@ -95,45 +88,32 @@ module JobDecisionEngine =
                 |> List.mapi (fun index userId -> (userId, unidentifiedContacts[index]))
                 |> List.groupBy (fun (_, (posIndex, _, _)) -> posIndex)
                 |> List.map (fun (posIndex, contactsGroupedByPosition) ->
-                    {
-                        PositionId = deps.generateGuid ()
-                        PositionName = plannedJob.Positions[posIndex].PositionName
-                        PositionsAvailable = plannedJob.Positions[posIndex].PositionsAvailable
-                        Contacts =
-                            contactsGroupedByPosition
-                            |> List.sortBy (fun (_, (_, contactIdx, plannedContact)) -> contactIdx)
-                            |> List.map (fun (userId, (_, _, plannedContact)) ->
-                                {
-                                    ContactId = deps.generateGuid ()
-                                    UserId = userId
-                                    ContactMethod = plannedContact.ContactMethod
-                                    State = NotContacted NotActioned
-                                })
-                    })
+                    { PositionId = deps.generateGuid ()
+                      PositionName = plannedJob.Positions[posIndex].PositionName
+                      PositionsAvailable = plannedJob.Positions[posIndex].PositionsAvailable
+                      Contacts =
+                        contactsGroupedByPosition
+                        |> List.sortBy (fun (_, (_, contactIdx, plannedContact)) -> contactIdx)
+                        |> List.map (fun (userId, (_, _, plannedContact)) ->
+                            { ContactId = deps.generateGuid ()
+                              UserId = userId
+                              ContactMethod = plannedContact.ContactMethod
+                              State = NotContacted NotActioned }) })
 
             let nextContacts = generateNextContacts jobId positions
 
             return
-                {
-                    StartJobDto.JobId = jobId
-                    StartJobDto.Decisions =
-                        {
-                            Facts =
-                                [
-                                    JobStarted
-                                        {
-                                            UserId = userId
-                                            CreatorId = plannedJob.CreatorId
-                                            Templates = plannedJob.Templates
-                                            Positions = positions
-                                        }
-                                ]
-                            Commands =
-                                nextContacts
-                                |> List.map (fun command -> CreateContactMessage command)
+                { StartJobDto.JobId = jobId
+                  StartJobDto.Decisions =
+                    { Facts =
+                        [ JobStarted
+                              { UserId = userId
+                                CreatorId = plannedJob.CreatorId
+                                Templates = plannedJob.Templates
+                                Positions = positions } ]
+                      Commands = nextContacts |> List.map (fun command -> CreateContactMessage command)
 
-                        }
-                }
+                    } }
         }
 
     type IGenerateMessageForContactDependencies =
@@ -159,30 +139,20 @@ module JobDecisionEngine =
         |> Seq.choose id
         |> Seq.tryHead
         // return an error result if the contact is not found.
-        |> Option.either
-            (fun pair -> TaskResult.ok pair)
-            (fun () -> TaskResult.error (NoContactFound command.ContactId))
+        |> Option.either (fun pair -> TaskResult.ok pair) (fun () ->
+            TaskResult.error (NoContactFound command.ContactId))
         >>= fun (position, contact) ->
-                // Generate the message
-                deps.generateMessage job position contact
-                |> TaskResult.mapError FailedToGenerateMessage
-                |> TaskResult.map (fun jobMsg -> contact, jobMsg)
+            // Generate the message
+            deps.generateMessage job position contact
+            |> TaskResult.mapError FailedToGenerateMessage
+            |> TaskResult.map (fun jobMsg -> contact, jobMsg)
         |> TaskResult.map (fun (contact, jobMsg) ->
-            {
-                Facts =
-                    [
-                        CreatedContactMessage
-                            {
-                                MessageId = jobMsg.GetId()
-                                ContactId = contact.ContactId
-                                Message = jobMsg
-                            }
-                    ]
-                Commands =
-                    [
-                        match jobMsg with
-                        | JobMessage.Email emailMessage ->
-                            SendContactMessage(SendContactMessageCommand.Email emailMessage.Id)
-                    ]
-            })
-
+            { Facts =
+                [ CreatedContactMessage
+                      { MessageId = jobMsg.GetId()
+                        ContactId = contact.ContactId
+                        Message = jobMsg } ]
+              Commands =
+                [ match jobMsg with
+                  | JobMessage.Email emailMessage ->
+                      SendContactMessage(SendContactMessageCommand.Email emailMessage.Id) ] })
