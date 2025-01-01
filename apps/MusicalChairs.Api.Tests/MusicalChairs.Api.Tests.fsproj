@@ -12,15 +12,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Argon.FSharp" Version="0.26.0" />
     <PackageReference Include="coverlet.collector" Version="6.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="Shouldly" Version="4.2.1" />
+    <PackageReference Include="Verify.Xunit" Version="28.7.0" />
     <PackageReference Include="xunit" Version="2.9.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MusicalChairs.Api\MusicalChairs.Api.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Private.CoreLib">
+      <HintPath>..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.0\System.Private.CoreLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

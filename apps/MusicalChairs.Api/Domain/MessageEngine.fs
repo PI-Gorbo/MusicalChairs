@@ -10,15 +10,6 @@ open MusicalChairs.Api.Utilities.GenericErrors
 
 [<RequireQualifiedAccess>]
 type SendContactMessageCommand = Email of EmailId: Guid
-
-[<RequireQualifiedAccess>]
-type JobMessage =
-    | Email of EmailMessage
-
-    member this.GetId() =
-        match this with
-        | Email emailMessage -> emailMessage.Id
-
 module MessageEngine =
     type FailedToSendFact = { ErrorMessage: string }
 

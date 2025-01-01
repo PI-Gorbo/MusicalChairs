@@ -4,13 +4,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Utilities\GenericErrors.fs" />
+    <Compile Include="Utilities\TaskResultExtensions.fs" />
     <Compile Include="Domain\User.fs" />
     <Compile Include="Domain\Email.fs" />
     <Compile Include="Domain\MessageEngine.fs" />
-    <Compile Include="Domain\Job.fs" />
-    <Compile Include="Domain\JobDecisionEngine.fs" />
-    <Compile Include="Domain\JobFactEngine.fs" />
-    <Compile Include="Domain\JobDecisionEngineV2.fs" />
+    <Compile Include="Domain\Jobs\Job.fs" />
+    <Compile Include="Domain\Jobs\JobCommands.fs" />
+    <Compile Include="Domain\Jobs\JobFacts.fs" />
+    <Compile Include="Domain\Jobs\JobFactEngine.fs" />
+    <Compile Include="Domain\Jobs\JobDecisionEngine.fs" />
     <Compile Include="RegisteredUserAuthRequirement.fs" />
     <Compile Include="Services/IdentityEmailSenders.fs" />
     <Compile Include="ApiEndpoints/Auth.fs" />

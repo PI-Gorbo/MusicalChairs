@@ -1,6 +1,7 @@
 ﻿namespace MusicalChairs.Api.Domain.Job
 
 open System
+open FsToolkit.ErrorHandling
 open MusicalChairs.Api.Domain
 open MusicalChairs.Api.Domain.Email
 open MusicalChairs.Api.Domain.MessageEngine
@@ -20,7 +21,7 @@ type Template =
 type PlannedContact =
     {
         Name: string
-        UserId: Guid Option
+        UserId: Guid
         TemplateId: Guid
         ContactMethod: ContactMethod
     }
@@ -34,6 +35,7 @@ type PlannedPosition =
 
 type PlannedJob =
     {
+        Id: Guid
         CreatorId: Guid
         Templates: Template list
         Positions: PlannedPosition list
@@ -66,9 +68,18 @@ type Contact =
     {
         ContactId: Guid
         UserId: Guid
+        TemplateId: Guid
         ContactMethod: ContactMethod
         State: ContactState
     }
+    static member tryFromPlannedContact (generateId: unit -> Guid) (plannedContact: PlannedContact) : TaskResult<Contact, string> =
+        TaskResult.ok {
+            ContactId = generateId ()
+            UserId = plannedContact.UserId
+            State = ContactState.NotContacted NotContactedReason.NotActioned
+            ContactMethod = plannedContact.ContactMethod
+            TemplateId = plannedContact.TemplateId
+        }
 
 type Position =
     {
@@ -91,35 +102,3 @@ type Job =
         JobState: JobState
     }
 
-// Job Facts
-
-type IJobFact =
-    abstract member Id: Guid
-type JobStartedFact =
-    {
-        UserId: Guid
-        CreatorId: Guid
-        Templates: Template List
-        Positions: Position List
-    }
-
-type CreatedContactMessageFact =
-    {
-        ContactId: Guid
-        MessageId: Guid
-        Message: JobMessage
-    }
-
-
-
-type JobFact =
-    | JobStarted of JobStartedFact
-    | CreatedContactMessage of CreatedContactMessageFact
-    | ContactMessageActioned of MessageFact
-
-// Job Commands
-type CreateContactMessageCommand = { ContactId: Guid; }
-
-type JobCommand =
-    | CreateContactMessage of CreateContactMessageCommand
-    | SendContactMessage of SendContactMessageCommand
