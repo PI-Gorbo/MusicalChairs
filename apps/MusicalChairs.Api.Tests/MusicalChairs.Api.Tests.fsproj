@@ -25,10 +25,4 @@
     <ProjectReference Include="..\MusicalChairs.Api\MusicalChairs.Api.fsproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Private.CoreLib">
-      <HintPath>..\..\..\..\Program Files\dotnet\shared\Microsoft.NETCore.App\9.0.0\System.Private.CoreLib.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

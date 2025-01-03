@@ -14,11 +14,14 @@ open Shouldly
 open VerifyXunit
 open Xunit
 
-let verifySettings fileName =
+let verifySettings =
     let settings = VerifySettings()
+    settings.UseDirectory("JobDecisionEngineTestsSnapshots")
     settings.DontIgnoreEmptyCollections()
-    settings.UseFileName(fileName)
-    settings.AddExtraSettings(_.AddFSharpConverters())
+    settings.AddExtraSettings(fun jsonSerializerSettings ->
+        jsonSerializerSettings.AddFSharpConverters()
+        jsonSerializerSettings.NullValueHandling <- NullValueHandling.Include
+    )
     settings
 
 type ProcessCommandDeps(jobId: Guid, plannedJob: PlannedJob, startJobCommand: StartJobCommand) =
@@ -27,7 +30,7 @@ type ProcessCommandDeps(jobId: Guid, plannedJob: PlannedJob, startJobCommand: St
     let mutable facts = []
     let mutable job: Job Option = None
     let mutable deletePlannedJobCalled = false
-    member val QueueMoreCommands = true with get, set
+    member val CommandsToProcess = 1 with get, set
 
     member self.getState() =
         {| Commands = commands
@@ -40,7 +43,8 @@ type ProcessCommandDeps(jobId: Guid, plannedJob: PlannedJob, startJobCommand: St
 
     interface IProcessCommandsDeps with
         member this.dequeueCommand() =
-            if this.QueueMoreCommands then
+            if this.CommandsToProcess <> 0 then
+                this.CommandsToProcess <- this.CommandsToProcess - 1
                 match commands with
                 | [] -> None
                 | [ item ] ->
@@ -91,53 +95,75 @@ type ProcessCommandDeps(jobId: Guid, plannedJob: PlannedJob, startJobCommand: St
 
 type JobDecisionEngineTests() =
 
+    let jobId = Guid.CreateVersion7()
+    let alexUserId = Guid.CreateVersion7()
+    let templateId = Guid.CreateVersion7()
+
+    let plannedJob: PlannedJob =
+        { Id = Guid.CreateVersion7()
+          CreatorId = alexUserId
+          Positions =
+            [ { PositionName = "Tennor"
+                PositionsAvailable = uint 1
+                Contacts =
+                  [ { TemplateId = templateId
+                      Name = "Alex"
+                      UserId = alexUserId
+                      ContactMethod = ContactMethod.Email { EmailAddress = "a.j.gorbatov@gmail.com" } } ] } ]
+          Templates =
+            [ { TemplateId = templateId
+                TemplateDetails =
+                  TemplateContactMethod.EmailTemplate { TemplatedHtml = HtmlData.Raw "<html>{{Content}</html>" } } ] }
+
+    let testProcessCommandDeps =
+        ProcessCommandDeps(
+            jobId,
+            plannedJob,
+            { UserId = alexUserId
+              PlannedJobId = plannedJob.Id }
+        )
 
     [<Fact>]
-    let sandbox () =
-        let jobId = Guid.CreateVersion7()
-        let alexUserId = Guid.CreateVersion7()
-        let templateId = Guid.CreateVersion7()
-
-        let plannedJob: PlannedJob =
-            { Id = Guid.CreateVersion7()
-              CreatorId = alexUserId
-              Positions =
-                [ { PositionName = "Tennor"
-                    PositionsAvailable = uint 1
-                    Contacts =
-                      [ { TemplateId = templateId
-                          Name = "Alex"
-                          UserId = alexUserId
-                          ContactMethod = ContactMethod.Email { EmailAddress = "a.j.gorbatov@gmail.com" } } ] } ]
-              Templates =
-                [ { TemplateId = templateId
-                    TemplateDetails =
-                      TemplateContactMethod.EmailTemplate { TemplatedHtml = HtmlData.Raw "<html>{{Content}</html>" } } ] }
-
-        let testProcessCommandDeps =
-            ProcessCommandDeps(
-                jobId,
-                plannedJob,
-                { UserId = alexUserId
-                  PlannedJobId = plannedJob.Id }
-            )
-
-
+    let TestQueuedStartJobCommandButHaveNotProcessedIt () =
         task {
-            testProcessCommandDeps.QueueMoreCommands <- false
+            // Enforce no commands are actually processed.
+            testProcessCommandDeps.CommandsToProcess <- 0
             let! result = processCommands testProcessCommandDeps
-
             result.IsOk.ShouldBeTrue(
                 result
                 |> Result.either (fun _ -> "") (fun err -> err)
             )
-
             let jobState = testProcessCommandDeps.getState ()
+            do! (Verifier.Verify (jobState, verifySettings)) .ToTask() |> Task.ignore
+            return ()
+        }
 
-            do! (Verifier.Verify (jobState.Commands, verifySettings "JobStartedCommand.Facts")) .ToTask() |> Task.ignore
-            do! (Verifier.Verify (jobState.Facts, verifySettings "JobStartedCommand.Facts")).ToTask() |> Task.ignore
-            do! (Verifier.Verify (jobState.Job, verifySettings "JobStartedCommand.Job")).ToTask() |> Task.ignore
+    [<Fact>]
+    let TestProcessedStartJobCommand () =
+        task {
+            // Enforce no commands are actually processed.
+            testProcessCommandDeps.CommandsToProcess <- 1
+            let! result = processCommands testProcessCommandDeps
+            result.IsOk.ShouldBeTrue(
+                result
+                |> Result.either (fun _ -> "") (fun err -> err)
+            )
+            let jobState = testProcessCommandDeps.getState ()
+            do! (Verifier.Verify (jobState, verifySettings)) .ToTask() |> Task.ignore
+            return ()
+        }
 
-
+    [<Fact>]
+    let TestProcessedStartJobAndGenerateContactsCommand () =
+        task {
+            // Enforce no commands are actually processed.
+            testProcessCommandDeps.CommandsToProcess <- -1
+            let! result = processCommands testProcessCommandDeps
+            result.IsOk.ShouldBeTrue(
+                result
+                |> Result.either (fun _ -> "") (fun err -> err)
+            )
+            let jobState = testProcessCommandDeps.getState ()
+            do! (Verifier.Verify (jobState, verifySettings)) .ToTask() |> Task.ignore
             return ()
         }

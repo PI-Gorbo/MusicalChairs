@@ -1,0 +1,133 @@
+﻿{
+  Commands: [
+    {
+      Case: CreateContactMessage,
+      Fields: [
+        {
+          JobId: Guid_1,
+          ContactId: Guid_2
+        }
+      ]
+    }
+  ],
+  DeletedPlannedJob: false,
+  Facts: [
+    {
+      Case: JobStarted,
+      Fields: [
+        {
+          UserId: Guid_3,
+          CreatorId: Guid_3,
+          Templates: [
+            {
+              TemplateId: Guid_4,
+              TemplateDetails: {
+                Case: EmailTemplate,
+                Fields: [
+                  {
+                    TemplatedHtml: {
+                      Case: Raw,
+                      Fields: [
+                        <html>{{Content}</html>
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          Positions: [
+            {
+              PositionId: Guid_5,
+              PositionName: Tennor,
+              PositionsAvailable: 1,
+              Contacts: [
+                {
+                  ContactId: Guid_2,
+                  UserId: Guid_3,
+                  TemplateId: Guid_4,
+                  ContactMethod: {
+                    Case: Email,
+                    Fields: [
+                      {
+                        EmailAddress: a.j.gorbatov@gmail.com
+                      }
+                    ]
+                  },
+                  State: {
+                    Case: NotContacted,
+                    Fields: [
+                      {
+                        Case: NotActioned
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  Job: {
+    Case: Some,
+    Fields: [
+      {
+        Id: Guid_6,
+        CreatorId: Guid_3,
+        Templates: [
+          {
+            TemplateId: Guid_4,
+            TemplateDetails: {
+              Case: EmailTemplate,
+              Fields: [
+                {
+                  TemplatedHtml: {
+                    Case: Raw,
+                    Fields: [
+                      <html>{{Content}</html>
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        Positions: [
+          {
+            PositionId: Guid_5,
+            PositionName: Tennor,
+            PositionsAvailable: 1,
+            Contacts: [
+              {
+                ContactId: Guid_2,
+                UserId: Guid_3,
+                TemplateId: Guid_4,
+                ContactMethod: {
+                  Case: Email,
+                  Fields: [
+                    {
+                      EmailAddress: a.j.gorbatov@gmail.com
+                    }
+                  ]
+                },
+                State: {
+                  Case: NotContacted,
+                  Fields: [
+                    {
+                      Case: NotActioned
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        JobState: {
+          Case: Started
+        }
+      }
+    ]
+  }
+}
