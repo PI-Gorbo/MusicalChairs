@@ -60,7 +60,6 @@ type NotContactedReason =
 
 type ContactState =
     | NotContacted of NotContactedReason
-    | Queued
     | Contacting of ContactingOutcome
     | Contacted of ContactedOutcome
 

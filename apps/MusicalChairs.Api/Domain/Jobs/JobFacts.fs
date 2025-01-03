@@ -8,17 +8,15 @@ type JobStartedFact =
     {
         UserId: Guid
         CreatorId: Guid
+
         Templates: Template List
         Positions: Position List
     }
 
 type JobContactCreatedEmailMessageInfo =
     {
-        Provider: EmailProvider
-        Source: EmailSource
         Body: HtmlData
-        From: EmailAddress
-        Recipients: EmailAddress list
+        To: EmailAddress list
         ReplyTo: EmailAddress list
         Bcc: EmailAddress list
         Cc: EmailAddress list

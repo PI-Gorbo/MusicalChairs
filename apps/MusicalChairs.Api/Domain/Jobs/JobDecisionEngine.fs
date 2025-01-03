@@ -3,6 +3,7 @@
 open System
 open FsToolkit.ErrorHandling
 open FsToolkit.ErrorHandling.Operator.TaskResult
+open MusicalChairs.Api.Domain.Email
 open MusicalChairs.Api.Domain.Job
 open MusicalChairs.Api.Domain.Jobs.JobCommands
 open MusicalChairs.Api.Domain.Jobs.JobFacts
@@ -13,6 +14,7 @@ module JobDecisionEngine =
         abstract member generateJobId: unit -> Guid
         abstract member generateContactId: unit -> Guid
         abstract member generatePositionId: unit -> Guid
+        abstract member generateMessageId : unit -> Guid
 
         abstract member getPlannedJob: Guid -> TaskResult<PlannedJob, string>
         abstract member deletePlannedJob: Guid -> TaskResult<unit, string>
@@ -78,22 +80,41 @@ module JobDecisionEngine =
                 deps.deletePlannedJob (command.PlannedJobId)
                 |> TaskResult.map (fun _ -> decisions))
         | CreateContactMessage command ->
-            deps.getJob()
+            deps.getJob command.JobId
             >>= (fun job ->
                 // Find the contact.
                 job.Positions
                 |> Seq.map (_.Contacts)
                 |> Seq.concat
-                |> Seq.tryFind (fun contact -> contact.Id = command.ContactId)
+                |> Seq.tryFind (fun contact -> contact.ContactId = command.ContactId)
 
-                // Generate the contact message.a
+                // validate the contact is in the correct state.
                 |> function
-                | None -> TaskResult.error "There is no contact with the provided id."
-                | Some contact ->
-
-
-
-                )
+                    | None -> TaskResult.error "There is no contact with the provided id."
+                    | Some contact ->
+                        match contact.State with
+                        | NotContacted notContactedReason -> TaskResult.ok contact
+                        | _ -> TaskResult.error "The contact must be in the Not Contacted state in order to generate a contact message."
+            >>= fun contact ->
+                let template =
+                    job.Templates
+                    |> List.tryFind (fun template -> template.TemplateId = contact.TemplateId)
+                    |> Option.map ()
+                let message : JobContactCreatedMessageInfo =
+                    match contact.ContactMethod with
+                    | ContactMethod.Email userEmailInfo ->
+                        JobContactCreatedMessageInfo.Email {
+                            To = [userEmailInfo.EmailAddress]
+                            ReplyTo = []
+                            Bcc = []
+                            Cc = []
+                            Body =
+                        }
+                {
+                    ContactId = contact.ContactId
+                    MessageId = deps.generateMessageId()
+                    Message = message
+                })
 
 
 

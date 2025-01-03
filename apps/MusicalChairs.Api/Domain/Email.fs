@@ -18,8 +18,6 @@ type EmailSource =
     | ConfirmEmail of UserId: Guid
     | ResetPassword of UserId: Guid
 
-type EmailProvider = | SendGrid
-
 type ClickLinkInfo = { Url: string; UrlIndex: uint }
 
 type EmailInteraction =
