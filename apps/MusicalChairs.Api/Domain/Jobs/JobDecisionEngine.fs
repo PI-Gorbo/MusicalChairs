@@ -14,7 +14,7 @@ module JobDecisionEngine =
         abstract member generateJobId: unit -> Guid
         abstract member generateContactId: unit -> Guid
         abstract member generatePositionId: unit -> Guid
-        abstract member generateMessageId : unit -> Guid
+        abstract member generateMessageId: unit -> Guid
 
         abstract member getPlannedJob: Guid -> TaskResult<PlannedJob, string>
         abstract member deletePlannedJob: Guid -> TaskResult<unit, string>
@@ -72,7 +72,7 @@ module JobDecisionEngine =
                         |> List.map (fun contact ->
                             CreateContactMessage
                                 { JobId = jobId
-                                  ContactId = contact.ContactId })
+                                  ContactId = contact.Id })
 
                     [ JobStarted jobStartedFact ], createContactMessageCommands))
 
@@ -84,39 +84,50 @@ module JobDecisionEngine =
             >>= (fun job ->
                 // Find the contact.
                 job.Positions
-                |> Seq.map (_.Contacts)
+                |> Seq.map _.Contacts
                 |> Seq.concat
-                |> Seq.tryFind (fun contact -> contact.ContactId = command.ContactId)
+                |> Seq.tryFind (fun contact -> contact.Id = command.ContactId)
 
                 // validate the contact is in the correct state.
                 |> function
                     | None -> TaskResult.error "There is no contact with the provided id."
                     | Some contact ->
                         match contact.State with
-                        | NotContacted notContactedReason -> TaskResult.ok contact
-                        | _ -> TaskResult.error "The contact must be in the Not Contacted state in order to generate a contact message."
-            >>= fun contact ->
-                let template =
-                    job.Templates
-                    |> List.tryFind (fun template -> template.TemplateId = contact.TemplateId)
-                    |> Option.map ()
-                let message : JobContactCreatedMessageInfo =
-                    match contact.ContactMethod with
-                    | ContactMethod.Email userEmailInfo ->
-                        JobContactCreatedMessageInfo.Email {
-                            To = [userEmailInfo.EmailAddress]
-                            ReplyTo = []
-                            Bcc = []
-                            Cc = []
-                            Body =
-                        }
-                {
-                    ContactId = contact.ContactId
-                    MessageId = deps.generateMessageId()
-                    Message = message
-                })
+                        | NotContacted notContactedReason -> TaskResult.ok (job, contact)
+                        | _ ->
+                            TaskResult.error
+                                "The contact must be in the Not Contacted state in order to generate a contact message.")
 
+            // Generate the message from the template & contact.
+            >>= (fun (job, contact) ->
+                job.Templates
+                |> List.tryFind (fun template -> template.TemplateId = contact.TemplateId)
+                |> Option.either TaskResult.ok (fun _ -> TaskResult.error "There is no template with the provided id.")
+                >>= fun template ->
+                    match (template.TemplateDetails, contact.ContactMethod) with
+                    | TemplateContactMethod.EmailTemplate template, ContactMethod.Email userEmailInfo ->
+                        let messageInfo =
+                            JobContactCreatedMessageInfo.Email
+                                { To = [ userEmailInfo.EmailAddress ]
+                                  ReplyTo = []
+                                  Bcc = []
+                                  Cc = []
+                                  Body = template.applyTemplate(userEmailInfo) }
+                        TaskResult.ok (
+                            JobFact.JobContactCreatedMessage {
+                                ContactId = contact.Id
+                                MessageId = deps.generateMessageId()
+                                Message = messageInfo
+                            })
+                    | _ -> TaskResult.error $"Template and contact method do not match for contact {contact.Id}")
+                |> TaskResult.map (fun fact -> job, contact, fact)
 
+            // Map to final Job Decisions
+            >>= (fun (job, contact, fact) ->
+
+                [fact], []
+
+                )
 
 
 

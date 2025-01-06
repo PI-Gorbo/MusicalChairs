@@ -34,7 +34,7 @@ module JobFactEngine =
                                     Contacts =
                                         pos.Contacts
                                         |> List.map (fun contact ->
-                                            if contact.ContactId = messageGeneratedForContactFact.ContactId then
+                                            if contact.Id = messageGeneratedForContactFact.ContactId then
                                                 { contact with
                                                     State = ContactState.Contacting ContactingOutcome.GeneratedMessage
                                                 }
