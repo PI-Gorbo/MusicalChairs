@@ -24,7 +24,7 @@ module JobFactEngine =
         member this.applyFact(fact: JobFact, job: Job) : TaskResult<Job, string> =
             match fact with
             | JobStarted _ -> TaskResult.error "Job has already been started."
-            | JobContactCreatedMessage messageGeneratedForContactFact ->
+            | JobContactCreatedEmail messageGeneratedForContactFact ->
                 TaskResult.ok
                     { job with
                         Positions =
@@ -42,7 +42,7 @@ module JobFactEngine =
                                                 contact)
                                 })
                     }
-            | JobContactActionedMessage fact -> failwith "Not implemented"
+            | JobContactEmailStatusUpdated fact -> failwith "Not implemented"
 
         member this.applyFacts (job: Job) (facts: JobFact seq) : TaskResult<Job, string> =
             facts

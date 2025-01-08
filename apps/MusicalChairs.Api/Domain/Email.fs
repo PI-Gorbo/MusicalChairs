@@ -13,6 +13,8 @@ type EmailTemplate =
         TemplatedHtml: HtmlData
     }
 
+    member self.applyTemplate () = self.TemplatedHtml
+
 type EmailSource =
     | Contact of JobId: Guid * ContactId: Guid
     | ConfirmEmail of UserId: Guid
@@ -37,7 +39,6 @@ type EmailState =
 type EmailMessage =
     {
         Id: Guid
-        Provider: EmailProvider
         Source: EmailSource
         State: EmailState
         Body: HtmlData

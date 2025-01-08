@@ -8,7 +8,6 @@ type JobStartedFact =
     {
         UserId: Guid
         CreatorId: Guid
-
         Templates: Template List
         Positions: Position List
     }
@@ -22,27 +21,21 @@ type JobContactCreatedEmailMessageInfo =
         Cc: EmailAddress list
      }
 
-type JobContactCreatedMessageInfo =
-    | Email of JobContactCreatedEmailMessageInfo
-
-type JobContactMessageCreatedFact =
+type JobContactCreatedEmailFact =
     {
         ContactId: Guid
         MessageId: Guid
-        Message: JobContactCreatedMessageInfo
+        Message: JobContactCreatedEmailMessageInfo
     }
 
-type JobContactActionedState =
-    | Email of EmailState
-
-type JobContactActionedMessageFact =
+type JobContactEmailStatusUpdatedFact =
     {
         ContactId: Guid
         MessageId: Guid
-        State: JobContactActionedState
+        State: ContactState
     }
 
 type JobFact =
     | JobStarted of JobStartedFact
-    | JobContactCreatedMessage of JobContactMessageCreatedFact
-    | JobContactActionedMessage of JobContactActionedMessageFact
+    | JobContactCreatedEmail of JobContactCreatedEmailFact
+    | JobContactEmailStatusUpdated of JobContactEmailStatusUpdatedFact

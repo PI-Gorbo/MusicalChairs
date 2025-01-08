@@ -8,15 +8,8 @@ open MusicalChairs.Api.Domain.MessageEngine
 
 // Contact Method
 type EmailDetails = { EmailAddress: string }
-type TemplateContactMethod = EmailTemplate of EmailTemplate
-type ContactMethod = Email of EmailDetails
-
-module EmailTemplateExtensions =
-    type EmailTemplate with
-        member self.applyTemplate(details: EmailDetails) : TaskResult<string, string> =
-            match self.TemplatedHtml with
-            | Raw s -> failwith "todo"
-            | Reference bucketReference -> failwith "todo"
+type TemplateContactMethod = | EmailTemplate of EmailTemplate
+type ContactMethod = | Email of EmailDetails
 
 type Template =
     { TemplateId: Guid
@@ -42,7 +35,6 @@ type PlannedJob =
 
 // Jobs
 type ContactedOutcome =
-    | Failed
     | ContactPassed
     | ContactConfirmed
 
@@ -60,12 +52,14 @@ type NotContactedReason =
 type ContactState =
     | NotContacted of NotContactedReason
     | Contacting of ContactingOutcome
+    | Failed of failureReason: string
     | Contacted of ContactedOutcome
 
 type Contact =
     { Id: Guid
       UserId: Guid
       TemplateId: Guid
+      MessageId: Guid Option
       ContactMethod: ContactMethod
       State: ContactState }
 
@@ -78,7 +72,8 @@ type Contact =
               UserId = plannedContact.UserId
               State = ContactState.NotContacted NotContactedReason.NotActioned
               ContactMethod = plannedContact.ContactMethod
-              TemplateId = plannedContact.TemplateId }
+              TemplateId = plannedContact.TemplateId
+              MessageId = None }
 
 type Position =
     { PositionId: Guid
@@ -96,3 +91,9 @@ type Job =
       Templates: Template list
       Positions: Position list
       JobState: JobState }
+
+    member self.tryFindContact contactId =
+        self.Positions
+        |> Seq.map _.Contacts
+        |> Seq.concat
+        |> Seq.tryFind (fun contact -> contact.Id = contactId)
