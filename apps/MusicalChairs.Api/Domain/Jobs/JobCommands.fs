@@ -4,9 +4,9 @@ open System
 
 type StartJobCommand = { UserId: Guid; PlannedJobId: Guid }
 type CreateContactMessageCommand = { JobId: Guid; ContactId: Guid }
-type SendContactMessageCommand = { JobId: Guid; ContactId: Guid }
+type EnqueueContactMessageCommand = { JobId: Guid; ContactId: Guid }
 
 type JobCommand =
     | StartJob of StartJobCommand
     | CreateContactMessage of CreateContactMessageCommand
-    | SendContactMessage of SendContactMessageCommand
+    | EnqueueContactMessage of EnqueueContactMessageCommand

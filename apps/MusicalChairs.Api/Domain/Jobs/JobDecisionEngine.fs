@@ -15,7 +15,7 @@ module JobDecisionEngine =
         abstract member generateJobId: unit -> Guid
         abstract member generateContactId: unit -> Guid
         abstract member generatePositionId: unit -> Guid
-        abstract member generateMessageId : unit -> Guid
+        abstract member generateMessageId: unit -> Guid
 
         abstract member getPlannedJob: Guid -> TaskResult<PlannedJob, string>
         abstract member deletePlannedJob: Guid -> TaskResult<unit, string>
@@ -92,36 +92,41 @@ module JobDecisionEngine =
                     | Some contact ->
                         match contact.State with
                         | NotContacted _ -> TaskResult.ok contact
-                        | _ -> TaskResult.error "The contact must be in the Not Contacted state in order to generate a contact message."
-            >>= fun contact ->
-                    job.Templates
-                    |> List.tryFind (fun template -> template.TemplateId = contact.TemplateId)
-                    |> Option.either TaskResult.ok (fun _ -> TaskResult.error "There is no template with the provided id.")
-                    |> TaskResult.map (fun template ->
-                        match template.TemplateDetails, contact.ContactMethod with
-                        | TemplateContactMethod.EmailTemplate emailTemplate, ContactMethod.Email userEmailInfo ->
-                            {
-                                To = [userEmailInfo.EmailAddress]
-                                ReplyTo = [];
-                                Bcc = [];
-                                Cc = [];
-                                Body = emailTemplate.applyTemplate ()
-                            })
-                    |> TaskResult.map (fun message ->
-                        // Return the ContactMessageCreatedFact.
-                        {
-                            JobContactCreatedEmailFact.ContactId = contact.Id
-                            MessageId = deps.generateMessageId()
-                            Message = message
-                        })
-                    |> TaskResult.map (fun fact ->
-                        // Store the created message fact & send a command
-                        [JobContactCreatedEmail fact], [JobCommand.SendContactMessage {JobId = job.Id; ContactId = contact.Id;}]
-                    ))
-        | SendContactMessage command ->
+                        | _ ->
+                            TaskResult.error
+                                "The contact must be in the Not Contacted state in order to generate a contact message."
+                >>= fun contact ->
+                        job.Templates
+                        |> List.tryFind (fun template -> template.TemplateId = contact.TemplateId)
+                        |> Option.either TaskResult.ok (fun _ ->
+                            TaskResult.error "There is no template with the provided id.")
+                        |> TaskResult.map (fun template ->
+                            match template.TemplateDetails, contact.ContactMethod with
+                            | TemplateContactMethod.EmailTemplate emailTemplate, ContactMethod.Email userEmailInfo ->
+                                { To = [ userEmailInfo.EmailAddress ]
+                                  ReplyTo = []
+                                  Bcc = []
+                                  Cc = []
+                                  Body = emailTemplate.applyTemplate () })
+                        |> TaskResult.map (fun message ->
+                            // Return the ContactMessageCreatedFact.
+                            { JobContactCreatedEmailFact.ContactId = contact.Id
+                              MessageId = deps.generateMessageId ()
+                              Message = message })
+                        |> TaskResult.map (fun fact ->
+                            // Store the created message fact & send a command
+                            [ JobContactCreatedEmail fact ],
+                            [ JobCommand.EnqueueContactMessage
+                                  { JobId = job.Id
+                                    ContactId = contact.Id } ]))
+        | EnqueueContactMessage command ->
             taskResult {
                 let! job = deps.getJob command.JobId
-                let! contact = job.tryFindContact command.ContactId |> Option.either TaskResult.ok (fun _ -> TaskResult.error "There is no contact with the given id.")
+
+                let! contact =
+                    job.tryFindContact command.ContactId
+                    |> Option.either TaskResult.ok (fun _ -> TaskResult.error "There is no contact with the given id.")
+
                 let! messageId =
                     match contact.MessageId with
                     | None -> TaskResult.error "There is no message associated with this contact."
@@ -129,15 +134,21 @@ module JobDecisionEngine =
                         match contact.State with
                         | Failed _ -> TaskResult.ok id
                         | Contacting state when state.IsGeneratedMessage -> TaskResult.ok id
-                        | _ -> TaskResult.error $"The contact is not in the expected state for sending a message. It is in state: {contact.State}"
+                        | _ ->
+                            TaskResult.error
+                                $"The contact is not in the expected state for sending a message. It is in state: {contact.State}"
 
-                let fact =
+                let! fact =
                     match contact.ContactMethod with
-                    | Email emailDetails ->
+                    | Email _ ->
                         deps.enqueueEmail messageId
-                        |> TaskResult.map (fun _ -> JobContactEmailStatusUpdated {ContactId = contact.Id; MessageId = messageId; State =  })
+                        |> TaskResult.map (fun _ ->
+                            JobContactEmailStatusUpdated
+                                { ContactId = contact.Id
+                                  MessageId = messageId
+                                  State = ContactState.Contacting(ContactingOutcome.Queued) })
 
-                return [JobFacts.JobContactEmailStatusUpdated]
+                return [ fact ], []
             }
 
 

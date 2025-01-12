@@ -93,6 +93,8 @@ type ProcessCommandDeps(jobId: Guid, plannedJob: PlannedJob, startJobCommand: St
         member this.generateContactId() = Guid.NewGuid()
         member this.generatePositionId() = Guid.NewGuid()
 
+        member this.enqueueEmail emailId = ()
+
 type JobDecisionEngineTests() =
 
     let jobId = Guid.CreateVersion7()
