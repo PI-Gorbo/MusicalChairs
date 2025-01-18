@@ -9,13 +9,22 @@
       "MusicalChairs.Server/1.0.0": {
         "dependencies": {
           "FSharp.Core": "9.0.100",
+          "FSharp.SystemTextJson": "1.3.13",
           "Fable.Remoting.AspNetCore": "2.40.0",
+          "GP.IdentityEndpoints": "1.3.3",
           "MusicalChairs.Domain": "1.0.0",
-          "MusicalChairs.Shared": "1.0.0",
-          "Swashbuckle.AspNetCore": "7.2.0"
+          "MusicalChairs.Shared": "1.0.0"
         },
         "runtime": {
           "MusicalChairs.Server.dll": {}
+        }
+      },
+      "Fable.Core/4.3.0": {
+        "runtime": {
+          "lib/netstandard2.0/Fable.Core.dll": {
+            "assemblyVersion": "4.3.0.0",
+            "fileVersion": "4.3.0.0"
+          }
         }
       },
       "Fable.Remoting.AspNetCore/2.40.0": {
@@ -77,6 +86,14 @@
           }
         }
       },
+      "FluentValidation/11.10.0": {
+        "runtime": {
+          "lib/net8.0/FluentValidation.dll": {
+            "assemblyVersion": "11.0.0.0",
+            "fileVersion": "11.10.0.0"
+          }
+        }
+      },
       "FSharp.Core/9.0.100": {
         "runtime": {
           "lib/netstandard2.1/FSharp.Core.dll": {
@@ -126,6 +143,18 @@
           }
         }
       },
+      "FSharp.SystemTextJson/1.3.13": {
+        "dependencies": {
+          "FSharp.Core": "9.0.100",
+          "System.Text.Json": "8.0.4"
+        },
+        "runtime": {
+          "lib/netstandard2.0/FSharp.SystemTextJson.dll": {
+            "assemblyVersion": "1.3.0.0",
+            "fileVersion": "1.3.13.11246"
+          }
+        }
+      },
       "FsToolkit.ErrorHandling/4.18.0": {
         "dependencies": {
           "FSharp.Core": "9.0.100"
@@ -145,6 +174,19 @@
           "lib/netstandard2.1/FsToolkit.ErrorHandling.TaskResult.dll": {
             "assemblyVersion": "4.18.0.0",
             "fileVersion": "4.18.0.0"
+          }
+        }
+      },
+      "GP.IdentityEndpoints/1.3.3": {
+        "dependencies": {
+          "FSharp.Core": "9.0.100",
+          "FluentValidation": "11.10.0",
+          "FsToolkit.ErrorHandling.TaskResult": "4.18.0"
+        },
+        "runtime": {
+          "lib/net8.0/GP.IdentityEndpoints.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
           }
         }
       },
@@ -703,7 +745,6 @@
         }
       },
       "Microsoft.CSharp/4.7.0": {},
-      "Microsoft.Extensions.ApiDescription.Server/6.0.5": {},
       "Microsoft.Extensions.Caching.Abstractions/8.0.0": {
         "dependencies": {
           "Microsoft.Extensions.Primitives": "8.0.0"
@@ -779,14 +820,6 @@
           "lib/net6.0/Microsoft.IO.RecyclableMemoryStream.dll": {
             "assemblyVersion": "3.0.0.0",
             "fileVersion": "3.0.0.0"
-          }
-        }
-      },
-      "Microsoft.OpenApi/1.6.22": {
-        "runtime": {
-          "lib/netstandard2.0/Microsoft.OpenApi.dll": {
-            "assemblyVersion": "1.6.22.0",
-            "fileVersion": "1.6.22.0"
           }
         }
       },
@@ -872,44 +905,6 @@
           "lib/net8.0/Polly.Core.dll": {
             "assemblyVersion": "8.0.0.0",
             "fileVersion": "8.3.1.3207"
-          }
-        }
-      },
-      "Swashbuckle.AspNetCore/7.2.0": {
-        "dependencies": {
-          "Microsoft.Extensions.ApiDescription.Server": "6.0.5",
-          "Swashbuckle.AspNetCore.Swagger": "7.2.0",
-          "Swashbuckle.AspNetCore.SwaggerGen": "7.2.0",
-          "Swashbuckle.AspNetCore.SwaggerUI": "7.2.0"
-        }
-      },
-      "Swashbuckle.AspNetCore.Swagger/7.2.0": {
-        "dependencies": {
-          "Microsoft.OpenApi": "1.6.22"
-        },
-        "runtime": {
-          "lib/net9.0/Swashbuckle.AspNetCore.Swagger.dll": {
-            "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.956"
-          }
-        }
-      },
-      "Swashbuckle.AspNetCore.SwaggerGen/7.2.0": {
-        "dependencies": {
-          "Swashbuckle.AspNetCore.Swagger": "7.2.0"
-        },
-        "runtime": {
-          "lib/net9.0/Swashbuckle.AspNetCore.SwaggerGen.dll": {
-            "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.956"
-          }
-        }
-      },
-      "Swashbuckle.AspNetCore.SwaggerUI/7.2.0": {
-        "runtime": {
-          "lib/net9.0/Swashbuckle.AspNetCore.SwaggerUI.dll": {
-            "assemblyVersion": "7.2.0.0",
-            "fileVersion": "7.2.0.956"
           }
         }
       },
@@ -1031,7 +1026,8 @@
       },
       "MusicalChairs.Shared/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.100"
+          "FSharp.Core": "9.0.100",
+          "Fable.Core": "4.3.0"
         },
         "runtime": {
           "MusicalChairs.Shared.dll": {
@@ -1048,27 +1044,35 @@
           }
         }
       },
-      "GP.IdentityEndpoints/1.0.0.0": {
+      "Swashbuckle.AspNetCore.SwaggerGen/7.2.0.0": {
         "runtime": {
-          "GP.IdentityEndpoints.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+          "Swashbuckle.AspNetCore.SwaggerGen.dll": {
+            "assemblyVersion": "7.2.0.0",
+            "fileVersion": "7.2.0.956"
           }
         }
       },
-      "FSharp.SystemTextJson/1.3.0.0": {
+      "Swashbuckle.AspNetCore.Swagger/7.2.0.0": {
         "runtime": {
-          "FSharp.SystemTextJson.dll": {
-            "assemblyVersion": "1.3.0.0",
-            "fileVersion": "1.3.13.11246"
+          "Swashbuckle.AspNetCore.Swagger.dll": {
+            "assemblyVersion": "7.2.0.0",
+            "fileVersion": "7.2.0.956"
           }
         }
       },
-      "FluentValidation/11.0.0.0": {
+      "Swashbuckle.AspNetCore.SwaggerUI/7.2.0.0": {
         "runtime": {
-          "FluentValidation.dll": {
-            "assemblyVersion": "11.0.0.0",
-            "fileVersion": "11.11.0.0"
+          "Swashbuckle.AspNetCore.SwaggerUI.dll": {
+            "assemblyVersion": "7.2.0.0",
+            "fileVersion": "7.2.0.956"
+          }
+        }
+      },
+      "Microsoft.OpenApi/1.6.22.0": {
+        "runtime": {
+          "Microsoft.OpenApi.dll": {
+            "assemblyVersion": "1.6.22.0",
+            "fileVersion": "1.6.22.0"
           }
         }
       }
@@ -1079,6 +1083,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Fable.Core/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sbK+hYs7H7I3b3sbgttI4GlvQfNPcIqSz1qPSagF3QbVA46KJ/pWSXC/Dwv0s9M6AeRGmoqcIeD7GUaLn41zkA==",
+      "path": "fable.core/4.3.0",
+      "hashPath": "fable.core.4.3.0.nupkg.sha512"
     },
     "Fable.Remoting.AspNetCore/2.40.0": {
       "type": "package",
@@ -1115,12 +1126,26 @@
       "path": "fastexpressioncompiler/4.1.0",
       "hashPath": "fastexpressioncompiler.4.1.0.nupkg.sha512"
     },
+    "FluentValidation/11.10.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qsJGSJDdZ8qiG+lVJ70PZfJHcEdq8UQZ/tZDXoj78/iHKG6lVKtMJsD11zyyv/IPc7rwqGqnFoFLTNzpo3IPYg==",
+      "path": "fluentvalidation/11.10.0",
+      "hashPath": "fluentvalidation.11.10.0.nupkg.sha512"
+    },
     "FSharp.Core/9.0.100": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-ye8yagHGsH08H2Twno5GRWkSbrMtxK/SWiHuPcF+3nODpW65/VJ8RO0aWxp8n9+KQbmahg90wAEL3TEXjF0r6A==",
       "path": "fsharp.core/9.0.100",
       "hashPath": "fsharp.core.9.0.100.nupkg.sha512"
+    },
+    "FSharp.SystemTextJson/1.3.13": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-znp8odpdkVGKVX0AvbhiXdmeMi0KJ+A4AyAQWSkfAEAe4Z4clRE+rVhrLnAGrFD1VEIUX2lsQ4o84ywpWZUSGw==",
+      "path": "fsharp.systemtextjson/1.3.13",
+      "hashPath": "fsharp.systemtextjson.1.3.13.nupkg.sha512"
     },
     "FsToolkit.ErrorHandling/4.18.0": {
       "type": "package",
@@ -1135,6 +1160,13 @@
       "sha512": "sha512-XEcsKn7nqISf2JbkuzAIlMPYKmx2fYw8Ufa8hwXsqisKTEVaEWAYG9HG+NRvjEQgw367o/XE8CdcOnEtMBzUwA==",
       "path": "fstoolkit.errorhandling.taskresult/4.18.0",
       "hashPath": "fstoolkit.errorhandling.taskresult.4.18.0.nupkg.sha512"
+    },
+    "GP.IdentityEndpoints/1.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-A+ynNYExINr412DOoCI+madGYgOFDg+leQJEXN5Y5ZNeG5+7MoescXz0ERpxm95JOHZtQj+r3X6JEtEtq/9UKw==",
+      "path": "gp.identityendpoints/1.3.3",
+      "hashPath": "gp.identityendpoints.1.3.3.nupkg.sha512"
     },
     "GP.MartenIdentity/1.1.1": {
       "type": "package",
@@ -1297,13 +1329,6 @@
       "path": "microsoft.csharp/4.7.0",
       "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
     },
-    "Microsoft.Extensions.ApiDescription.Server/6.0.5": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Ckb5EDBUNJdFWyajfXzUIMRkhf52fHZOQuuZg/oiu8y7zDCVwD0iHhew6MnThjHmevanpxL3f5ci2TtHQEN6bw==",
-      "path": "microsoft.extensions.apidescription.server/6.0.5",
-      "hashPath": "microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512"
-    },
     "Microsoft.Extensions.Caching.Abstractions/8.0.0": {
       "type": "package",
       "serviceable": true,
@@ -1402,13 +1427,6 @@
       "path": "microsoft.io.recyclablememorystream/3.0.0",
       "hashPath": "microsoft.io.recyclablememorystream.3.0.0.nupkg.sha512"
     },
-    "Microsoft.OpenApi/1.6.22": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-aBvunmrdu/x+4CaA/UP1Jx4xWGwk4kymhoIRnn2Vp+zi5/KOPQJ9EkSXHRUr01WcGKtYl3Au7XfkPJbU1G2sjQ==",
-      "path": "microsoft.openapi/1.6.22",
-      "hashPath": "microsoft.openapi.1.6.22.nupkg.sha512"
-    },
     "NetTopologySuite/2.5.0": {
       "type": "package",
       "serviceable": true,
@@ -1464,34 +1482,6 @@
       "sha512": "sha512-b9mMAjqXuCXFCtf/RtRPwFUkAm/sz37s7G+taDvS5EqfkJsLiWfO2xO2cSISjIgIY+88oIZTGguP6UrRGRlqzg==",
       "path": "polly.core/8.3.1",
       "hashPath": "polly.core.8.3.1.nupkg.sha512"
-    },
-    "Swashbuckle.AspNetCore/7.2.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-vJv19UpWm6OOgnS9QLDnWARNVasXUfj8SFvlG7UVALm4nBnfwRnEky7C0veSDqMUmBeMPC6Ec3d6G1ts/J04Uw==",
-      "path": "swashbuckle.aspnetcore/7.2.0",
-      "hashPath": "swashbuckle.aspnetcore.7.2.0.nupkg.sha512"
-    },
-    "Swashbuckle.AspNetCore.Swagger/7.2.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-y27fNDfIh1vGhJjXYynLcZjl7DLOW1bSO2MDsY9wB4Zm1fdxpPsuBSiR4U+0acWlAqLmnuOPKr/OeOgwRUkBlw==",
-      "path": "swashbuckle.aspnetcore.swagger/7.2.0",
-      "hashPath": "swashbuckle.aspnetcore.swagger.7.2.0.nupkg.sha512"
-    },
-    "Swashbuckle.AspNetCore.SwaggerGen/7.2.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-pMrTxGVuXM7t4wqft5CNNU8A0++Yw5kTLmYhB6tbEcyBfO8xEF/Y8pkJhO6BZ/2MYONrRYoQTfPFJqu8fOf5WQ==",
-      "path": "swashbuckle.aspnetcore.swaggergen/7.2.0",
-      "hashPath": "swashbuckle.aspnetcore.swaggergen.7.2.0.nupkg.sha512"
-    },
-    "Swashbuckle.AspNetCore.SwaggerUI/7.2.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-hgrXeKzyp5OGN8qVvL7A+vhmU7mDJTfGpiMBRL66IcfLOyna8UTLtn3cC3CghamXpRDufcc9ciklTszUGEQK0w==",
-      "path": "swashbuckle.aspnetcore.swaggerui/7.2.0",
-      "hashPath": "swashbuckle.aspnetcore.swaggerui.7.2.0.nupkg.sha512"
     },
     "System.Collections.Immutable/7.0.0": {
       "type": "package",
@@ -1634,17 +1624,22 @@
       "serviceable": false,
       "sha512": ""
     },
-    "GP.IdentityEndpoints/1.0.0.0": {
+    "Swashbuckle.AspNetCore.SwaggerGen/7.2.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "FSharp.SystemTextJson/1.3.0.0": {
+    "Swashbuckle.AspNetCore.Swagger/7.2.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "FluentValidation/11.0.0.0": {
+    "Swashbuckle.AspNetCore.SwaggerUI/7.2.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.OpenApi/1.6.22.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

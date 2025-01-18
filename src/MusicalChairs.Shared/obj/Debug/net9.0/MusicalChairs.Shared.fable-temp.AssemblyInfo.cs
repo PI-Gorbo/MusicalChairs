@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MusicalChairs.Shared.fable-temp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e5d1a81845a5b4f8bc38d1de9195f898c78d9c93")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c39370bddcd85f6a1681be6fc61a4ba4e0ef5c4")]
 [assembly: System.Reflection.AssemblyProductAttribute("MusicalChairs.Shared.fable-temp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MusicalChairs.Shared.fable-temp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

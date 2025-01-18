@@ -10,7 +10,7 @@ open System.Reflection
 [<assembly: System.Reflection.AssemblyCompanyAttribute("MusicalChairs.Shared")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
-[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b79b12dbc0694a03160fbefa59aa3aa1c254b5cf")>]
+[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c39370bddcd85f6a1681be6fc61a4ba4e0ef5c4")>]
 [<assembly: System.Reflection.AssemblyProductAttribute("MusicalChairs.Shared")>]
 [<assembly: System.Reflection.AssemblyTitleAttribute("MusicalChairs.Shared")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]
