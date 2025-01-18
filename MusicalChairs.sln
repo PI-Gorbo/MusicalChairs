@@ -5,8 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8412F5E4-887F-46FC-B5AF-A76BDE51C145}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MusicalChairs.Api", "src\MusicalChairs.Api\MusicalChairs.Api.fsproj", "{6B01856A-096F-474B-A114-7CC419E75046}"
-EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MusicalChairs.Domain.Tests", "src\MusicalChairs.Domain.Tests\MusicalChairs.Domain.Tests.fsproj", "{A45698CC-0C5E-476E-A041-22F93B516D9A}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "MusicalChairs.Server", "src\MusicalChairs.Server\MusicalChairs.Server.fsproj", "{3936F2D9-8044-4FE8-A4BD-203A91A34A11}"
@@ -26,10 +24,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6B01856A-096F-474B-A114-7CC419E75046}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B01856A-096F-474B-A114-7CC419E75046}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B01856A-096F-474B-A114-7CC419E75046}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B01856A-096F-474B-A114-7CC419E75046}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A45698CC-0C5E-476E-A041-22F93B516D9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A45698CC-0C5E-476E-A041-22F93B516D9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A45698CC-0C5E-476E-A041-22F93B516D9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,7 +46,6 @@ Global
 		{9800BF92-7671-4A81-94F3-73FF1896D0FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{6B01856A-096F-474B-A114-7CC419E75046} = {8412F5E4-887F-46FC-B5AF-A76BDE51C145}
 		{A45698CC-0C5E-476E-A041-22F93B516D9A} = {8412F5E4-887F-46FC-B5AF-A76BDE51C145}
 		{3936F2D9-8044-4FE8-A4BD-203A91A34A11} = {8412F5E4-887F-46FC-B5AF-A76BDE51C145}
 		{2247B815-BB95-4943-9493-7E032DDBBCBB} = {8412F5E4-887F-46FC-B5AF-A76BDE51C145}
