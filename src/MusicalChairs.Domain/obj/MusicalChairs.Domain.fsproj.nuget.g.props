@@ -5,17 +5,21 @@
     <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
     <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
     <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
-    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\Sam\.nuget\packages\;C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages</NuGetPackageFolders>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\samgo\.nuget\packages\</NuGetPackageFolders>
     <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
     <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.12.2</NuGetToolVersion>
   </PropertyGroup>
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <SourceRoot Include="C:\Users\Sam\.nuget\packages\" />
-    <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
+    <SourceRoot Include="C:\Users\samgo\.nuget\packages\" />
   </ItemGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)microsoft.codeanalysis.analyzers\3.3.4\buildTransitive\Microsoft.CodeAnalysis.Analyzers.props" Condition="Exists('$(NuGetPackageRoot)microsoft.codeanalysis.analyzers\3.3.4\buildTransitive\Microsoft.CodeAnalysis.Analyzers.props')" />
+  </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\Sam\.nuget\packages\fsharp.core\9.0.101</PkgFSharp_Core>
-    <PkgFsToolkit_ErrorHandling Condition=" '$(PkgFsToolkit_ErrorHandling)' == '' ">C:\Users\Sam\.nuget\packages\fstoolkit.errorhandling\4.18.0</PkgFsToolkit_ErrorHandling>
-    <PkgFsToolkit_ErrorHandling_TaskResult Condition=" '$(PkgFsToolkit_ErrorHandling_TaskResult)' == '' ">C:\Users\Sam\.nuget\packages\fstoolkit.errorhandling.taskresult\4.18.0</PkgFsToolkit_ErrorHandling_TaskResult>
+    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\samgo\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.4</PkgMicrosoft_CodeAnalysis_Analyzers>
+    <PkgGP_MartenIdentity Condition=" '$(PkgGP_MartenIdentity)' == '' ">C:\Users\samgo\.nuget\packages\gp.martenidentity\1.1.1</PkgGP_MartenIdentity>
+    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\samgo\.nuget\packages\fsharp.core\9.0.100</PkgFSharp_Core>
+    <PkgFsToolkit_ErrorHandling Condition=" '$(PkgFsToolkit_ErrorHandling)' == '' ">C:\Users\samgo\.nuget\packages\fstoolkit.errorhandling\4.18.0</PkgFsToolkit_ErrorHandling>
+    <PkgFsToolkit_ErrorHandling_TaskResult Condition=" '$(PkgFsToolkit_ErrorHandling_TaskResult)' == '' ">C:\Users\samgo\.nuget\packages\fstoolkit.errorhandling.taskresult\4.18.0</PkgFsToolkit_ErrorHandling_TaskResult>
   </PropertyGroup>
 </Project>

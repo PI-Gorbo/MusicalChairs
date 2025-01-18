@@ -10,24 +10,18 @@
         "projectUniqueName": "C:\\samData\\MusicalChairs\\src\\MusicalChairs.Shared\\MusicalChairs.Shared.fsproj",
         "projectName": "MusicalChairs.Shared",
         "projectPath": "C:\\samData\\MusicalChairs\\src\\MusicalChairs.Shared\\MusicalChairs.Shared.fsproj",
-        "packagesPath": "C:\\Users\\Sam\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\samgo\\.nuget\\packages\\",
         "outputPath": "C:\\samData\\MusicalChairs\\src\\MusicalChairs.Shared\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\samData\\MusicalChairs\\NuGet.Config",
-          "C:\\Users\\Sam\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\samgo\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\sdk\\9.0.102\\FSharp\\library-packs": {},
+          "C:\\Program Files\\dotnet\\sdk\\9.0.101\\FSharp\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {},
           "https://nuget.pkg.github.com/PI-Gorbo/index.json": {}
         },
@@ -51,7 +45,7 @@
             "FSharp.Core": {
               "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
               "target": "Package",
-              "version": "[9.0.101, )",
+              "version": "[9.0.100, )",
               "generatePathProperty": true
             }
           },
@@ -71,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

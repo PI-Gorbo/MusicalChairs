@@ -1,6 +1,5 @@
 namespace MusicalChairs.Api.Domain.User
 open GP.MartenIdentity
-open Microsoft.AspNetCore.Identity
 open System
 
 type UserId = Guid

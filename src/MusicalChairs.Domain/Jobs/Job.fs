@@ -1,10 +1,7 @@
-﻿namespace MusicalChairs.Api.Domain.Job
+﻿module MusicalChairs.Domain.Job
 
 open System
-open FsToolkit.ErrorHandling
-open MusicalChairs.Api.Domain
 open MusicalChairs.Api.Domain.Email
-open MusicalChairs.Api.Domain.MessageEngine
 
 // Contact Method
 type EmailDetails = { EmailAddress: string }

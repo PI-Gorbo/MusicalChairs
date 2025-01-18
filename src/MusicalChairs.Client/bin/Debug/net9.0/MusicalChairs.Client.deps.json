@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v9.0": {
       "MusicalChairs.Client/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.101",
+          "FSharp.Core": "9.0.100",
           "Fable.Core": "4.3.0",
           "Fable.Remoting.Client": "7.32.0",
           "MusicalChairs.Shared": "1.0.0"
@@ -19,7 +19,7 @@
       },
       "Fable.Browser.Blob/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.101",
+          "FSharp.Core": "9.0.100",
           "Fable.Core": "4.3.0"
         },
         "runtime": {
@@ -31,7 +31,7 @@
       },
       "Fable.Browser.Dom/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.101",
+          "FSharp.Core": "9.0.100",
           "Fable.Browser.Blob": "1.0.0",
           "Fable.Browser.Event": "1.0.0",
           "Fable.Browser.WebStorage": "1.0.0",
@@ -46,7 +46,7 @@
       },
       "Fable.Browser.Event/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.101",
+          "FSharp.Core": "9.0.100",
           "Fable.Core": "4.3.0"
         },
         "runtime": {
@@ -58,7 +58,7 @@
       },
       "Fable.Browser.WebStorage/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.101",
+          "FSharp.Core": "9.0.100",
           "Fable.Browser.Event": "1.0.0",
           "Fable.Core": "4.3.0"
         },
@@ -71,7 +71,7 @@
       },
       "Fable.Browser.XMLHttpRequest/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.101",
+          "FSharp.Core": "9.0.100",
           "Fable.Browser.Dom": "1.0.0",
           "Fable.Core": "4.3.0"
         },
@@ -92,7 +92,7 @@
       },
       "Fable.Parsimmon/4.0.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.101",
+          "FSharp.Core": "9.0.100",
           "Fable.Core": "4.3.0"
         },
         "runtime": {
@@ -104,7 +104,7 @@
       },
       "Fable.Remoting.Client/7.32.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.101",
+          "FSharp.Core": "9.0.100",
           "Fable.Browser.XMLHttpRequest": "1.0.0",
           "Fable.Core": "4.3.0",
           "Fable.Remoting.MsgPack": "1.24.0",
@@ -119,7 +119,7 @@
       },
       "Fable.Remoting.MsgPack/1.24.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.101"
+          "FSharp.Core": "9.0.100"
         },
         "runtime": {
           "lib/net6.0/Fable.Remoting.MsgPack.dll": {
@@ -130,7 +130,7 @@
       },
       "Fable.SimpleJson/3.24.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.101",
+          "FSharp.Core": "9.0.100",
           "Fable.Core": "4.3.0",
           "Fable.Parsimmon": "4.0.0"
         },
@@ -141,11 +141,11 @@
           }
         }
       },
-      "FSharp.Core/9.0.101": {
+      "FSharp.Core/9.0.100": {
         "runtime": {
           "lib/netstandard2.1/FSharp.Core.dll": {
             "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.1.124.60203"
+            "fileVersion": "9.1.24.52202"
           }
         },
         "resources": {
@@ -192,7 +192,7 @@
       },
       "MusicalChairs.Shared/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.101"
+          "FSharp.Core": "9.0.100"
         },
         "runtime": {
           "MusicalChairs.Shared.dll": {
@@ -279,12 +279,12 @@
       "path": "fable.simplejson/3.24.0",
       "hashPath": "fable.simplejson.3.24.0.nupkg.sha512"
     },
-    "FSharp.Core/9.0.101": {
+    "FSharp.Core/9.0.100": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-3/YR1SDWFA+Ojx9HiBwND+0UR8ZWoeZfkhD0DWAPCDdr/YI+CyFkArmMGzGSyPXeYtjG0sy0emzfyNwjt7zhig==",
-      "path": "fsharp.core/9.0.101",
-      "hashPath": "fsharp.core.9.0.101.nupkg.sha512"
+      "sha512": "sha512-ye8yagHGsH08H2Twno5GRWkSbrMtxK/SWiHuPcF+3nODpW65/VJ8RO0aWxp8n9+KQbmahg90wAEL3TEXjF0r6A==",
+      "path": "fsharp.core/9.0.100",
+      "hashPath": "fsharp.core.9.0.100.nupkg.sha512"
     },
     "MusicalChairs.Shared/1.0.0": {
       "type": "project",

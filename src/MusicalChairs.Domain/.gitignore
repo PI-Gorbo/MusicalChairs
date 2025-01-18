@@ -482,8 +482,3 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
-
-.idea
-.vscode
-node_modules
-MusicalChairs.sln.DotSettings.user

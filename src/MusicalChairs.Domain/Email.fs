@@ -1,4 +1,4 @@
-﻿namespace MusicalChairs.Api.Domain.Email
+﻿module MusicalChairs.Domain.Email
 
 open System
 

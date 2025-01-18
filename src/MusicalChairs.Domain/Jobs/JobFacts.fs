@@ -1,4 +1,4 @@
-﻿module MusicalChairs.Api.Domain.Jobs.JobFacts
+﻿module MusicalChairs.Domain.Jobs.JobFacts
 
 open System
 open MusicalChairs.Api.Domain.Email

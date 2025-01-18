@@ -15,11 +15,19 @@
         <Compile Include="Email.fs"/>
         <Compile Include="MessageEngine.fs"/>
         <Compile Include="User.fs"/>
+        <Content Include=".gitignore" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="FsToolkit.ErrorHandling" Version="4.18.0"/>
         <PackageReference Include="FsToolkit.ErrorHandling.TaskResult" Version="4.18.0"/>
+        <PackageReference Include="GP.MartenIdentity" Version="1.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="MusicalChairs.Api">
+        <HintPath>..\MusicalChairs.Api\bin\Debug\net9.0\MusicalChairs.Api.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

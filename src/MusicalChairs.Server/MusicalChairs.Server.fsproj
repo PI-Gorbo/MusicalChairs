@@ -6,16 +6,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Utils\AuthUtils.fs" />
+    <Compile Include="Features\UserApi.fs" />
     <Compile Include="Program.fs" />
+    <Content Include=".gitignore" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Fable.Remoting.AspNetCore" Version="2.40.0" />
+    <PackageReference Include="GP.IdentityEndpoints" Version="1.3.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MusicalChairs.Shared\MusicalChairs.Shared.fsproj" />
+    <ProjectReference Include="..\MusicalChairs.Domain\MusicalChairs.Domain.fsproj" />
   </ItemGroup>
 
 </Project>

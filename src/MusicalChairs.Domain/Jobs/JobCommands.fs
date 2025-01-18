@@ -1,4 +1,4 @@
-﻿module MusicalChairs.Api.Domain.Jobs.JobCommands
+﻿module MusicalChairs.Domain.JobCommands
 
 open System
 
