@@ -12,7 +12,18 @@
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="C:\Users\samgo\.nuget\packages\" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Content Include="$(NuGetPackageRoot)fable.core\4.3.0\contentFiles\any\netstandard2.0\CHANGELOG.md" Condition="Exists('$(NuGetPackageRoot)fable.core\4.3.0\contentFiles\any\netstandard2.0\CHANGELOG.md')">
+      <NuGetPackageId>Fable.Core</NuGetPackageId>
+      <NuGetPackageVersion>4.3.0</NuGetPackageVersion>
+      <NuGetItemType>Content</NuGetItemType>
+      <Pack>false</Pack>
+      <Private>False</Private>
+      <Link>CHANGELOG.md</Link>
+    </Content>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\samgo\.nuget\packages\fsharp.core\9.0.100</PkgFSharp_Core>
+    <PkgFable_Core Condition=" '$(PkgFable_Core)' == '' ">C:\Users\samgo\.nuget\packages\fable.core\4.3.0</PkgFable_Core>
   </PropertyGroup>
 </Project>

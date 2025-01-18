@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "QGBaby7DQ5E=",
+  "dgSpecHash": "SBVuz6hymBg=",
   "success": true,
   "projectFilePath": "C:\\samData\\MusicalChairs\\src\\MusicalChairs.Server\\MusicalChairs.Server.fsproj",
   "expectedPackageFiles": [
+    "C:\\Users\\samgo\\.nuget\\packages\\fable.core\\4.3.0\\fable.core.4.3.0.nupkg.sha512",
     "C:\\Users\\samgo\\.nuget\\packages\\fable.remoting.aspnetcore\\2.40.0\\fable.remoting.aspnetcore.2.40.0.nupkg.sha512",
     "C:\\Users\\samgo\\.nuget\\packages\\fable.remoting.json\\2.25.0\\fable.remoting.json.2.25.0.nupkg.sha512",
     "C:\\Users\\samgo\\.nuget\\packages\\fable.remoting.msgpack\\1.24.0\\fable.remoting.msgpack.1.24.0.nupkg.sha512",

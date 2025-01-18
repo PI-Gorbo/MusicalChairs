@@ -1,6 +1,6 @@
 import { Remoting_buildProxy_64DC51C } from "./fable_modules/Fable.Remoting.Client.7.32.0/Remoting.fs.js";
 import { RemotingModule_createApi, RemotingModule_withBaseUrl } from "./fable_modules/Fable.Remoting.Client.7.32.0/Remoting.fs.js";
-import { RequestResetPasswordTokenRequest, ResetPasswordError_$union, ResetPasswordRequest, RegisterFailure_$union, RegisterRequest, UserDto, LoginRequest, IUserApi, IUserApi_$reflection } from "./MusicalChairs.Shared/UserApi/UserApi.js";
+import { RequestResetPasswordTokenRequest, ResetPasswordError, ResetPasswordRequest, RegisterFailure, RegisterRequest, UserDto, LoginRequest, IUserApi, IUserApi_$reflection } from "./MusicalChairs.Shared/UserApi/UserApi.js";
 import { startAsPromise } from "./fable_modules/fable-library-ts.4.24.0/Async.js";
 import { FSharpResult$2_$union } from "./fable_modules/fable-library-ts.4.24.0/Result.js";
 
@@ -10,15 +10,15 @@ export function login(req: LoginRequest): Promise<FSharpResult$2_$union<void, st
     return startAsPromise(userApi.login(req));
 }
 
-export function me(): Promise<UserDto> {
+export function me(): Promise<FSharpResult$2_$union<UserDto, void>> {
     return startAsPromise(userApi.me());
 }
 
-export function register(req: RegisterRequest): Promise<FSharpResult$2_$union<void, RegisterFailure_$union>> {
+export function register(req: RegisterRequest): Promise<FSharpResult$2_$union<void, RegisterFailure>> {
     return startAsPromise(userApi.register(req));
 }
 
-export function resetPassword(req: ResetPasswordRequest): Promise<FSharpResult$2_$union<void, ResetPasswordError_$union>> {
+export function resetPassword(req: ResetPasswordRequest): Promise<FSharpResult$2_$union<void, ResetPasswordError>> {
     return startAsPromise(userApi.resetPassword(req));
 }
 

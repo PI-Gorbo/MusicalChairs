@@ -1,6 +1,7 @@
 ﻿namespace MusicalChairs.Shared.UserApi
 
 open System
+open Fable.Core
 
 type PlannedJobId = Guid
 type JobId = Guid
@@ -23,6 +24,7 @@ type Login = LoginRequest -> Async<LoginResult>
 // register
 type RegisterRequest = { email: string; password: string }
 
+[<TypeScriptTaggedUnion("type")>]
 type RegisterFailure =
     | EmailAlreadyRegistered
     | PasswordInvalid of reason: string
@@ -40,6 +42,7 @@ type ResetPasswordRequest =
       newPassword: string
       token: string }
 
+[<TypeScriptTaggedUnion("type")>]
 type ResetPasswordError =
     | InvalidToken
     | InvalidNewPassword of error: string

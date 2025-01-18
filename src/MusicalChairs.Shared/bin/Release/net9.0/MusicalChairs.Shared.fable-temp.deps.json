@@ -8,10 +8,19 @@
     ".NETCoreApp,Version=v9.0": {
       "MusicalChairs.Shared.fable-temp/1.0.0": {
         "dependencies": {
-          "FSharp.Core": "9.0.100"
+          "FSharp.Core": "9.0.100",
+          "Fable.Core": "4.3.0"
         },
         "runtime": {
           "MusicalChairs.Shared.fable-temp.dll": {}
+        }
+      },
+      "Fable.Core/4.3.0": {
+        "runtime": {
+          "lib/netstandard2.0/Fable.Core.dll": {
+            "assemblyVersion": "4.3.0.0",
+            "fileVersion": "4.3.0.0"
+          }
         }
       },
       "FSharp.Core/9.0.100": {
@@ -70,6 +79,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Fable.Core/4.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sbK+hYs7H7I3b3sbgttI4GlvQfNPcIqSz1qPSagF3QbVA46KJ/pWSXC/Dwv0s9M6AeRGmoqcIeD7GUaLn41zkA==",
+      "path": "fable.core/4.3.0",
+      "hashPath": "fable.core.4.3.0.nupkg.sha512"
     },
     "FSharp.Core/9.0.100": {
       "type": "package",
