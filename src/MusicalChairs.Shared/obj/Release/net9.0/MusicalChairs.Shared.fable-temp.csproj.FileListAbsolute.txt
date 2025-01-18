@@ -1,0 +1,4 @@
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\bin\Release\net9.0\MusicalChairs.Shared.fable-temp.deps.json
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Release\net9.0\MusicalChairs.Shared.fable-temp.GeneratedMSBuildEditorConfig.editorconfig
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Release\net9.0\MusicalChairs.Shared.fable-temp.AssemblyInfoInputs.cache
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Release\net9.0\MusicalChairs.Shared.fable-temp.AssemblyInfo.cs

@@ -1,0 +1,14 @@
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\bin\Debug\net9.0\MusicalChairs.Shared.deps.json
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\bin\Debug\net9.0\MusicalChairs.Shared.dll
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\bin\Debug\net9.0\MusicalChairs.Shared.pdb
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\bin\Debug\net9.0\MusicalChairs.Shared.xml
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Debug\net9.0\MusicalChairs.Shared.fsproj.AssemblyReference.cache
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Debug\net9.0\MusicalChairs.Shared.AssemblyInfoInputs.cache
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Debug\net9.0\MusicalChairs.Shared.AssemblyInfo.fs
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Debug\net9.0\MusicalChairs.Shared.fsproj.CoreCompileInputs.cache
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Debug\net9.0\MusicalChairs.Shared.sourcelink.json
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Debug\net9.0\MusicalChairs.Shared.dll
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Debug\net9.0\refint\MusicalChairs.Shared.dll
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Debug\net9.0\MusicalChairs.Shared.xml
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Debug\net9.0\MusicalChairs.Shared.pdb
+C:\samData\MusicalChairs\apps\MusicalChairs.Shared\obj\Debug\net9.0\ref\MusicalChairs.Shared.dll

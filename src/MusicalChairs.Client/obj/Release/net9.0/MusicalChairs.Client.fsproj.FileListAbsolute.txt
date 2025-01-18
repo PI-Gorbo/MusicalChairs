@@ -1,0 +1,2 @@
+C:\samData\MusicalChairs\apps\MusicalChairs.Client\obj\Release\net9.0\MusicalChairs.Client.AssemblyInfoInputs.cache
+C:\samData\MusicalChairs\apps\MusicalChairs.Client\obj\Release\net9.0\MusicalChairs.Client.AssemblyInfo.fs

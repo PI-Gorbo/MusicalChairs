@@ -3,9 +3,10 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "concurrently \"bun run api\" \"bun run pwa\" -n \"api,pwa\" --kill-others-on-fail --handle-input --default-input-target 0",
-        "api": "cd apps/MusicalChairs.Api && dotnet watch run",
-        "pwa": "cd apps/MusicalChairs.Pwa && bun run dev",
+        "dev": "concurrently \"bun run genTS\" \"bun run server\" \"bun run pwa\" -n \"genTS,server,pwa\" --kill-others-on-fail --handle-input --default-input-target 0",
+        "genTS" : "cd src/MusicalChairs.Client && dotnet fable watch --lang ts -o ../MusicalChairs.Pwa/utils/generated/",
+        "server": "cd src/MusicalChairs.Server && dotnet run",
+        "pwa": "cd src/MusicalChairs.Pwa && bun run dev",
         "devDb": "docker run -p 5432:5432 --name musicalChairsDb -e POSTGRES_PASSWORD=postgres -d postgres"
     },
     "devDependencies": {

@@ -1,0 +1,15 @@
+﻿{
+  Commands: [
+    {
+      Case: StartJob,
+      Fields: [
+        {
+          UserId: Guid_1,
+          PlannedJobId: Guid_2
+        }
+      ]
+    }
+  ],
+  DeletedPlannedJob: false,
+  Facts: []
+}

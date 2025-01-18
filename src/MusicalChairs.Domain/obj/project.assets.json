@@ -1,0 +1,304 @@
+{
+  "version": 3,
+  "targets": {
+    "net9.0": {
+      "FSharp.Core/9.0.101": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/FSharp.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/FSharp.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "resource": {
+          "lib/netstandard2.1/cs/FSharp.Core.resources.dll": {
+            "locale": "cs"
+          },
+          "lib/netstandard2.1/de/FSharp.Core.resources.dll": {
+            "locale": "de"
+          },
+          "lib/netstandard2.1/es/FSharp.Core.resources.dll": {
+            "locale": "es"
+          },
+          "lib/netstandard2.1/fr/FSharp.Core.resources.dll": {
+            "locale": "fr"
+          },
+          "lib/netstandard2.1/it/FSharp.Core.resources.dll": {
+            "locale": "it"
+          },
+          "lib/netstandard2.1/ja/FSharp.Core.resources.dll": {
+            "locale": "ja"
+          },
+          "lib/netstandard2.1/ko/FSharp.Core.resources.dll": {
+            "locale": "ko"
+          },
+          "lib/netstandard2.1/pl/FSharp.Core.resources.dll": {
+            "locale": "pl"
+          },
+          "lib/netstandard2.1/pt-BR/FSharp.Core.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "lib/netstandard2.1/ru/FSharp.Core.resources.dll": {
+            "locale": "ru"
+          },
+          "lib/netstandard2.1/tr/FSharp.Core.resources.dll": {
+            "locale": "tr"
+          },
+          "lib/netstandard2.1/zh-Hans/FSharp.Core.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "lib/netstandard2.1/zh-Hant/FSharp.Core.resources.dll": {
+            "locale": "zh-Hant"
+          }
+        }
+      },
+      "FsToolkit.ErrorHandling/4.18.0": {
+        "type": "package",
+        "dependencies": {
+          "FSharp.Core": "7.0.300"
+        },
+        "compile": {
+          "lib/netstandard2.1/FsToolkit.ErrorHandling.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/FsToolkit.ErrorHandling.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "FsToolkit.ErrorHandling.TaskResult/4.18.0": {
+        "type": "package",
+        "dependencies": {
+          "FsToolkit.ErrorHandling": "4.18.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/FsToolkit.ErrorHandling.TaskResult.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/FsToolkit.ErrorHandling.TaskResult.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "FSharp.Core/9.0.101": {
+      "sha512": "3/YR1SDWFA+Ojx9HiBwND+0UR8ZWoeZfkhD0DWAPCDdr/YI+CyFkArmMGzGSyPXeYtjG0sy0emzfyNwjt7zhig==",
+      "type": "package",
+      "path": "fsharp.core/9.0.101",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "fsharp.core.9.0.101.nupkg.sha512",
+        "fsharp.core.nuspec",
+        "lib/netstandard2.0/FSharp.Core.dll",
+        "lib/netstandard2.0/FSharp.Core.xml",
+        "lib/netstandard2.0/cs/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/de/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/es/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/fr/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/it/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/ja/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/ko/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/pl/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/pt-BR/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/ru/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/tr/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/zh-Hans/FSharp.Core.resources.dll",
+        "lib/netstandard2.0/zh-Hant/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/FSharp.Core.dll",
+        "lib/netstandard2.1/FSharp.Core.xml",
+        "lib/netstandard2.1/cs/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/de/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/es/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/fr/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/it/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/ja/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/ko/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/pl/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/pt-BR/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/ru/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/tr/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/zh-Hans/FSharp.Core.resources.dll",
+        "lib/netstandard2.1/zh-Hant/FSharp.Core.resources.dll"
+      ]
+    },
+    "FsToolkit.ErrorHandling/4.18.0": {
+      "sha512": "cGtOP6lWcnLcXiLTGZLHi+8JAyuUDjGhZOmJWnZfd5aPCUIyL+DqUIwmfEGkUk3j/gpcchLDk9BNwUTc1oM30w==",
+      "type": "package",
+      "path": "fstoolkit.errorhandling/4.18.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "fable/Array.fs",
+        "fable/AssemblyInfo.fs",
+        "fable/Async.fs",
+        "fable/AsyncOption.fs",
+        "fable/AsyncOptionCE.fs",
+        "fable/AsyncOptionOp.fs",
+        "fable/AsyncResult.fs",
+        "fable/AsyncResultCE.fs",
+        "fable/AsyncResultOp.fs",
+        "fable/AsyncResultOption.fs",
+        "fable/AsyncResultOptionCE.fs",
+        "fable/AsyncResultOptionOp.fs",
+        "fable/AsyncValidation.fs",
+        "fable/AsyncValidationCE.fs",
+        "fable/AsyncValidationOp.fs",
+        "fable/FsToolkit.ErrorHandling.fsproj",
+        "fable/List.fs",
+        "fable/Option.fs",
+        "fable/OptionCE.fs",
+        "fable/OptionOp.fs",
+        "fable/Result.fs",
+        "fable/ResultCE.fs",
+        "fable/ResultOp.fs",
+        "fable/ResultOption.fs",
+        "fable/ResultOptionCE.fs",
+        "fable/ResultOptionOp.fs",
+        "fable/Seq.fs",
+        "fable/Shims.fs",
+        "fable/Validation.fs",
+        "fable/ValidationCE.fs",
+        "fable/ValidationOp.fs",
+        "fable/ValueOption.fs",
+        "fable/ValueOptionCE.fs",
+        "fable/obj/Debug/netstandard2.1/.NETStandard,Version=v2.1.AssemblyAttributes.fs",
+        "fable/obj/Debug/netstandard2.1/FsToolkit.ErrorHandling.AssemblyInfo.fs",
+        "fable/obj/Release/netstandard2.0/.NETStandard,Version=v2.0.AssemblyAttributes.fs",
+        "fable/obj/Release/netstandard2.0/FsToolkit.ErrorHandling.AssemblyInfo.fs",
+        "fable/obj/Release/netstandard2.1/.NETStandard,Version=v2.1.AssemblyAttributes.fs",
+        "fable/obj/Release/netstandard2.1/FsToolkit.ErrorHandling.AssemblyInfo.fs",
+        "fstoolkit.errorhandling.4.18.0.nupkg.sha512",
+        "fstoolkit.errorhandling.nuspec",
+        "lib/netstandard2.0/FsToolkit.ErrorHandling.dll",
+        "lib/netstandard2.0/FsToolkit.ErrorHandling.pdb",
+        "lib/netstandard2.0/FsToolkit.ErrorHandling.xml",
+        "lib/netstandard2.1/FsToolkit.ErrorHandling.dll",
+        "lib/netstandard2.1/FsToolkit.ErrorHandling.pdb",
+        "lib/netstandard2.1/FsToolkit.ErrorHandling.xml"
+      ]
+    },
+    "FsToolkit.ErrorHandling.TaskResult/4.18.0": {
+      "sha512": "XEcsKn7nqISf2JbkuzAIlMPYKmx2fYw8Ufa8hwXsqisKTEVaEWAYG9HG+NRvjEQgw367o/XE8CdcOnEtMBzUwA==",
+      "type": "package",
+      "path": "fstoolkit.errorhandling.taskresult/4.18.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "fstoolkit.errorhandling.taskresult.4.18.0.nupkg.sha512",
+        "fstoolkit.errorhandling.taskresult.nuspec",
+        "lib/netstandard2.0/FsToolkit.ErrorHandling.TaskResult.dll",
+        "lib/netstandard2.0/FsToolkit.ErrorHandling.TaskResult.pdb",
+        "lib/netstandard2.0/FsToolkit.ErrorHandling.TaskResult.xml",
+        "lib/netstandard2.1/FsToolkit.ErrorHandling.TaskResult.dll",
+        "lib/netstandard2.1/FsToolkit.ErrorHandling.TaskResult.pdb",
+        "lib/netstandard2.1/FsToolkit.ErrorHandling.TaskResult.xml"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net9.0": [
+      "FSharp.Core >= 9.0.101",
+      "FsToolkit.ErrorHandling >= 4.18.0",
+      "FsToolkit.ErrorHandling.TaskResult >= 4.18.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Sam\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\samData\\MusicalChairs\\src\\MusicalChairs.Domain\\MusicalChairs.Domain.fsproj",
+      "projectName": "MusicalChairs.Domain",
+      "projectPath": "C:\\samData\\MusicalChairs\\src\\MusicalChairs.Domain\\MusicalChairs.Domain.fsproj",
+      "packagesPath": "C:\\Users\\Sam\\.nuget\\packages\\",
+      "outputPath": "C:\\samData\\MusicalChairs\\src\\MusicalChairs.Domain\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\samData\\MusicalChairs\\NuGet.Config",
+        "C:\\Users\\Sam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net9.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\sdk\\9.0.102\\FSharp\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.pkg.github.com/PI-Gorbo/index.json": {}
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "projectReferences": {}
+        }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.100"
+    },
+    "frameworks": {
+      "net9.0": {
+        "targetAlias": "net9.0",
+        "dependencies": {
+          "FSharp.Core": {
+            "include": "Runtime, Compile, Build, Native, Analyzers, BuildTransitive",
+            "target": "Package",
+            "version": "[9.0.101, )",
+            "generatePathProperty": true
+          },
+          "FsToolkit.ErrorHandling": {
+            "target": "Package",
+            "version": "[4.18.0, )",
+            "generatePathProperty": true
+          },
+          "FsToolkit.ErrorHandling.TaskResult": {
+            "target": "Package",
+            "version": "[4.18.0, )",
+            "generatePathProperty": true
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

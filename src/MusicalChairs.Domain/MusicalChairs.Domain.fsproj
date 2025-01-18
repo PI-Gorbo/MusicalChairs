@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Utils\TaskResultExtensions.fs"/>
+        <Compile Include="Jobs\Job.fs"/>
+        <Compile Include="Jobs\JobCommands.fs"/>
+        <Compile Include="Jobs\JobDecisionEngine.fs"/>
+        <Compile Include="Jobs\JobFactEngine.fs"/>
+        <Compile Include="Jobs\JobFacts.fs"/>
+        <Compile Include="Email.fs"/>
+        <Compile Include="MessageEngine.fs"/>
+        <Compile Include="User.fs"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FsToolkit.ErrorHandling" Version="4.18.0"/>
+        <PackageReference Include="FsToolkit.ErrorHandling.TaskResult" Version="4.18.0"/>
+    </ItemGroup>
+
+</Project>
