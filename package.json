@@ -4,12 +4,15 @@
     "type": "module",
     "scripts": {
         "dev": "concurrently \"bun run genTS\" \"bun run server\" \"bun run pwa\" -n \"genTS,server,pwa\" --kill-others-on-fail --handle-input --default-input-target 0",
-        "genTS" : "cd src/MusicalChairs.Client && dotnet fable watch --lang ts -o ../MusicalChairs.Pwa/utils/generated/",
+        "genTS": "cd src/MusicalChairs.Client && dotnet fable watch --lang ts -o ../MusicalChairs.Pwa/utils/generated/",
         "server": "cd src/MusicalChairs.Server && dotnet run",
         "pwa": "cd src/MusicalChairs.Pwa && bun run dev",
         "devDb": "docker run -p 5432:5432 --name musicalChairsDb -e POSTGRES_PASSWORD=postgres -d postgres"
     },
     "devDependencies": {
-        "concurrently": "^9.1.0"
+        "autoprefixer": "^10.4.20",
+        "concurrently": "^9.1.0",
+        "postcss": "^8.5.1",
+        "tailwindcss": "^3.4.17"
     }
 }

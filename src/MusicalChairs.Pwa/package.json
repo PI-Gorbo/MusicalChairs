@@ -13,6 +13,7 @@
     "@nuxtjs/ionic": "^0.15.1",
     "@vite-pwa/nuxt": "^0.10.5",
     "nuxt": "^3.13.0",
+    "radix-vue": "^1.9.12",
     "vue": "latest",
     "vue-router": "latest"
   }
