@@ -27,55 +27,57 @@ let main args =
         .AddJsonFile("appsettings.json", false)
         .AddJsonFile("appsettings.Development.json", true)
         .AddEnvironmentVariables()
-        |> ignore
+    |> ignore
 
     // Add Database Reference
-    builder.Services.AddMarten(
-        let storeOptions = Marten.StoreOptions()
-        storeOptions.Connection(builder.Configuration.GetConnectionString("Marten"))
+    builder.Services
+        .AddMarten(
+            let storeOptions = Marten.StoreOptions()
+            storeOptions.Connection(builder.Configuration.GetConnectionString("Marten"))
 
-        storeOptions.UseSystemTextJsonForSerialization(
-            configure =
-                fun opts ->
-                    JsonFSharpOptions
-                        .Default()
-                        .WithUnionAdjacentTag()
-                        .WithUnionNamedFields()
-                        .AddToJsonSerializerOptions(opts)
+            storeOptions.UseSystemTextJsonForSerialization(
+                configure =
+                    fun opts ->
+                        JsonFSharpOptions
+                            .Default()
+                            .WithUnionAdjacentTag()
+                            .WithUnionNamedFields()
+                            .AddToJsonSerializerOptions(opts)
+            )
+
+            storeOptions.RegisterIdentityModels<User, UserRole>() |> ignore
+
+            if builder.Environment.IsDevelopment() then
+                storeOptions.AutoCreateSchemaObjects <- AutoCreate.All
+
+            storeOptions
         )
-
-        storeOptions.RegisterIdentityModels<User, UserRole>()
-        |> ignore
-
-        if builder.Environment.IsDevelopment() then
-            storeOptions.AutoCreateSchemaObjects <- AutoCreate.All
-
-        storeOptions
-    ).UseIdentitySessions()
+        .UseIdentitySessions()
     |> ignore
 
     // Add Aspnet Identity
-    builder.Services.AddIdentityCore<User>(fun opts ->
-        opts.SignIn.RequireConfirmedAccount <- false
-        opts.User.RequireUniqueEmail <- true
-        opts.Password <-
-            PasswordOptions(
-                RequireDigit = true,
-                RequiredLength = 6,
-                RequireLowercase = true,
-                RequireUppercase = true,
-                RequireNonAlphanumeric = true
-    ))
+    builder.Services
+        .AddIdentityCore<User>(fun opts ->
+            opts.SignIn.RequireConfirmedAccount <- false
+            opts.User.RequireUniqueEmail <- true
+
+            opts.Password <-
+                PasswordOptions(
+                    RequireDigit = true,
+                    RequiredLength = 6,
+                    RequireLowercase = true,
+                    RequireUppercase = true,
+                    RequireNonAlphanumeric = true
+                ))
         .AddRoles<UserRole>()
         .AddUserStore<MartenUserStore<User, UserRole>>()
         .AddRoleStore<MartenRoleStore<UserRole>>()
         .AddSignInManager()
         .AddDefaultTokenProviders()
-        |> ignore
+    |> ignore
 
     // Add Authentication - Who are you
-    builder
-        .Services
+    builder.Services
         .AddAuthentication(fun opts ->
             opts.DefaultAuthenticateScheme <- CookieAuthenticationDefaults.AuthenticationScheme
             opts.DefaultChallengeScheme <- CookieAuthenticationDefaults.AuthenticationScheme
@@ -104,19 +106,7 @@ let main args =
                     |> function
                         | x when String.IsNullOrEmpty x -> failwith "Error" // Default to localhost.
                         | x -> x)
-        |> ignore
-
-    // // Add Authorization - What you have access to
-    // builder.Services.AddScoped<IAuthorizationHandler, RegisteredUserAuthRequirement.IsRegisteredUserAuthorizationHandler>() |> ignore
-    // builder.Services.AddAuthorization(fun cfg ->
-    //     cfg.AddPolicy(
-    //         "IsRegisteredUser",
-    //         fun policyCfg ->
-    //             policyCfg
-    //                 .RequireAuthenticatedUser()
-    //                 .AddRequirements(RegisteredUserAuthRequirement.IsRegisteredUserRequirement())
-    //             |> ignore)
-    //     ) |> ignore
+    |> ignore
 
     // Configure Cors
     builder.Services.AddCors(
@@ -130,10 +120,7 @@ let main args =
 
     let webApp =
         Remoting.createApi ()
-        |> Remoting.fromContext (fun ctx ->
-            createUserApiDeps ctx (ctx.GetService<IDocumentSession>())
-            |> createUserApi
-        )
+        |> Remoting.fromContext (fun ctx -> createUserApiDeps ctx (ctx.GetService<IDocumentSession>()) |> createUserApi)
 
     app.UseRemoting(webApp)
     app.Run()

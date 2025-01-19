@@ -13,6 +13,7 @@ type UserDto =
       username: string
       email: string }
 
+[<TypeScriptTaggedUnion("type")>]
 type MeResponse = Result<UserDto, unit>
 type Me = unit -> Async<MeResponse>
 

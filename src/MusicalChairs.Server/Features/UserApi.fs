@@ -40,7 +40,7 @@ let createUserApi (deps: IUserApiDeps) : IUserApi =
                 return! deps.getUserDtoById userId
             }
 
-      login = failwith "todo"
-      register = failwith "todo"
-      requestResetPasswordToken = failwith "todo"
-      resetPassword = failwith "todo" }
+      login = fun _ -> failwith "todo"
+      register = fun _ -> failwith "todo"
+      requestResetPasswordToken = fun _ -> failwith "todo"
+      resetPassword = fun _ ->  failwith "todo" }
