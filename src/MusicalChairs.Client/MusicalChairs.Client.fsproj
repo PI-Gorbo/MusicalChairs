@@ -21,7 +21,7 @@
 
   <Target Name="Generate TS after Build" AfterTargets="Build">
     <Message Text="Generating TS from Client"/>
-    <Exec Command="dotnet fable --lang ts -o ../MusicalChairs.Pwa/utils/generated/" />
+    <Exec Command="dotnet fable --lang ts -o ../MusicalChairs.Web/utils/generated/" />
   </Target>
 
 </Project>
