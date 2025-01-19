@@ -1,8 +1,8 @@
 ﻿module MusicalChairs.Domain.Jobs.JobFacts
 
 open System
-open MusicalChairs.Api.Domain.Email
-open MusicalChairs.Api.Domain.Job
+open MusicalChairs.Domain.Email
+open MusicalChairs.Domain.Job
 
 type JobStartedFact =
     {

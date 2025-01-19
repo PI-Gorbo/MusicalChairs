@@ -3,10 +3,10 @@
 open System
 open FsToolkit.ErrorHandling
 open FsToolkit.ErrorHandling.Operator.TaskResult
-open MusicalChairs.Api.Domain.Job
-open MusicalChairs.Api.Domain.Jobs.JobCommands
-open MusicalChairs.Api.Domain.Jobs.JobFacts
-open MusicalChairs.Api.Utilities
+open MusicalChairs.Domain.Job
+open MusicalChairs.Domain.Utilities
+open MusicalChairs.Domain.JobCommands
+open MusicalChairs.Domain.Jobs.JobFacts
 
 
 type IApplyJobDependencies =

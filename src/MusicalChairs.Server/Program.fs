@@ -13,8 +13,8 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Fable.Remoting.Server
 open Fable.Remoting.AspNetCore
-open MusicalChairs.Api
-open MusicalChairs.Api.Domain.User
+open MusicalChairs.Domain.User
+open MusicalChairs.Server
 open MusicalChairs.Server.Features.UserApi
 open Weasel.Core
 
@@ -106,18 +106,17 @@ let main args =
                         | x -> x)
         |> ignore
 
-    // Add Authorization - What you have access to
-    builder.Services.AddScoped<IAuthorizationHandler, RegisteredUserAuthRequirement.IsRegisteredUserRequirement>
-        ()
-    builder.Services.AddAuthorization(fun cfg ->
-        cfg.AddPolicy(
-            "IsRegisteredUser",
-            fun policyCfg ->
-                policyCfg
-                    .RequireAuthenticatedUser()
-                    .AddRequirements(RegisteredUserAuthRequirement.IsRegisteredUserRequirement())
-                |> ignore)
-        )
+    // // Add Authorization - What you have access to
+    // builder.Services.AddScoped<IAuthorizationHandler, RegisteredUserAuthRequirement.IsRegisteredUserAuthorizationHandler>() |> ignore
+    // builder.Services.AddAuthorization(fun cfg ->
+    //     cfg.AddPolicy(
+    //         "IsRegisteredUser",
+    //         fun policyCfg ->
+    //             policyCfg
+    //                 .RequireAuthenticatedUser()
+    //                 .AddRequirements(RegisteredUserAuthRequirement.IsRegisteredUserRequirement())
+    //             |> ignore)
+    //     ) |> ignore
 
     // Configure Cors
     builder.Services.AddCors(
@@ -136,7 +135,6 @@ let main args =
             |> createUserApi
         )
 
-
-    app.UseRemoting webApp
+    app.UseRemoting(webApp)
     app.Run()
     0 // Exit code

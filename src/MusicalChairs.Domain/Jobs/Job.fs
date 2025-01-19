@@ -1,7 +1,7 @@
 ﻿module MusicalChairs.Domain.Job
 
 open System
-open MusicalChairs.Api.Domain.Email
+open MusicalChairs.Domain.Email
 
 // Contact Method
 type EmailDetails = { EmailAddress: string }

@@ -3,7 +3,7 @@
 open System
 open Marten
 open Microsoft.AspNetCore.Http
-open MusicalChairs.Api.Domain.User
+open MusicalChairs.Domain.User
 open MusicalChairs.Server.Utils.AuthUtils
 open MusicalChairs.Shared.UserApi
 open FsToolkit.ErrorHandling

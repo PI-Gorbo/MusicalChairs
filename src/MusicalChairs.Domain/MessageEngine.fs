@@ -1,11 +1,11 @@
-﻿namespace MusicalChairs.Api.Domain
+﻿namespace MusicalChairs.Domain
 
 // open System
 // open System.Threading.Tasks
 // open FsToolkit.ErrorHandling
 // open FsToolkit.ErrorHandling.Operator.TaskResult
 // open Microsoft.FSharp.Core
-// open MusicalChairs.Api.Domain.Email
+// open MusicalChairs.Domain.Email
 // open MusicalChairs.Api.Utilities.GenericErrors
 //
 // [<RequireQualifiedAccess>]

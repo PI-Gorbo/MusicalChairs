@@ -1,15 +1,15 @@
-﻿module MusicalChairs.Api.Tests.JobDecisionEngineTests
+﻿module MusicalChairs.Domain.Tests.JobDecisionEngineTests
 
 open System
-open MusicalChairs.Api.Domain.Job
-open MusicalChairs.Api.Domain.JobDecisionEngine
-open MusicalChairs.Api.Domain.JobFactEngine
-open MusicalChairs.Api.Domain.Jobs.JobCommands
+open MusicalChairs.Domain.Job
+open MusicalChairs.Domain.JobDecisionEngine
+open MusicalChairs.Domain.JobFactEngine
+open MusicalChairs.Domain.JobCommands
 open VerifyTests
 open Argon
 open FsToolkit.ErrorHandling
-open MusicalChairs.Api.Domain.Email
-open MusicalChairs.Api.Domain.Jobs.JobFacts
+open MusicalChairs.Domain.Email
+open MusicalChairs.Domain.Jobs.JobFacts
 open Shouldly
 open VerifyXunit
 open Xunit

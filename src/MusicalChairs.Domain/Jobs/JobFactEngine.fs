@@ -3,8 +3,8 @@
 open System
 open FsToolkit.ErrorHandling
 open FsToolkit.ErrorHandling.Operator.TaskResult
-open MusicalChairs.Api.Domain.Job
-open MusicalChairs.Api.Domain.Jobs.JobFacts
+open MusicalChairs.Domain.Job
+open MusicalChairs.Domain.Jobs.JobFacts
 
 type IJobFactDeps =
     abstract member getJobId: Unit -> Guid

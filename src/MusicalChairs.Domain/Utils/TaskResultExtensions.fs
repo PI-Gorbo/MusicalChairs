@@ -1,4 +1,4 @@
-﻿namespace MusicalChairs.Api.Utilities
+﻿namespace MusicalChairs.Domain.Utilities
 
 open FsToolkit.ErrorHandling
 open FsToolkit.ErrorHandling.Operator.TaskResult

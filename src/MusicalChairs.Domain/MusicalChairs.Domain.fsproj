@@ -7,14 +7,14 @@
 
     <ItemGroup>
         <Compile Include="Utils\TaskResultExtensions.fs"/>
+        <Compile Include="Email.fs" />
+        <Compile Include="MessageEngine.fs" />
+        <Compile Include="User.fs" />
         <Compile Include="Jobs\Job.fs"/>
+        <Compile Include="Jobs\JobFacts.fs" />
         <Compile Include="Jobs\JobCommands.fs"/>
         <Compile Include="Jobs\JobDecisionEngine.fs"/>
         <Compile Include="Jobs\JobFactEngine.fs"/>
-        <Compile Include="Jobs\JobFacts.fs"/>
-        <Compile Include="Email.fs"/>
-        <Compile Include="MessageEngine.fs"/>
-        <Compile Include="User.fs"/>
         <Content Include=".gitignore" />
     </ItemGroup>
 

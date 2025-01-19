@@ -6,7 +6,7 @@ open System.Threading
 open FsToolkit.ErrorHandling
 open Marten
 open Microsoft.AspNetCore.Http
-open MusicalChairs.Api.Domain.User
+open MusicalChairs.Domain.User
 open System.Linq
 
 type IAuthenticateDeps =

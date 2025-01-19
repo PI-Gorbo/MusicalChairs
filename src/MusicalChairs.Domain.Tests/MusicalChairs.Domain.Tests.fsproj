@@ -22,7 +22,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MusicalChairs.Server\MusicalChairs.Server.fsproj" />
+    <ProjectReference Include="..\MusicalChairs.Domain\MusicalChairs.Domain.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MusicalChairs.Api">
+      <HintPath>..\MusicalChairs.Api\bin\Debug\net9.0\MusicalChairs.Api.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

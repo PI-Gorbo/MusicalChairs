@@ -10,3 +10,4 @@ type JobCommand =
     | StartJob of StartJobCommand
     | CreateContactMessage of CreateContactMessageCommand
     | EnqueueContactMessage of EnqueueContactMessageCommand
+

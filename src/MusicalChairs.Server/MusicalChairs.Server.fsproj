@@ -24,11 +24,5 @@
     <ProjectReference Include="..\MusicalChairs.Shared\MusicalChairs.Shared.fsproj" />
     <ProjectReference Include="..\MusicalChairs.Domain\MusicalChairs.Domain.fsproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="MusicalChairs.Api">
-      <HintPath>..\MusicalChairs.Api\bin\Debug\net9.0\MusicalChairs.Api.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
+  
 </Project>

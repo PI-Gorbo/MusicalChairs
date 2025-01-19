@@ -1,4 +1,4 @@
-namespace MusicalChairs.Api.Domain.User
+namespace MusicalChairs.Domain.User
 open GP.MartenIdentity
 open System
 
