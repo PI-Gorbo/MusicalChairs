@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MusicalChairs.Api\MusicalChairs.Api.fsproj" />
+    <ProjectReference Include="..\MusicalChairs.Server\MusicalChairs.Server.fsproj" />
   </ItemGroup>
 
 </Project>
