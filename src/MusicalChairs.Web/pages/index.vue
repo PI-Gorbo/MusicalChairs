@@ -12,7 +12,7 @@
                 <section>A cool blurb</section>
                 <div>
                     <NuxtLink
-                        to="/login"
+                        to="/register"
                     >
                         <Button class="bg-ms-accent hover:bg-ms-accent hover:brightness-90">
                             Get Started
