@@ -7,6 +7,7 @@ open MusicalChairs.Shared.UserApi
 let userApi: IUserApi =
     Remoting.createApi ()
     |> Remoting.withBaseUrl "http://localhost:5000"
+    |> Remoting.withCredentials true
     |> Remoting.buildProxy<IUserApi>
 
 let login req =

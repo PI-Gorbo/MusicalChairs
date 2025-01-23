@@ -1,4 +1,4 @@
-﻿namespace MusicalChairs.Shared.UserApi
+﻿module MusicalChairs.Shared.UserApi
 
 open System
 open Fable.Core
@@ -13,25 +13,17 @@ type UserDto =
       username: string
       email: string }
 
-[<TypeScriptTaggedUnion("type")>]
-type MeResponse = Result<UserDto, unit>
-type Me = unit -> Async<MeResponse>
-
 // login
 type LoginRequest = { email: string; password: string }
-type LoginResult = Result<unit, string>
-type Login = LoginRequest -> Async<LoginResult>
 
 // register
 type RegisterRequest = { email: string; password: string }
 
-[<TypeScriptTaggedUnion("type")>]
 type RegisterFailure =
     | EmailAlreadyRegistered
     | PasswordInvalid of reason: string
 
 type RegisterResult = Result<unit, RegisterFailure>
-type Register = RegisterRequest -> Async<RegisterResult>
 
 // request reset password token
 type RequestResetPasswordTokenRequest = { email: string }
@@ -43,18 +35,16 @@ type ResetPasswordRequest =
       newPassword: string
       token: string }
 
-[<TypeScriptTaggedUnion("type")>]
 type ResetPasswordError =
     | InvalidToken
     | InvalidNewPassword of error: string
 
 type ResetPasswordResponse = Result<unit, ResetPasswordError>
-type ResetPassword = ResetPasswordRequest -> Async<ResetPasswordResponse>
 
 // api
 type IUserApi =
-    { me: Me
-      login: Login
-      register: Register
+    { me: unit -> Async<Result<UserDto, string>>
+      login: LoginRequest -> Async<Result<unit, string>>
+      register: RegisterRequest -> Async<RegisterResult>
       requestResetPasswordToken: RequestResetPasswordToken
-      resetPassword: ResetPassword }
+      resetPassword: ResetPasswordRequest -> Async<ResetPasswordResponse> }

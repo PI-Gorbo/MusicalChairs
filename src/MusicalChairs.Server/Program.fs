@@ -13,6 +13,7 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open Fable.Remoting.Server
 open Fable.Remoting.AspNetCore
+open Microsoft.Extensions.Logging
 open MusicalChairs.Domain.User
 open MusicalChairs.Server
 open MusicalChairs.Server.Features.UserApi
@@ -110,7 +111,13 @@ let main args =
 
     // Configure Cors
     builder.Services.AddCors(
-        _.AddDefaultPolicy(fun defaultPolicy -> defaultPolicy.AllowAnyHeader().AllowAnyOrigin() |> ignore)
+        _.AddDefaultPolicy(fun defaultPolicy ->
+            defaultPolicy
+                .WithOrigins("http://localhost:3000", "https://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()
+            |> ignore)
     )
     |> ignore
 
@@ -118,9 +125,19 @@ let main args =
 
     app.UseCors() |> ignore
 
+    let errorHandler (logger: ILogger) (ex: Exception) (routeInfo: RouteInfo<HttpContext>) =
+        // do some logging
+        logger.LogError $"Error at {routeInfo.path} on method {routeInfo.methodName} : ${ex}"
+
+        // Propagate a general error to the client.
+        Propagate $"Error at {routeInfo.path} on method {routeInfo.methodName}"
+
+
+    // Grab a logger.
     let webApp =
         Remoting.createApi ()
         |> Remoting.fromContext (fun ctx -> createUserApiDeps ctx (ctx.GetService<IDocumentSession>()) |> createUserApi)
+        |> Remoting.withErrorHandler (errorHandler app.Logger)
 
     app.UseRemoting(webApp)
     app.Run()

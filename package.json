@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "concurrently \"bun run genTS\" \"bun run server\" \"bun run web\" -n \"genTS,server,web\" --kill-others-on-fail --handle-input --default-input-target 1",
         "genTS": "cd src/MusicalChairs.Client && dotnet fable watch --lang ts -o ../MusicalChairs.Web/utils/generated/",
-        "server": "cd src/MusicalChairs.Server && dotnet run",
+        "server": "cd src/MusicalChairs.Server && dotnet watch run --no-hot-reload",
         "web": "cd src/MusicalChairs.Web && bun run dev",
         "devDb": "docker run -p 5432:5432 --name musicalChairsDb -e POSTGRES_PASSWORD=postgres -d postgres"
     },

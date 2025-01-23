@@ -9,6 +9,7 @@ type UserRole() =
     inherit MartenIdentityRole()
 
 
+
 [<AllowNullLiteral>]
 type User() =
     inherit MartenIdentityUser<UserRole>() 

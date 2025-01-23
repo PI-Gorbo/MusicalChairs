@@ -21,17 +21,18 @@ let authenticateDeps (ctx: HttpContext) (session: IDocumentSession) : IAuthentic
             session.Query<User>().Where(fun x -> x.Id = id).AnyAsync() |> Async.AwaitTask
     }
 
-let authenticate (deps: IAuthenticateDeps) : Async<Result<Guid, string>> =
+let authenticate (deps: IAuthenticateDeps) : Async<Result<Guid, unit>> =
     asyncResult {
+
         let! userId =
             deps.getClaims ()
-            |> Seq.tryFind (fun claim -> claim.Type = "Id")
+            |> Seq.tryFind (fun claim -> claim.Type = "USERID")
             |> Option.bind (fun claim ->
                 let mutable id = Guid.Empty
                 if Guid.TryParse(claim.Value, &id) then Some id else None)
-            |> Option.either Ok (fun _ -> Error "Unauthenticated")
+            |> Option.either Ok (fun _ -> Error ())
 
         return!
             deps.userExistsAndCanLogin userId
-            |> Async.map (fun validUser -> if validUser then Ok userId else Error "Unauthenticated")
+            |> Async.map (fun validUser -> if validUser then Ok userId else Error ())
     }
