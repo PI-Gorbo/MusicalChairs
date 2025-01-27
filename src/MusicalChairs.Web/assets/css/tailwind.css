@@ -10,9 +10,10 @@
     }
 
     :root {
-        --background: 0 0% 100%;
+        --background: 46 100% 97%;
         --foreground: 20 14.3% 4.1%;
-
+        
+        /*
         --muted: 60 4.8% 95.9%;
         --muted-foreground: 25 5.3% 44.7%;
 
@@ -35,17 +36,18 @@
         --accent-foreground: 24 9.8% 10%;
 
         --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 60 9.1% 97.8%;
+        --destructive-foreground: 60 9.1% 97.8%; */
 
-        --ring: 20 14.3% 4.1%;
+        --ring: 20 14.3% 4.1%; 
 
         --radius: 0.5rem;
 
-        --ms-primary: 204 79% 20%;
-        --ms-primary-foreground: 60 9.1% 97.8%;
+        --primary: 109 24% 27%;
+        --primary-foreground: 60 9.1% 97.8%;
+        --primary-dark: 109 24% 17%;
 
-        --ms-secondary: 203 59% 48%;
-        --ms-secondary-foreground: 60 9.1% 97.8%;
+        --secondary: 203 59% 48%;
+        --secondary-foreground: 60 9.1% 97.8%;
 
         --ms-accent: 48 85% 46%;
         --ms-accent-foreground: 20 14.3% 4.1%;

@@ -1,9 +1,7 @@
 <template>
-  <div class="w-full h-full bg-accent">
-    <NuxtPage />
-  </div>
+    <NuxtLoadingIndicator />
+    <NuxtLayout>
+        <NuxtPage />
+    </NuxtLayout>
 </template>
-<script setup lang="ts">
-
-
-</script>
+<script setup lang="ts"></script>

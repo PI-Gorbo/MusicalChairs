@@ -1,3 +1,4 @@
+import { head } from './utils/generated/fable_modules/fable-library-ts.4.24.0/Array';
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: "2024-11-01",
@@ -14,18 +15,12 @@ export default defineNuxtConfig({
          */
         componentDir: "./components/ui",
     },
-
-    routeRules
-        : {
-        // // Homepage pre-rendered at build time
-        // '/': {
-        //     prerender
-        //         : true
-        // },
-
-        // '/home': {
-        //     ssr
-        //         : false
-        // },
+    css: [
+        '@fortawesome/fontawesome-svg-core/styles.css'
+    ],
+    app: {
+        head: {
+            title: 'Musical Chairs'
+        }
     }
 });

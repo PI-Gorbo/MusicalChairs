@@ -20,6 +20,8 @@ type IUserApiDeps =
     abstract member getSignInManager: Unit -> SignInManager<User>
     abstract member getHttpContext: Unit -> HttpContext
 
+type UserMap = { UserName: string; Email: string }
+
 let createUserApiDeps (httpContext: HttpContext) (session: IDocumentSession) : IUserApiDeps =
     let authDeps = authenticateDeps httpContext session
     let signInManager = httpContext.GetService<SignInManager<User>>()
@@ -29,15 +31,12 @@ let createUserApiDeps (httpContext: HttpContext) (session: IDocumentSession) : I
             session
                 .Query<User>()
                 .Where(fun user -> user.Id = userId)
-                // .Select(fun u ->
-                //     {| Username = u.UserName
-                //        Email = u.Email |})
                 .FirstAsync()
             |> Async.AwaitTask
-            |> Async.map (fun partial ->
+            |> Async.map (fun u ->
                 { UserDto.id = userId
-                  email = partial.Email
-                  username = partial.UserName })
+                  email = u.Email
+                  username = u.UserName })
 
         member this.userExistsAndCanLogin id = authDeps.userExistsAndCanLogin id
         member this.getClaims() = authDeps.getClaims ()

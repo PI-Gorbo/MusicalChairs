@@ -84,6 +84,7 @@
     </main>
 </template>
 <script setup lang="ts">
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { toTypedSchema } from "@vee-validate/zod";
 import type { ArgumentsType } from "@vueuse/core";
 import { useForm, type SubmissionContext } from "vee-validate";
