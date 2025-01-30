@@ -49,6 +49,7 @@ export default defineNuxtConfig({
                     type: "image/png",
                 },
             ],
+            theme_color: 'hsl(109 24% 27%)'
         },
     }
 });
