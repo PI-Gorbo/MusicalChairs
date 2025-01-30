@@ -19,16 +19,11 @@ module.exports = {
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",
-                background: "hsl(var(--background))",
+                background: {
+                    DEFAULT: "hsl(var(--background))",
+                    surface: "hsl(var(--background-surface))",
+                },
                 foreground: "hsl(var(--foreground))",
-                primary: {
-                    DEFAULT: "hsl(var(--primary))",
-                    foreground: "hsl(var(--primary-foreground))",
-                },
-                secondary: {
-                    DEFAULT: "hsl(var(--secondary))",
-                    foreground: "hsl(var(--secondary-foreground))",
-                },
                 destructive: {
                     DEFAULT: "hsl(var(--destructive))",
                     foreground: "hsl(var(--destructive-foreground))",
@@ -36,10 +31,6 @@ module.exports = {
                 muted: {
                     DEFAULT: "hsl(var(--muted))",
                     foreground: "hsl(var(--muted-foreground))",
-                },
-                accent: {
-                    DEFAULT: "hsl(var(--accent))",
-                    foreground: "hsl(var(--accent-foreground))",
                 },
                 popover: {
                     DEFAULT: "hsl(var(--popover))",
@@ -49,17 +40,17 @@ module.exports = {
                     DEFAULT: "hsl(var(--card))",
                     foreground: "hsl(var(--card-foreground))",
                 },
-                "ms-primary": {
-                    DEFAULT: "hsl(var(--ms-primary))",
-                    foreground: "hsl(var(--ms-primary-foreground))",
+                primary: {
+                    DEFAULT: "hsl(var(--primary))",
+                    foreground: "hsl(var(--primary-foreground))",
                 },
-                "ms-secondary": {
-                    DEFAULT: "hsl(var(--ms-secondary))",
-                    foreground: "hsl(var(--ms-secondary-foreground))",
+                secondary: {
+                    DEFAULT: "hsl(var(--secondary))",
+                    foreground: "hsl(var(--secondary-foreground))",
                 },
-                "ms-accent": {
-                    DEFAULT: "hsl(var(--ms-accent))",
-                    foreground: "hsl(var(--ms-accent-foreground))",
+                accent: {
+                    DEFAULT: "hsl(var(--accent))",
+                    foreground: "hsl(var(--accent-foreground))",
                 },
             },
             borderRadius: {

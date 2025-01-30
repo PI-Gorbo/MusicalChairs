@@ -25,7 +25,9 @@
     "embla-carousel-vue": "^8.5.2",
     "lucide-vue-next": "^0.473.0",
     "nuxt": "^3.15.2",
+    "nuxt-typed-router": "3.7.3",
     "pinia": "^2.3.0",
+    "prettier": "^2.5.x || 3.x",
     "radix-vue": "^1.9.12",
     "shadcn-nuxt": "0.11.3",
     "tailwind-merge": "^2.6.0",
@@ -39,6 +41,7 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vue-tsc": "^2.2.0"
   }
 }

@@ -3,7 +3,7 @@ import { head } from './utils/generated/fable_modules/fable-library-ts.4.24.0/Ar
 export default defineNuxtConfig({
     compatibilityDate: "2024-11-01",
     devtools: { enabled: true },
-    modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@pinia/nuxt"],
+    modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@pinia/nuxt", "nuxt-typed-router"],
     shadcn: {
         /**
          * Prefix for all the imported component
@@ -22,5 +22,9 @@ export default defineNuxtConfig({
         head: {
             title: 'Musical Chairs'
         }
+    },
+    typescript: {
+        typeCheck: false,
+        strict: false
     }
 });

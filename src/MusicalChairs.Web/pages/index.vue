@@ -1,35 +1,34 @@
 <template>
-    <main class="h-full bg-accent">
+    <template>
         <header>
-            <nav class="bg-ms-primary px-2">
-                <div class="p-4 text-primary-foreground text-lg">
+            <nav class="flex bg-primary items-center px-2">
+                <div class="p-4 text-primary-foreground font-semibold text-lg">
                     Musical Chairs
                 </div>
-            </nav>
-        </header>
-        <article class="h-80 bg-primary flex justify-center items-center">
-            <div class="text-primary-foreground flex flex-col gap-2">
-                <section>A cool blurb</section>
-                <div>
-                    <NuxtLink
-                        to="/register"
+                <div class="flex flex-1 justify-end gap-2">
+                    <NuxtLink to="/login"
+                        ><Button variant="secondary"> Log in </Button></NuxtLink
                     >
-                        <Button class="bg-ms-accent hover:bg-ms-accent hover:brightness-90">
-                            Get Started
+
+                    <NuxtLink to="/register">
+                        <Button class="bg-background text-foreground">
+                            Sign up for free
                         </Button>
                     </NuxtLink>
                 </div>
-            </div>
+            </nav>
+        </header>
+        <article>
+            This is the index page, where people that search up musical chairs
+            will land.
         </article>
-        <article >
-            
-        </article>
-    </main>
+    </template>
 </template>
 <script setup lang="ts">
 import Button from "~/components/ui/button/Button.vue";
 
+//@ts-ignore
 definePageMeta({
-    middleware: ['redirect-when-logged-in']
-})
+    middleware: ["redirect-when-logged-in"],
+});
 </script>

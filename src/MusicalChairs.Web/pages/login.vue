@@ -1,9 +1,9 @@
 <template>
-    <main class="flex justify-center items-center h-full bg-accent">
-        <div
-            class="bg-primary text-primary-foreground p-4 w-3/5 md:w-2/5 rounded shadow shadow-ms-primary"
-        >
-            <header>Login</header>
+    <main class="flex justify-center items-center h-full">
+        <Card class="p-4 w-3/5 md:w-2/5 bg-background-surface border-primary">
+            <CardHeader>
+                <CardTitle>Login</CardTitle>
+            </CardHeader>
             <AutoForm
                 :form="form"
                 :schema="loginSchema"
@@ -31,10 +31,9 @@
                     {{ submitError }}
                 </div>
 
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center mt-4">
                     <Button
                         type="submit"
-                        class="bg-ms-accent text-ms-accent-foreground hover:bg-ms-accent hover:brightness-90 mt-4"
                     >
                         {{ !submitting ? "Login" : "Logging in..." }}
                     </Button>
@@ -47,7 +46,7 @@
                     </NuxtLink>
                 </div>
             </AutoForm>
-        </div>
+        </Card>
     </main>
 </template>
 <script setup lang="ts">
@@ -82,5 +81,4 @@ async function onSubmit(data: LoginDto) {
 }
 
 type LoginDto = z.infer<typeof loginSchema>;
-
 </script>
