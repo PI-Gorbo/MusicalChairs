@@ -4,7 +4,7 @@
             <nav class="flex bg-primary items-center px-2">
                 <div class="p-4 text-primary-foreground font-semibold text-lg">
                     Musical Chairs
-                </div>
+                </div>  
                 <div class="flex flex-1 justify-end gap-2">
                     <NuxtLink to="/login"
                         ><Button variant="secondary"> Log in </Button></NuxtLink
