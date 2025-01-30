@@ -1,5 +1,5 @@
 <template>
-    <template>
+    <div>
         <header>
             <nav class="flex bg-primary items-center px-2">
                 <div class="p-4 text-primary-foreground font-semibold text-lg">
@@ -22,7 +22,7 @@
             This is the index page, where people that search up musical chairs
             will land.
         </article>
-    </template>
+    </div>
 </template>
 <script setup lang="ts">
 import Button from "~/components/ui/button/Button.vue";
