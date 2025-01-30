@@ -28,7 +28,5 @@
 import Button from "~/components/ui/button/Button.vue";
 
 //@ts-ignore
-definePageMeta({
-    middleware: ["redirect-when-logged-in"],
-});
+definePageMeta({});
 </script>
