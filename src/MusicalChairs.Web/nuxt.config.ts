@@ -3,7 +3,13 @@ import { head } from './utils/generated/fable_modules/fable-library-ts.4.24.0/Ar
 export default defineNuxtConfig({
     compatibilityDate: "2024-11-01",
     devtools: { enabled: true },
-    modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "@pinia/nuxt", "nuxt-typed-router"],
+    modules: [
+        "@nuxtjs/tailwindcss",
+        "shadcn-nuxt",
+        "@pinia/nuxt",
+        "nuxt-typed-router",
+        "@vite-pwa/nuxt"
+    ],
     shadcn: {
         /**
          * Prefix for all the imported component
@@ -26,5 +32,23 @@ export default defineNuxtConfig({
     typescript: {
         typeCheck: false,
         strict: false
+    },
+    pwa: {
+        registerType: "autoUpdate",
+        registerWebManifestInRouteRules: true,
+        manifest: {
+            name: "musical chairs",
+            short_name: "musical chairs",
+            description: "An app about musical chairs...",
+            lang: "en",
+            orientation: "portrait",
+            icons: [
+                {
+                    src: "band.png",
+                    sizes: "512x512",
+                    type: "image/png",
+                },
+            ],
+        },
     }
 });
