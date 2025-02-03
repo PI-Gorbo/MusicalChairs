@@ -1,9 +1,9 @@
 <template>
-    <main class="flex justify-center items-center h-full bg-accent">
-        <div
-            class="bg-primary text-primary-foreground p-4 w-3/5 md:w-2/5 rounded shadow shadow-ms-primary"
-        >
-            <header>Register</header>
+    <main class="flex justify-center items-center bg-primary h-full">
+        <Card class="p-4 bg-background border-primary w-9/12 xl:w-1/3">
+            <CardHeader>
+                <CardTitle>Sign up for free</CardTitle>
+            </CardHeader>
             <AutoForm
                 :form="form"
                 :schema="registerSchema"
@@ -30,57 +30,81 @@
                 :handleSubmit="onSubmit"
                 v-slot="{ submitting }"
             >
-                <div class="rounded-md border border-ms-accent mt-4 p-2">
-                    <label class="text-sm italic">Password Requirements</label>
+                <div
+                    class="rounded-md border border-ms-accent mt-4 p-2 text-sm"
+                >
+                    <label class="italic">Password Requirements</label>
                     <section
                         class="grid grid-flow-row grid-cols-1 lg:grid-cols-2"
                     >
                         <div>
                             <FontAwesomeIcon
                                 :icon="validPasswordLength ? 'check' : 'x'"
+                                :class="
+                                    validPasswordLength
+                                        ? 'text-primary'
+                                        : 'text-destructive'
+                                "
                             />
                             6 or more characters
                         </div>
                         <div>
                             <FontAwesomeIcon
                                 :icon="validPasswordHasLower ? 'check' : 'x'"
+                                :class="
+                                    validPasswordHasLower
+                                        ? 'text-primary'
+                                        : 'text-destructive'
+                                "
                             />
                             At least one lowercase character
                         </div>
                         <div>
                             <FontAwesomeIcon
                                 :icon="validPasswordHasUpper ? 'check' : 'x'"
+                                :class="
+                                    validPasswordHasUpper
+                                        ? 'text-primary'
+                                        : 'text-destructive'
+                                "
                             />
                             At least one uppercase character
                         </div>
                         <div>
                             <FontAwesomeIcon
                                 :icon="validPasswordHasDigit ? 'check' : 'x'"
+                                :class="
+                                    validPasswordHasDigit
+                                        ? 'text-primary'
+                                        : 'text-destructive'
+                                "
                             />
                             At least one digit
                         </div>
                         <div>
                             <FontAwesomeIcon
                                 :icon="validPasswordHasSpecial ? 'check' : 'x'"
+                                :class="
+                                    validPasswordHasSpecial
+                                        ? 'text-primary'
+                                        : 'text-destructive'
+                                "
                             />
                             At least one special character
                         </div>
                     </section>
                 </div>
-                <div class="flex justify-between items-center">
-                    <Button
-                        type="submit"
-                        class="bg-ms-accent text-ms-accent-foreground hover:bg-ms-accent hover:brightness-90 mt-4"
-                    >
+                <div class="flex justify-between items-center mt-4">
+                    <Button type="submit">
                         {{ !submitting ? "Register" : "Registering..." }}
                     </Button>
 
-                    <NuxtLink to="/login" class="underline text-sm cursor-pointer">
-                        Login Instead
+                    <NuxtLink to="/login" class="text-sm cursor-pointer">
+                        <span class="underline">Login Instead</span>
                     </NuxtLink>
                 </div>
             </AutoForm>
-        </div>
+        </Card>
     </main>
 </template>
 <script setup lang="ts">
@@ -90,7 +114,7 @@ import type { ArgumentsType } from "@vueuse/core";
 import { useForm, type SubmissionContext } from "vee-validate";
 import { z } from "zod";
 import { RegisterRequest } from "~/utils/generated/MusicalChairs.Shared/UserApi/UserApi";
-import { register } from "~/utils/generated/UserApi";
+import { userApi } from "~/utils/generated/UserApi";
 
 const testPasswordLength = (password: string) => password.length >= 6;
 const testPasswordHasLower = (p: string) => p.match(/[a-z]/) != null;
@@ -135,10 +159,11 @@ const form = useForm({
     validationSchema: toTypedSchema(registerSchema),
 });
 
-
 async function onSubmit(data: RegisterDto) {
-    const result = await register(new RegisterRequest(data.email, data.password));
-    if (result.name === 'Error') {
+    const result = await userApi.register(
+        new RegisterRequest(data.email, data.password)
+    );
+    if (result.name === "Error") {
         // Error
         switch (result.fields[0].name) {
             case "EmailAlreadyRegistered":
@@ -151,7 +176,7 @@ async function onSubmit(data: RegisterDto) {
         return;
     }
 
-    await navigateTo('/home')
+    await navigateTo("/home");
 }
 
 type RegisterDto = z.infer<typeof registerSchema>;

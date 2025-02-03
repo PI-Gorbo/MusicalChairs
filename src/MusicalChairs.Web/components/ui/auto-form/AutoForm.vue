@@ -110,7 +110,7 @@ function handleSubmit(val: z.infer<T>) {
 </script>
 
 <template>
-    <component :is="formComponent" v-bind="formComponentProps">
+    <component :is="formComponent" v-bind="formComponentProps" @submit.prevent>
         <slot name="customAutoForm" :fields="fields" :submitting="submitting">
             <template v-for="(shape, key) of shapes" :key="key">
                 <slot

@@ -1,7 +1,6 @@
 ﻿module MusicalChairs.Shared.UserApi
 
 open System
-open Fable.Core
 
 type PlannedJobId = Guid
 type JobId = Guid
@@ -45,6 +44,7 @@ type ResetPasswordResponse = Result<unit, ResetPasswordError>
 type IUserApi =
     { me: unit -> Async<Result<UserDto, string>>
       login: LoginRequest -> Async<Result<unit, string>>
+      logout: unit -> Async<unit>
       register: RegisterRequest -> Async<RegisterResult>
       requestResetPasswordToken: RequestResetPasswordToken
       resetPassword: ResetPasswordRequest -> Async<ResetPasswordResponse> }

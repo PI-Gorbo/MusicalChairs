@@ -139,13 +139,15 @@ export function ResetPasswordError_$reflection(): TypeInfo {
 export class IUserApi extends Record {
     readonly me: (() => Async<FSharpResult$2_$union<UserDto, string>>);
     readonly login: ((arg0: LoginRequest) => Async<FSharpResult$2_$union<void, string>>);
+    readonly logout: (() => Async<void>);
     readonly register: ((arg0: RegisterRequest) => Async<FSharpResult$2_$union<void, RegisterFailure_$union>>);
     readonly requestResetPasswordToken: ((arg0: RequestResetPasswordTokenRequest) => Async<void>);
     readonly resetPassword: ((arg0: ResetPasswordRequest) => Async<FSharpResult$2_$union<void, ResetPasswordError_$union>>);
-    constructor(me: (() => Async<FSharpResult$2_$union<UserDto, string>>), login: ((arg0: LoginRequest) => Async<FSharpResult$2_$union<void, string>>), register: ((arg0: RegisterRequest) => Async<FSharpResult$2_$union<void, RegisterFailure_$union>>), requestResetPasswordToken: ((arg0: RequestResetPasswordTokenRequest) => Async<void>), resetPassword: ((arg0: ResetPasswordRequest) => Async<FSharpResult$2_$union<void, ResetPasswordError_$union>>)) {
+    constructor(me: (() => Async<FSharpResult$2_$union<UserDto, string>>), login: ((arg0: LoginRequest) => Async<FSharpResult$2_$union<void, string>>), logout: (() => Async<void>), register: ((arg0: RegisterRequest) => Async<FSharpResult$2_$union<void, RegisterFailure_$union>>), requestResetPasswordToken: ((arg0: RequestResetPasswordTokenRequest) => Async<void>), resetPassword: ((arg0: ResetPasswordRequest) => Async<FSharpResult$2_$union<void, ResetPasswordError_$union>>)) {
         super();
         this.me = me;
         this.login = login;
+        this.logout = logout;
         this.register = register;
         this.requestResetPasswordToken = requestResetPasswordToken;
         this.resetPassword = resetPassword;
@@ -153,6 +155,6 @@ export class IUserApi extends Record {
 }
 
 export function IUserApi_$reflection(): TypeInfo {
-    return record_type("MusicalChairs.Shared.UserApi.IUserApi", [], IUserApi, () => [["me", lambda_type(unit_type, class_type("Microsoft.FSharp.Control.FSharpAsync`1", [union_type("Microsoft.FSharp.Core.FSharpResult`2", [UserDto_$reflection(), string_type], FSharpResult$2, () => [[["ResultValue", UserDto_$reflection()]], [["ErrorValue", string_type]]])]))], ["login", lambda_type(LoginRequest_$reflection(), class_type("Microsoft.FSharp.Control.FSharpAsync`1", [union_type("Microsoft.FSharp.Core.FSharpResult`2", [unit_type, string_type], FSharpResult$2, () => [[["ResultValue", unit_type]], [["ErrorValue", string_type]]])]))], ["register", lambda_type(RegisterRequest_$reflection(), class_type("Microsoft.FSharp.Control.FSharpAsync`1", [union_type("Microsoft.FSharp.Core.FSharpResult`2", [unit_type, RegisterFailure_$reflection()], FSharpResult$2, () => [[["ResultValue", unit_type]], [["ErrorValue", RegisterFailure_$reflection()]]])]))], ["requestResetPasswordToken", lambda_type(RequestResetPasswordTokenRequest_$reflection(), class_type("Microsoft.FSharp.Control.FSharpAsync`1", [unit_type]))], ["resetPassword", lambda_type(ResetPasswordRequest_$reflection(), class_type("Microsoft.FSharp.Control.FSharpAsync`1", [union_type("Microsoft.FSharp.Core.FSharpResult`2", [unit_type, ResetPasswordError_$reflection()], FSharpResult$2, () => [[["ResultValue", unit_type]], [["ErrorValue", ResetPasswordError_$reflection()]]])]))]]);
+    return record_type("MusicalChairs.Shared.UserApi.IUserApi", [], IUserApi, () => [["me", lambda_type(unit_type, class_type("Microsoft.FSharp.Control.FSharpAsync`1", [union_type("Microsoft.FSharp.Core.FSharpResult`2", [UserDto_$reflection(), string_type], FSharpResult$2, () => [[["ResultValue", UserDto_$reflection()]], [["ErrorValue", string_type]]])]))], ["login", lambda_type(LoginRequest_$reflection(), class_type("Microsoft.FSharp.Control.FSharpAsync`1", [union_type("Microsoft.FSharp.Core.FSharpResult`2", [unit_type, string_type], FSharpResult$2, () => [[["ResultValue", unit_type]], [["ErrorValue", string_type]]])]))], ["logout", lambda_type(unit_type, class_type("Microsoft.FSharp.Control.FSharpAsync`1", [unit_type]))], ["register", lambda_type(RegisterRequest_$reflection(), class_type("Microsoft.FSharp.Control.FSharpAsync`1", [union_type("Microsoft.FSharp.Core.FSharpResult`2", [unit_type, RegisterFailure_$reflection()], FSharpResult$2, () => [[["ResultValue", unit_type]], [["ErrorValue", RegisterFailure_$reflection()]]])]))], ["requestResetPasswordToken", lambda_type(RequestResetPasswordTokenRequest_$reflection(), class_type("Microsoft.FSharp.Control.FSharpAsync`1", [unit_type]))], ["resetPassword", lambda_type(ResetPasswordRequest_$reflection(), class_type("Microsoft.FSharp.Control.FSharpAsync`1", [union_type("Microsoft.FSharp.Core.FSharpResult`2", [unit_type, ResetPasswordError_$reflection()], FSharpResult$2, () => [[["ResultValue", unit_type]], [["ErrorValue", ResetPasswordError_$reflection()]]])]))]]);
 }
 

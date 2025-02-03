@@ -4,22 +4,16 @@ open Fable.Remoting.Client
 open Fable.Core
 open MusicalChairs.Shared.UserApi
 
-let userApi: IUserApi =
+let _userApi: IUserApi =
     Remoting.createApi ()
     |> Remoting.withBaseUrl "http://localhost:5000"
     |> Remoting.withCredentials true
     |> Remoting.buildProxy<IUserApi>
 
-let login req =
-    userApi.login req |> Async.StartAsPromise
-
-let me req = userApi.me req |> Async.StartAsPromise
-
-let register req =
-    userApi.register req |> Async.StartAsPromise
-
-let resetPassword req =
-    userApi.resetPassword req |> Async.StartAsPromise
-
-let requestResetPasswordToken req =
-    userApi.requestResetPasswordToken req |> Async.StartAsPromise
+let userApi =
+    {| login = _userApi.login >> Async.StartAsPromise
+       me = _userApi.me >> Async.StartAsPromise
+       register = _userApi.register >> Async.StartAsPromise
+       resetPassword = _userApi.resetPassword >> Async.StartAsPromise
+       requestResetPasswordToken = _userApi.requestResetPasswordToken >> Async.StartAsPromise
+       logout = _userApi.logout >> Async.StartAsPromise |}

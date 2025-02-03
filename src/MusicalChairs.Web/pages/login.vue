@@ -1,8 +1,8 @@
 <template>
-    <main class="flex justify-center items-center h-full">
-        <Card class="p-4 w-3/5 md:w-2/5 bg-background-surface border-primary">
+    <main class="flex justify-center items-center bg-primary h-full">
+        <Card class="p-4 bg-background border-primary w-9/12 xl:w-1/3">
             <CardHeader>
-                <CardTitle>Login</CardTitle>
+                <CardTitle>Welcome Back</CardTitle>
             </CardHeader>
             <AutoForm
                 :form="form"
@@ -26,15 +26,13 @@
             >
                 <div
                     v-if="submitError != null"
-                    class="border border-dashed border-destructive bg-white text-destructive-foreground"
+                    class="border border-dashed border-destructive bg-destructive text-destructive-foreground rounded"
                 >
                     {{ submitError }}
                 </div>
 
                 <div class="flex justify-between items-center mt-4">
-                    <Button
-                        type="submit"
-                    >
+                    <Button type="submit">
                         {{ !submitting ? "Login" : "Logging in..." }}
                     </Button>
 
@@ -55,7 +53,7 @@ import type { ArgumentsType } from "@vueuse/core";
 import { useForm, type SubmissionContext } from "vee-validate";
 import { z } from "zod";
 import { LoginRequest } from "~/utils/generated/MusicalChairs.Shared/UserApi/UserApi";
-import { login } from "~/utils/generated/UserApi";
+import { userApi } from "~/utils/generated/UserApi";
 
 const loginSchema = z.object({
     email: z.string().email(),
@@ -71,7 +69,9 @@ const form = useForm({
 const submitError = ref<string | null>(null);
 async function onSubmit(data: LoginDto) {
     submitError.value = null;
-    const result = await login(new LoginRequest(data.email, data.password));
+    const result = await userApi.login(
+        new LoginRequest(data.email, data.password)
+    );
     if (result.name === "Error") {
         submitError.value = result.fields[0];
         return;

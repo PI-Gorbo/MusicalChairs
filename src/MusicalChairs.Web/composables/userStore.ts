@@ -1,8 +1,10 @@
+import { LogOut } from "lucide-vue-next"
+import { defineStore } from "pinia"
 import type { UserDto } from "~/utils/generated/MusicalChairs.Shared/UserApi/UserApi"
-import { me } from "~/utils/generated/UserApi"
 
 export const useUserStore = defineStore('user-store', () => {
 
+    const api = useApi()
     const state = reactive<{
         user: UserDto | null
     }>({
@@ -10,7 +12,7 @@ export const useUserStore = defineStore('user-store', () => {
     })
 
     async function init() {
-        const result = await me()
+        const result = await api.user.me()
         if (result.name == 'Error') {
             return { authorized: false }
         }
@@ -29,9 +31,19 @@ export const useUserStore = defineStore('user-store', () => {
         return result.authorized
     }
 
+    async function logout() {
+        if (state.user == null) { return }
+
+        await api.user.logout();
+
+        state.user = null;
+        await navigateTo("/");
+    }
+
 
     return {
         init,
-        isLoggedIn
+        isLoggedIn,
+        logout
     }
 })

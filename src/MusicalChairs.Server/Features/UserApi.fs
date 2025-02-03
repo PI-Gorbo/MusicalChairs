@@ -28,10 +28,7 @@ let createUserApiDeps (httpContext: HttpContext) (session: IDocumentSession) : I
 
     { new IUserApiDeps with
         member this.getUserDtoById(userId) =
-            session
-                .Query<User>()
-                .Where(fun user -> user.Id = userId)
-                .FirstAsync()
+            session.Query<User>().Where(fun user -> user.Id = userId).FirstAsync()
             |> Async.AwaitTask
             |> Async.map (fun u ->
                 { UserDto.id = userId
@@ -93,4 +90,11 @@ let createUserApi (deps: IUserApiDeps) : IUserApi =
             }
 
       requestResetPasswordToken = fun _ -> failwith "todo"
-      resetPassword = fun _ -> failwith "todo" }
+      resetPassword = fun _ -> failwith "todo"
+      logout =
+        fun _ ->
+            async {
+                do!
+                    CookieOperations.RemoveCookieFromContext(deps.getHttpContext ())
+                    |> Async.AwaitTask
+            } }
