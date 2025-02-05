@@ -14,6 +14,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
         query: {
             redirectTo: to.path,
         },
-    });
+    }); 
 
 });

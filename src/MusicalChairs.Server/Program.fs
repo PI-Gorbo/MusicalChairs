@@ -113,7 +113,7 @@ let main args =
     builder.Services.AddCors(
         _.AddDefaultPolicy(fun defaultPolicy ->
             defaultPolicy
-                .WithOrigins("http://localhost:3000", "https://localhost:3000")
+                .WithOrigins(builder.Configuration.GetValue<string>("MC:CorsOrigins").Split(";"))
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()
