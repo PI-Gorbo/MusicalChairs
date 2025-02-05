@@ -24,10 +24,4 @@
         <PackageReference Include="GP.MartenIdentity" Version="1.1.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Reference Include="MusicalChairs.Api">
-        <HintPath>..\MusicalChairs.Api\bin\Debug\net9.0\MusicalChairs.Api.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
 </Project>

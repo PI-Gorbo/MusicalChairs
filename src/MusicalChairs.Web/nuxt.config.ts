@@ -54,5 +54,10 @@ export default defineNuxtConfig({
         devOptions: {
             suppressWarnings: true
         }
+    },
+    runtimeConfig: {
+        public: {
+            apiUrl: 'http://localhost:5000'
+        }
     }
 });

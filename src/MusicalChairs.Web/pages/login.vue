@@ -49,11 +49,8 @@
 </template>
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
-import type { ArgumentsType } from "@vueuse/core";
-import { useForm, type SubmissionContext } from "vee-validate";
+import { useForm } from "vee-validate";
 import { z } from "zod";
-import { LoginRequest } from "~/utils/generated/MusicalChairs.Shared/UserApi/UserApi";
-import { userApi } from "~/utils/generated/UserApi";
 
 const loginSchema = z.object({
     email: z.string().email(),
@@ -61,6 +58,7 @@ const loginSchema = z.object({
         required_error: "A password is required",
     }),
 });
+type LoginDto = z.infer<typeof loginSchema>;
 
 const form = useForm({
     validationSchema: toTypedSchema(loginSchema),
@@ -69,16 +67,11 @@ const form = useForm({
 const submitError = ref<string | null>(null);
 async function onSubmit(data: LoginDto) {
     submitError.value = null;
-    const result = await userApi.login(
-        new LoginRequest(data.email, data.password)
-    );
-    if (result.name === "Error") {
-        submitError.value = result.fields[0];
+    
+    const result = await useUserStore().login(data.email, data.password)
+    if (result.error) {
+        submitError.value = result.errorMessage
         return;
     }
-
-    await navigateTo("/home");
 }
-
-type LoginDto = z.infer<typeof loginSchema>;
 </script>

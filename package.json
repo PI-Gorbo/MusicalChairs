@@ -8,7 +8,7 @@
         "server": "cd src/MusicalChairs.Server && dotnet watch run --no-hot-reload",
         "web": "cd src/MusicalChairs.Web && bun run dev",
         "devDb": "docker run -p 5432:5432 --name musicalChairsDb -e POSTGRES_PASSWORD=postgres -d postgres",
-        "docker:build:api" : "cd src/MusicalCHairs.Api && docker build --build-arg $Env:personal_github_token ."
+        "docker:build:server" : "cd src/MusicalCHairs.Server && docker build . --build-arg GITHUB_TOKEN=$Env:personal_github_token"
 
     },
     "devDependencies": {

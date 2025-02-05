@@ -1,5 +1,18 @@
 <template>
     <main class="bg-background w-full h-full">
-        <slot/>
+        <slot />
+        <Dialog :open="appState.hasError">
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>An Error has occurred...</DialogTitle>
+                </DialogHeader>
+                Something went wrong! We are sorry for the inconvenience. Please
+                reload the page and try again.
+            </DialogContent>
+        </Dialog>
     </main>
 </template>
+
+<script setup lang="ts">
+const appState = useAppStateStore();
+</script>

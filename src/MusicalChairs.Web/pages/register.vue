@@ -114,7 +114,6 @@ import type { ArgumentsType } from "@vueuse/core";
 import { useForm, type SubmissionContext } from "vee-validate";
 import { z } from "zod";
 import { RegisterRequest } from "~/utils/generated/MusicalChairs.Shared/UserApi/UserApi";
-import { userApi } from "~/utils/generated/UserApi";
 
 const testPasswordLength = (password: string) => password.length >= 6;
 const testPasswordHasLower = (p: string) => p.match(/[a-z]/) != null;
@@ -159,8 +158,10 @@ const form = useForm({
     validationSchema: toTypedSchema(registerSchema),
 });
 
+
+const api = useApi()
 async function onSubmit(data: RegisterDto) {
-    const result = await userApi.register(
+    const result = await api.user.register(
         new RegisterRequest(data.email, data.password)
     );
     if (result.name === "Error") {

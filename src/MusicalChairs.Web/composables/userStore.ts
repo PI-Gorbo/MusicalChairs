@@ -1,6 +1,6 @@
 import { LogOut } from "lucide-vue-next"
 import { defineStore } from "pinia"
-import type { UserDto } from "~/utils/generated/MusicalChairs.Shared/UserApi/UserApi"
+import { LoginRequest, type UserDto } from "~/utils/generated/MusicalChairs.Shared/UserApi/UserApi"
 
 export const useUserStore = defineStore('user-store', () => {
 
@@ -12,14 +12,18 @@ export const useUserStore = defineStore('user-store', () => {
     })
 
     async function init() {
-        const result = await api.user.me()
-        if (result.name == 'Error') {
+        try {
+            const result = await api.user.me()
+            if (result.name == 'Error') {
+                return { authorized: false }
+            }
+
+            state.user = result.fields[0]
+
+            return { authorized: true }
+        } catch {
             return { authorized: false }
         }
-
-        state.user = result.fields[0]
-
-        return { authorized: true }
     }
 
     async function isLoggedIn() {
@@ -31,19 +35,39 @@ export const useUserStore = defineStore('user-store', () => {
         return result.authorized
     }
 
+    async function login(email: string, password: string): Promise<{ error: true; errorMessage: string } | { error: false }> {
+        const result = await api.user.login(
+            new LoginRequest(email, password)
+        );
+        if (result.name === "Error") {
+            return { error: true, errorMessage: result.fields[0] };
+        }
+
+        await init()
+
+        await navigateTo("/home");
+
+        return { error: false }
+    }
+
     async function logout() {
-        if (state.user == null) { return }
+        try {
+            if (state.user == null) { return }
 
-        await api.user.logout();
+            await api.user.logout();
 
-        state.user = null;
-        await navigateTo("/");
+            state.user = null;
+            await navigateTo("/");
+        } catch {
+
+        }
     }
 
 
     return {
         init,
         isLoggedIn,
-        logout
+        logout,
+        login
     }
 })
