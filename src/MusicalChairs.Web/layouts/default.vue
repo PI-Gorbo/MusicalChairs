@@ -8,6 +8,9 @@
                 </DialogHeader>
                 Something went wrong! We are sorry for the inconvenience. Please
                 reload the page and try again.
+                <Button variant="destructive" @click="reloadPage">
+                    Reload
+                </Button>
             </DialogContent>
         </Dialog>
     </main>
@@ -15,4 +18,7 @@
 
 <script setup lang="ts">
 const appState = useAppStateStore();
+function reloadPage() {
+    window.location.reload()
+}
 </script>
