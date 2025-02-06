@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Remoting_buildProxy_64DC51C } from "./fable_modules/Fable.Remoting.Client.7.32.0/Remoting.fs.js";
 import { RemotingModule_createApi, RemotingModule_withBaseUrl, RemotingModule_withCredentials } from "./fable_modules/Fable.Remoting.Client.7.32.0/Remoting.fs.js";
 import { ResetPasswordError_$union, ResetPasswordRequest, RequestResetPasswordTokenRequest, RegisterFailure_$union, RegisterRequest, UserDto, LoginRequest, IUserApi, IUserApi_$reflection } from "./MusicalChairs.Shared/UserApi/UserApi.js";

@@ -27,8 +27,19 @@
 <script setup lang="ts">
 import Button from "~/components/ui/button/Button.vue";
 
-//@ts-ignore
-definePageMeta({
-    middleware: ['redirect-when-logged-in']
-});
+const checkLoggedIn = useAsyncData(
+    "check-logged-in-index",
+    async () => {
+        const userStore = useUserStore();
+        const isLoggedIn = await userStore.isLoggedIn();
+        if (isLoggedIn) {
+            return navigateTo({
+                path: "/home",
+            });
+        }
+    },
+    {
+        server: false,
+    }
+);
 </script>
