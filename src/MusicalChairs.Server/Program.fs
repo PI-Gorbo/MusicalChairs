@@ -48,8 +48,8 @@ let main args =
 
             storeOptions.RegisterIdentityModels<User, UserRole>() |> ignore
 
-            if builder.Environment.IsDevelopment() then
-                storeOptions.AutoCreateSchemaObjects <- AutoCreate.All
+            // if builder.Environment.IsDevelopment() then
+            storeOptions.AutoCreateSchemaObjects <- AutoCreate.All
 
             storeOptions
         )
