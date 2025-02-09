@@ -1,6 +1,6 @@
 export default defineNuxtRouteMiddleware(async (to) => {
 
-    if (import.meta.server || !to.meta.requiresAuth) return;
+    if (!to.meta.requiresAuth) return;
 
     const userStore = useUserStore();
     const isLoggedIn = await userStore.isLoggedIn();
@@ -14,6 +14,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
         query: {
             redirectTo: to.path,
         },
-    }); 
+    });
 
 });

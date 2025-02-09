@@ -125,9 +125,6 @@ let main args =
     // Add Logger
     builder.Logging.AddConsole() |> ignore
 
-    // Set URLs
-    builder.WebHost.UseUrls("http://localhost:5000") |> ignore
-
     let app = builder.Build()
 
     app.UseCors() |> ignore

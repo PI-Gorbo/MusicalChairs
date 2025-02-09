@@ -7,7 +7,8 @@ export default defineNuxtConfig({
         "@nuxtjs/tailwindcss",
         "shadcn-nuxt",
         "@pinia/nuxt",
-        "@vite-pwa/nuxt"
+        "@vite-pwa/nuxt",
+        "@nuxtjs/device",
     ],
     shadcn: {
         /**
@@ -24,8 +25,8 @@ export default defineNuxtConfig({
         registerType: "autoUpdate",
         registerWebManifestInRouteRules: true,
         manifest: {
-            name: "musical chairs",
-            short_name: "musical chairs",
+            name: "Musical Chairs",
+            short_name: "Musical Chairs",
             description: "An app about musical chairs...",
             lang: "en",
             orientation: "portrait",
@@ -40,11 +41,16 @@ export default defineNuxtConfig({
         },
         devOptions: {
             enabled: true,
+            suppressWarnings: true
         },
+    },
+    device: {
+        defaultUserAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.39 Safari/537.36'
     },
     runtimeConfig: {
         public: {
-            apiUrl: 'http://localhost:5000'
+            apiUrl: 'http://localhost:5000',
+            device: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.39 Safari/537.36'
         }
     },
     css: [

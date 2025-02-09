@@ -15,12 +15,12 @@
                 </div>
                 <div class="flex justify-between">
                     <NuxtLink to="/register">
-                        <Button>
-                            Sign up for free
-                        </Button>
+                        <Button> Sign up for free </Button>
                     </NuxtLink>
                     <NuxtLink to="/login">
-                        <Button class="bg-accent hover:brightness-95"> Log in </Button>
+                        <Button class="bg-accent hover:brightness-95">
+                            Log in
+                        </Button>
                     </NuxtLink>
                 </div>
             </article>

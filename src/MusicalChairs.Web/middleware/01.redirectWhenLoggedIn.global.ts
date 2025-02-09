@@ -1,6 +1,6 @@
 export default defineNuxtRouteMiddleware(async (to) => {
 
-    if (import.meta.server || to.name == 'index' || to.meta.requiresAuth) return;
+    if (to.name == 'index' || to.meta.requiresAuth) return;
 
     const userStore = useUserStore();
     const isLoggedIn = await userStore.isLoggedIn();
@@ -9,5 +9,4 @@ export default defineNuxtRouteMiddleware(async (to) => {
             path: "/home",
         });
     }
-
 });

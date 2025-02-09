@@ -1,90 +1,80 @@
 <template>
-    <div class="overflow-y-auto flex justify-center">
+    <div class="flex justify-center">
         <div class="max-w-page w-full">
             <section>
-                <header class="text-xl font-semibold py-2">Active Jobs</header>
-                <ul class="flex flex-col gap-2">
-                    <Card v-for="index in 5">
-                        <CardHeader
-                            class="px-2 pt-1 pb-0 flex flex-row items-center"
-                            ><span class="flex-1">Job Name</span>
-                            <div class="flex text-sm gap-2">
-                                <Button variant="ghost" class="p-2">
-                                    <FontAwesomeIcon size="sm" :icon="faPen" />
-                                    <span class="text-sm">Edit</span>
-                                </Button>
-                                <Button class="p-2" variant="destructive">
-                                    <FontAwesomeIcon
-                                        size="sm"
-                                        :icon="faTrash"
-                                    />
-                                    <span class="text-sm">Delete</span>
-                                </Button>
-                            </div>
-                        </CardHeader>
-                        <CardContent class="py-2 px-4 text-sm">
-                            <div>Tenor - 4 positions | 0 contacts</div>
-                            <div>
-                                <FontAwesomeIcon size="sm" :icon="faCheck" />
-                                Completed Email
-                            </div>
-                            <div>
-                                <FontAwesomeIcon size="sm" :icon="faX" />
-                                Missing Contacts
-                            </div>
-                        </CardContent>
-                    </Card>
-                </ul>
+                <header class="text-xl font-semibold py-2">Jobs</header>
+
+                <Card>
+                    <CardContent
+                        class="rounded bg-background"
+                        :class="[
+                            displayMode.isWeb.value
+                                ? 'p-3 grid grid-rows-2 grid-flow-col-dense w-fit overflow-x-auto gap-3'
+                                : 'p-0 w-full flex flex-col relative overflow-x-hidden',
+                        ]"
+                    >
+                        <template v-if="displayMode.isMobile.value">
+                            <MobileSwipableBar
+                                v-for="index in 5"
+                                :key="index"
+                                :class="[
+                                    {
+                                        'rounded-t-lg': index == 1,
+                                        'rounded-b-lg': index == 5,
+                                    },
+                                ]"
+                            >
+                                <template #overlay>Overlay</template>
+                                <template #underlay-left>
+                                    <Button
+                                        class="border-r-lg border-l-0 border-accent h-full"
+                                    >
+                                        <FontAwesomeIcon :icon="faPencil" />
+                                        Edit
+                                    </Button>
+                                </template>
+                            </MobileSwipableBar>
+                        </template>
+                        <template v-else>
+                            <section
+                                v-for="index in 5"
+                                ref="jobItems"
+                                :index="index"
+                                :class="['rounded']"
+                            >
+                                Web
+                            </section>
+                        </template>
+                    </CardContent>
+                </Card>
             </section>
-            <section>
+
+            <!-- <section>
                 <header class="text-xl font-semibold py-2">
                     Your Draft Jobs
                 </header>
-                <ul class="flex flex-col gap-2">
-                    <Card v-for="index in 5">
-                        <CardHeader
-                            class="px-2 pt-1 pb-0 flex flex-row items-center"
-                            ><span class="flex-1">Job Name</span>
-                            <div class="flex text-sm gap-2">
-                                <Button variant="ghost" class="p-2">
-                                    <FontAwesomeIcon size="sm" :icon="faPen" />
-                                    <span class="text-sm">Edit</span>
-                                </Button>
-                                <Button class="p-2" variant="destructive">
-                                    <FontAwesomeIcon
-                                        size="sm"
-                                        :icon="faTrash"
-                                    />
-                                    <span class="text-sm">Delete</span>
-                                </Button>
-                            </div>
-                        </CardHeader>
-                        <CardContent class="py-2 px-4 text-sm">
-                            <div>Tenor - 4 positions | 0 contacts</div>
-                            <div>
-                                <FontAwesomeIcon size="sm" :icon="faCheck" />
-                                Completed Email
-                            </div>
-                            <div>
-                                <FontAwesomeIcon size="sm" :icon="faX" />
-                                Missing Contacts
-                            </div>
-                        </CardContent>
-                    </Card>
-                </ul>
-            </section>
+                <Card>
+                    <CardContent v-for="index in 5" class="py-2 px-4 text-sm">
+                        <div>Job Name</div>
+                        <div>
+                            <FontAwesomeIcon size="sm" :icon="faCheck" />
+                            Completed Email
+                        </div>
+                        <div>
+                            <FontAwesomeIcon size="sm" :icon="faX" />
+                            Missing Contacts
+                        </div>
+                    </CardContent>
+                </Card>
+            </section> -->
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import {
-    faCheck,
-    faPen,
-    faTrash,
-    faX,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faPencil } from "@fortawesome/free-solid-svg-icons";
+
+const displayMode = useDisplayMode();
 
 definePageMeta({
     requiresAuth: true,

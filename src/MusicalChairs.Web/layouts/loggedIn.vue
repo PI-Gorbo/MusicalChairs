@@ -1,10 +1,6 @@
 <template>
     <NuxtLayout name="default">
-        <div
-            class="flex flex-col"
-          
-        >
-        
+        <div class="flex flex-col h-full">
             <nav class="flex bg-primary items-center px-2 justify-between">
                 <NuxtLink
                     to="/home"
@@ -14,7 +10,7 @@
                 </NuxtLink>
                 <div
                     v-if="displayMode.isWeb.value"
-                    class="flex flex-1 justify-end gap-1 px-28 overflow-y-auto"
+                    class="flex flex-1 justify-end gap-1 px-28"
                 >
                     <NuxtLink to="/jobs">
                         <Button class="bg-primary-shade text-center">
@@ -47,12 +43,14 @@
                     />
                 </div>
             </nav>
-            <div class="px-4 flex-1 overflow-y-scroll">
-                <NuxtPage />
-            </div>
+            <section class="flex-1 overflow-y-auto">
+                <div class="max-h-full h-full px-2">
+                    <NuxtPage />
+                </div>
+            </section>
             <footer
                 v-if="displayMode.isMobile.value"
-                class="bg-primary w-full py-1 flex justify-center gap-3 px-2 h-[7.5%]"
+                class="bg-primary w-full py-1 flex justify-center gap-3 px-2 h-[7.5%] min-h-fit"
             >
                 <div class="grid grid-cols-3 grid-rows-1 items-center">
                     <NuxtLink to="/jobs">
