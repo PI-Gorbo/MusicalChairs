@@ -59,11 +59,6 @@ export default defineNuxtConfig({
             mode: 'out-in'
         }
     },
-    routeRules: {
-        // "/api/**": {
-        //     proxy: { to: process.env.NUXT_PUBLIC_API_URL ?? 'http://localhost:5000/**' },
-        // }
-    },
     typescript: {
         typeCheck: false,
         strict: false

@@ -39,12 +39,12 @@
                 />
             </div>
         </nav>
-        <div class="px-4">
-            <NuxtPage />
+        <div class="px-4 flex-1">
+            <NuxtPage class="overflow-y-auto"/>
         </div>
         <footer
             v-if="displayMode.isMobile.value" 
-            class="bg-primary fixed bottom-0 w-full py-1 flex justify-center gap-3 px-2 h-[7.5%]"
+            class="bg-primary w-full py-1 flex justify-center gap-3 px-2 h-[7.5%]"
         >
             <div class="grid grid-cols-3 grid-rows-1 items-center">
                 <NuxtLink to="/jobs">

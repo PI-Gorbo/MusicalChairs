@@ -2,7 +2,8 @@ import { createApi } from "~/utils/generated/UserApi"
 
 export default defineNuxtPlugin(nuxtApp => {
 
-    const api = createApi("/api/")
+    const runtimeConig = useRuntimeConfig()
+    const api = createApi(runtimeConig.public.apiUrl)
 
     return {
         provide: {
