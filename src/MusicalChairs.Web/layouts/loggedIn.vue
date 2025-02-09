@@ -1,84 +1,93 @@
 <template>
     <NuxtLayout name="default">
-        <nav class="flex bg-primary items-center px-2 justify-between">
-            <NuxtLink to="/home" class="p-4 text-primary-foreground font-semibold text-lg">
-                Musical Chairs
-            </NuxtLink>
-            <div
-                v-if="displayMode.isWeb.value"
-                class="flex flex-1 justify-end gap-1 px-28 overflow-y-auto"
-            >
-                <NuxtLink to="/jobs">
-                    <Button class="bg-primary-shade text-center">
-                        <FontAwesomeIcon :icon="faPersonRunning" />
-                        Jobs
-                    </Button>
-                </NuxtLink>
-                <NuxtLink to="/drafts">
-                    <Button class="bg-primary-shade text-center">
-                        <FontAwesomeIcon :icon="faAddressBook" />
-                        Drafts
-                    </Button>
-                </NuxtLink>
-                <NuxtLink to="/profile">
-                    <Button class="bg-primary-shade text-center">
-                        <FontAwesomeIcon :icon="faCircleUser" />
-                        Your Profile
-                    </Button>
-                </NuxtLink>
-            </div>
-            <div class="px-4">
-                <AsyncButton
-                    :async="{
-                        type: 'Click',
-                        label: 'Log Out',
-                        loadingLabel: 'Logging Out...',
-                        icon: faRightToBracket,
-                        click: logout,
-                    }"
-                />
-            </div>
-        </nav>
-        <div class="px-4 flex-1">
-            <NuxtPage class="overflow-y-auto"/>
-        </div>
-        <footer
-            v-if="displayMode.isMobile.value" 
-            class="bg-primary w-full py-1 flex justify-center gap-3 px-2 h-[7.5%]"
+        <div
+            class="flex flex-col"
+          
         >
-            <div class="grid grid-cols-3 grid-rows-1 items-center">
-                <NuxtLink to="/jobs">
-                    <Button
-                        class="bg-primary shadow-none text-center flex flex-col h-fit"
-                    >
-                        <div>
+        
+            <nav class="flex bg-primary items-center px-2 justify-between">
+                <NuxtLink
+                    to="/home"
+                    class="p-4 text-primary-foreground font-semibold text-lg"
+                >
+                    Musical Chairs
+                </NuxtLink>
+                <div
+                    v-if="displayMode.isWeb.value"
+                    class="flex flex-1 justify-end gap-1 px-28 overflow-y-auto"
+                >
+                    <NuxtLink to="/jobs">
+                        <Button class="bg-primary-shade text-center">
                             <FontAwesomeIcon :icon="faPersonRunning" />
-                        </div>
-                        <div class="text-sm">Jobs</div>
-                    </Button>
-                </NuxtLink>
-                <NuxtLink to="/drafts">
-                    <Button
-                        class="bg-primary shadow-none text-center flex flex-col h-fit"
-                    >
-                        <div>
+                            Jobs
+                        </Button>
+                    </NuxtLink>
+                    <NuxtLink to="/drafts">
+                        <Button class="bg-primary-shade text-center">
                             <FontAwesomeIcon :icon="faAddressBook" />
-                        </div>
-                        <div class="text-sm">Drafts</div>
-                    </Button>
-                </NuxtLink>
-                <NuxtLink to="/profile">
-                    <Button
-                        class="bg-primary shadow-none text-center flex flex-col h-fit"
-                    >
-                        <div>
+                            Drafts
+                        </Button>
+                    </NuxtLink>
+                    <NuxtLink to="/profile">
+                        <Button class="bg-primary-shade text-center">
                             <FontAwesomeIcon :icon="faCircleUser" />
-                        </div>
-                        <div class="text-sm">Your Profile</div>
-                    </Button>
-                </NuxtLink>
+                            Your Profile
+                        </Button>
+                    </NuxtLink>
+                </div>
+                <div class="px-4">
+                    <AsyncButton
+                        :async="{
+                            type: 'Click',
+                            label: 'Log Out',
+                            loadingLabel: 'Logging Out...',
+                            icon: faRightToBracket,
+                            click: logout,
+                        }"
+                    />
+                </div>
+            </nav>
+            <div class="px-4 flex-1 overflow-y-scroll">
+                <NuxtPage />
             </div>
-        </footer>
+            <footer
+                v-if="displayMode.isMobile.value"
+                class="bg-primary w-full py-1 flex justify-center gap-3 px-2 h-[7.5%]"
+            >
+                <div class="grid grid-cols-3 grid-rows-1 items-center">
+                    <NuxtLink to="/jobs">
+                        <Button
+                            class="bg-primary shadow-none text-center flex flex-col h-fit"
+                        >
+                            <div>
+                                <FontAwesomeIcon :icon="faPersonRunning" />
+                            </div>
+                            <div class="text-sm">Jobs</div>
+                        </Button>
+                    </NuxtLink>
+                    <NuxtLink to="/drafts">
+                        <Button
+                            class="bg-primary shadow-none text-center flex flex-col h-fit"
+                        >
+                            <div>
+                                <FontAwesomeIcon :icon="faAddressBook" />
+                            </div>
+                            <div class="text-sm">Drafts</div>
+                        </Button>
+                    </NuxtLink>
+                    <NuxtLink to="/profile">
+                        <Button
+                            class="bg-primary shadow-none text-center flex flex-col h-fit"
+                        >
+                            <div>
+                                <FontAwesomeIcon :icon="faCircleUser" />
+                            </div>
+                            <div class="text-sm">Your Profile</div>
+                        </Button>
+                    </NuxtLink>
+                </div>
+            </footer>
+        </div>
     </NuxtLayout>
 </template>
 
