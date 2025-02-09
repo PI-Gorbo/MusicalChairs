@@ -1,6 +1,6 @@
 <template>
     <main class="flex justify-center items-center bg-primary h-full">
-        <Card class="p-4 bg-background border-primary w-9/12 xl:w-1/3">
+        <Card class="p-4 bg-background w-9/12 xl:w-1/3">
             <CardHeader>
                 <CardTitle>Welcome Back</CardTitle>
             </CardHeader>
@@ -24,24 +24,24 @@
                 :handleSubmit="onSubmit"
                 v-slot="{ submitting }"
             >
-                <div
-                    v-if="submitError != null"
-                    class="border border-dashed border-destructive bg-destructive text-destructive-foreground rounded"
-                >
-                    {{ submitError }}
-                </div>
-
-                <div class="flex justify-between items-center mt-4">
-                    <Button type="submit">
-                        {{ !submitting ? "Login" : "Logging in..." }}
-                    </Button>
-
-                    <NuxtLink
-                        to="/register"
-                        class="underline text-sm cursor-pointer"
+                <div class="flex flex-col gap-2 mt-2">
+                    <div
+                        v-if="submitError != null"
+                        class="border border-dashed border-destructive bg-destructive text-destructive-foreground rounded text-sm px-4"
                     >
-                        Register Instead
-                    </NuxtLink>
+                        {{ submitError }}
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <Button type="submit">
+                            {{ !submitting ? "Login" : "Logging in..." }}
+                        </Button>
+                        <NuxtLink
+                            to="/register"
+                            class="underline text-sm cursor-pointer"
+                        >
+                            Register Instead
+                        </NuxtLink>
+                    </div>
                 </div>
             </AutoForm>
         </Card>
@@ -67,10 +67,10 @@ const form = useForm({
 const submitError = ref<string | null>(null);
 async function onSubmit(data: LoginDto) {
     submitError.value = null;
-    
-    const result = await useUserStore().login(data.email, data.password)
+
+    const result = await useUserStore().login(data.email, data.password);
     if (result.error) {
-        submitError.value = result.errorMessage
+        submitError.value = result.errorMessage;
         return;
     }
 }

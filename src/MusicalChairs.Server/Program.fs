@@ -126,7 +126,7 @@ let main args =
     app.UseCors() |> ignore
 
     let errorHandler (logger: ILogger) (ex: Exception) (routeInfo: RouteInfo<HttpContext>) =
-        // do some logging
+        // Do some logging
         logger.LogError $"Error at {routeInfo.path} on method {routeInfo.methodName} : ${ex}"
 
         // Propagate a general error to the client.

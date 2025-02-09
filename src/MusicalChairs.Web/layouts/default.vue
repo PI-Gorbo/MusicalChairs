@@ -3,7 +3,7 @@
         <slot />
         <Dialog :open="appState.hasError">
             <DialogContent>
-                <DialogHeader>
+                <DialogHeader class="header">
                     <DialogTitle>An Error has occurred...</DialogTitle>
                 </DialogHeader>
                 Something went wrong! We are sorry for the inconvenience. Please
@@ -19,6 +19,6 @@
 <script setup lang="ts">
 const appState = useAppStateStore();
 function reloadPage() {
-    window.location.reload()
+    window.location.reload();
 }
 </script>
