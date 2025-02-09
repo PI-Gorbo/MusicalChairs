@@ -1,4 +1,5 @@
 const animate = require("tailwindcss-animate");
+const typography = require("@tailwindcss/typography");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -43,6 +44,7 @@ module.exports = {
                 primary: {
                     DEFAULT: "hsl(var(--primary))",
                     foreground: "hsl(var(--primary-foreground))",
+                    shade: "hsl(var(--primary-shade))",
                 },
                 secondary: {
                     DEFAULT: "hsl(var(--secondary))",
@@ -88,5 +90,5 @@ module.exports = {
             },
         },
     },
-    plugins: [animate],
+    plugins: [animate, typography],
 };

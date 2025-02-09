@@ -8,17 +8,21 @@
             </nav>
         </header>
         <section class="w-full flex justify-center">
-            <article class="max-w-[1080px]">
-                <h1 >Welcome to Musical Chairs</h1>
-                <h3>Co-Ordination Platform</h3>
-                <NuxtLink to="/login">
-                    <Button variant="secondary"> Log in </Button>
-                </NuxtLink>
-                <NuxtLink to="/register">
-                    <Button class="bg-background text-foreground">
-                        Sign up for free
-                    </Button>
-                </NuxtLink>
+            <article class="max-w-page">
+                <div class="prose pt-14 pb-10">
+                    <h2 class="mb-0">Welcome to Musical Chairs</h2>
+                    <h5>Co-Ordination Platform</h5>
+                </div>
+                <div class="flex justify-between">
+                    <NuxtLink to="/register">
+                        <Button>
+                            Sign up for free
+                        </Button>
+                    </NuxtLink>
+                    <NuxtLink to="/login">
+                        <Button class="bg-accent hover:brightness-95"> Log in </Button>
+                    </NuxtLink>
+                </div>
             </article>
         </section>
     </div>
@@ -26,7 +30,7 @@
 <script setup lang="ts">
 import Button from "~/components/ui/button/Button.vue";
 
-const checkLoggedIn = useAsyncData(
+useAsyncData(
     "check-logged-in-index",
     async () => {
         const userStore = useUserStore();

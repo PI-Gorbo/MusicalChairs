@@ -1,15 +1,39 @@
 <template>
     <NuxtLayout name="default">
-        <nav class="flex bg-primary items-center px-2">
-            <div class="p-4 text-primary-foreground font-semibold text-lg">
+        <nav class="flex bg-primary items-center px-2 justify-between">
+            <NuxtLink to="/home" class="p-4 text-primary-foreground font-semibold text-lg">
                 Musical Chairs
+            </NuxtLink>
+            <div
+                v-if="displayMode.isWeb.value"
+                class="flex flex-1 justify-end gap-1 px-28 overflow-y-auto"
+            >
+                <NuxtLink to="/jobs">
+                    <Button class="bg-primary-shade text-center">
+                        <FontAwesomeIcon :icon="faPersonRunning" />
+                        Jobs
+                    </Button>
+                </NuxtLink>
+                <NuxtLink to="/drafts">
+                    <Button class="bg-primary-shade text-center">
+                        <FontAwesomeIcon :icon="faAddressBook" />
+                        Drafts
+                    </Button>
+                </NuxtLink>
+                <NuxtLink to="/profile">
+                    <Button class="bg-primary-shade text-center">
+                        <FontAwesomeIcon :icon="faCircleUser" />
+                        Your Profile
+                    </Button>
+                </NuxtLink>
             </div>
-            <div>
+            <div class="px-4">
                 <AsyncButton
                     :async="{
                         type: 'Click',
                         label: 'Log Out',
                         loadingLabel: 'Logging Out...',
+                        icon: faRightToBracket,
                         click: logout,
                     }"
                 />
@@ -18,13 +42,59 @@
         <div class="px-4">
             <NuxtPage />
         </div>
+        <footer
+            v-if="displayMode.isMobile.value" 
+            class="bg-primary fixed bottom-0 w-full py-1 flex justify-center gap-3 px-2 h-[7.5%]"
+        >
+            <div class="grid grid-cols-3 grid-rows-1 items-center">
+                <NuxtLink to="/jobs">
+                    <Button
+                        class="bg-primary shadow-none text-center flex flex-col h-fit"
+                    >
+                        <div>
+                            <FontAwesomeIcon :icon="faPersonRunning" />
+                        </div>
+                        <div class="text-sm">Jobs</div>
+                    </Button>
+                </NuxtLink>
+                <NuxtLink to="/drafts">
+                    <Button
+                        class="bg-primary shadow-none text-center flex flex-col h-fit"
+                    >
+                        <div>
+                            <FontAwesomeIcon :icon="faAddressBook" />
+                        </div>
+                        <div class="text-sm">Drafts</div>
+                    </Button>
+                </NuxtLink>
+                <NuxtLink to="/profile">
+                    <Button
+                        class="bg-primary shadow-none text-center flex flex-col h-fit"
+                    >
+                        <div>
+                            <FontAwesomeIcon :icon="faCircleUser" />
+                        </div>
+                        <div class="text-sm">Your Profile</div>
+                    </Button>
+                </NuxtLink>
+            </div>
+        </footer>
     </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-const userStore = useUserStore()
+import {
+    faAddressBook,
+    faCircleUser,
+    faPersonRunning,
+    faRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
+const displayMode = useDisplayMode();
+const userStore = useUserStore();
 
 async function logout() {
-    await userStore.logout()
+    await userStore.logout();
 }
 </script>

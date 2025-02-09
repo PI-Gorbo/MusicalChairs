@@ -1,6 +1,6 @@
 export default defineNuxtRouteMiddleware(async (to) => {
 
-    if (import.meta.server || to.meta.requiresAuth) return;
+    if (import.meta.server || to.name == 'index' || to.meta.requiresAuth) return;
 
     const userStore = useUserStore();
     const isLoggedIn = await userStore.isLoggedIn();

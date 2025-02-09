@@ -1,6 +1,7 @@
 <template>
     <Button :v-bind="props" @click="onClick">
         <span v-if="!isLoading">
+            <FontAwesomeIcon v-if="props.async.icon" :icon="props.async.icon" />
             {{ props.async.label }}
         </span>
         <span v-else>
@@ -12,7 +13,7 @@
 
 <script setup lang="ts">
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faSpinner, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import type { Props } from "./ui/button/Button.vue";
 
 interface AsyncButtonProps extends Props {
@@ -27,6 +28,7 @@ interface AsyncButtonProps extends Props {
           }
     ) & {
         label: string;
+        icon?: IconDefinition;
         loadingLabel: string;
     };
 }

@@ -35,14 +35,18 @@
         --radius: 0.5rem;
 
         --primary: 109 24% 27%;
+        --primary-shade: 109 24% 20%;
         --primary-foreground: 60 9.1% 97.8%;
-        --primary-dark: 109 24% 17%;
 
         --secondary: 33 88% 44%;
         --secondary-foreground: 60 9.1% 97.8%;
 
         --accent: 217 48% 26%;
         --accent-foreground: 60 9.1% 97.8%;
+    }
+
+    .max-w-page {
+        max-width: 1080px;
     }
 }
 

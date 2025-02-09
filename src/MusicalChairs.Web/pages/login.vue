@@ -1,56 +1,58 @@
 <template>
-    <main class="flex justify-center items-center bg-primary h-full">
-        <Card class="p-4 bg-background w-9/12 xl:w-1/3">
-            <CardHeader>
-                <CardTitle>Welcome Back</CardTitle>
-            </CardHeader>
-            <AutoForm
-                :form="form"
-                :schema="loginSchema"
-                :fieldConfig="{
-                    email: {
-                        inputProps: {
-                            type: 'email',
-                            class: 'text-black',
-                        },
+    <Card class="p-4 bg-background">
+        <CardHeader>
+            <CardTitle>Welcome Back</CardTitle>
+        </CardHeader>
+        <AutoForm
+            :form="form"
+            :schema="loginSchema"
+            :fieldConfig="{
+                email: {
+                    inputProps: {
+                        type: 'email',
+                        class: 'text-black',
                     },
-                    password: {
-                        inputProps: {
-                            type: 'password',
-                            class: 'text-black ',
-                        },
+                },
+                password: {
+                    inputProps: {
+                        type: 'password',
+                        class: 'text-black ',
                     },
-                }"
-                :handleSubmit="onSubmit"
-                v-slot="{ submitting }"
-            >
-                <div class="flex flex-col gap-2 mt-2">
-                    <div
-                        v-if="submitError != null"
-                        class="border border-dashed border-destructive bg-destructive text-destructive-foreground rounded text-sm px-4"
-                    >
-                        {{ submitError }}
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <Button type="submit">
-                            {{ !submitting ? "Login" : "Logging in..." }}
-                        </Button>
-                        <NuxtLink
-                            to="/register"
-                            class="underline text-sm cursor-pointer"
-                        >
-                            Register Instead
-                        </NuxtLink>
-                    </div>
+                },
+            }"
+            :handleSubmit="onSubmit"
+            v-slot="{ submitting }"
+        >
+            <div class="flex flex-col gap-2 mt-2">
+                <div
+                    v-if="submitError != null"
+                    class="border border-dashed border-destructive bg-destructive text-destructive-foreground rounded text-sm px-4"
+                >
+                    {{ submitError }}
                 </div>
-            </AutoForm>
-        </Card>
-    </main>
+                <div class="flex justify-between items-center">
+                    <Button type="submit">
+                        {{ !submitting ? "Login" : "Logging in..." }}
+                    </Button>
+                    <NuxtLink
+                        to="/register"
+                        class="underline text-sm cursor-pointer"
+                    >
+                        Register Instead
+                    </NuxtLink>
+                </div>
+            </div>
+        </AutoForm>
+    </Card>
 </template>
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import { z } from "zod";
+
+definePageMeta({
+    layout: "auth",
+});
 
 const loginSchema = z.object({
     email: z.string().email(),
