@@ -16,6 +16,7 @@
     "@nuxtjs/color-mode": "^3.5.2",
     "@nuxtjs/tailwindcss": "^6.13.1",
     "@pinia/nuxt": "0.9.0",
+    "@tailwindcss/typography": "^0.5.16",
     "@unovis/ts": "^1.5.0",
     "@unovis/vue": "^1.5.0",
     "@vee-validate/zod": "^4.15.0",
