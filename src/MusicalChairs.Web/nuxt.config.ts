@@ -42,9 +42,9 @@ export default defineNuxtConfig({
             enabled: true,
         },
     },
-    runtimeConfig: {
-        apiUrl: 'http://localhost:5000'
-    },
+    // runtimeConfig: {
+    //     apiUrl: 'http://localhost:5000'
+    // },
     css: [
         '@fortawesome/fontawesome-svg-core/styles.css'
     ],
@@ -55,6 +55,11 @@ export default defineNuxtConfig({
         pageTransition: {
             name: 'page',
             mode: 'out-in'
+        }
+    },
+    routeRules: {
+        "/api/**": {
+            proxy: process.env.NUXT_API_URL ?? 'http://localhost:5000/**'
         }
     },
     typescript: {
