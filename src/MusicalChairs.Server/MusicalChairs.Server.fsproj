@@ -17,6 +17,7 @@
     <PackageReference Include="FSharp.SystemTextJson" Version="1.3.13" />
     <PackageReference Include="GP.IdentityEndpoints" Version="1.3.3" />
     <PackageReference Include="GP.MartenIdentity" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.1" />
     
   </ItemGroup>
 

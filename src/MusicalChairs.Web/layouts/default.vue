@@ -8,6 +8,8 @@
                 </DialogHeader>
                 Something went wrong! We are sorry for the inconvenience. Please
                 reload the page and try again.
+
+                {{ appState.state.error.error }}
                 <Button variant="destructive" @click="reloadPage">
                     Reload
                 </Button>

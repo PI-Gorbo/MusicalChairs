@@ -6,6 +6,7 @@ open Marten
 open Microsoft.AspNetCore.Authentication.Cookies
 open Microsoft.AspNetCore.Authorization
 open Microsoft.AspNetCore.Builder
+open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Identity
 open Microsoft.Extensions.Configuration
@@ -120,6 +121,12 @@ let main args =
             |> ignore)
     )
     |> ignore
+
+    // Add Logger
+    builder.Logging.AddConsole() |> ignore
+
+    // Set URLs
+    builder.WebHost.UseUrls("http://*:5000") |> ignore
 
     let app = builder.Build()
 

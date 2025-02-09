@@ -5,7 +5,7 @@ export function useApi() {
     const api = nuxtApp.$api
 
     function handleError(error) {
-        appStateStore.setError("Something went wrong!", error)
+        appStateStore.setError(`Something went wrongs! ${JSON.stringify(error)}`, error)
         return error;
     }
 

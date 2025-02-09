@@ -41,7 +41,7 @@ export default defineNuxtConfig({
             short_name: "musical chairs",
             description: "An app about musical chairs...",
             lang: "en",
-            orientation: "portrait",    
+            orientation: "portrait",
             icons: [
                 {
                     src: "band.png",
@@ -52,12 +52,10 @@ export default defineNuxtConfig({
             theme_color: 'hsl(109 24% 27%)'
         },
         devOptions: {
-            suppressWarnings: true
+            enabled: true,
         }
     },
     runtimeConfig: {
-        public: {
-            apiUrl: 'http://localhost:5000'
-        }
-    }
+        apiUrl: 'http://localhost:5000'
+    },
 });
