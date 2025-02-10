@@ -1,8 +1,5 @@
 <template>
-    <div
-        ref="container"
-        class="relative flex overflow-hidden select-none border py-4"
-    >
+    <div ref="container" class="relative flex overflow-hidden select-none">
         <div
             ref="target"
             class="absolute top-0 left-0 w-full h-full bg-background z-10"
@@ -11,7 +8,7 @@
         >
             <slot name="overlay" />
         </div>
-        <div class="z-0 w-full flex justify-between">
+        <div class="z-0 w-full h-full flex justify-between bg-black text-white">
             <div ref="underlay-left">
                 <slot name="underlay-left" />
             </div>
@@ -27,12 +24,11 @@ import type { UseSwipeDirection } from "@vueuse/core";
 import { useSwipe } from "@vueuse/core";
 import { computed, ref } from "vue";
 
-const target = ref<HTMLElement | null>(null);
-const container = ref<HTMLElement | null>(null);
+const target = useTemplateRef("target");
+const container = useTemplateRef("container");
 const containerWidth = computed(() => container.value?.offsetWidth);
 const left = ref("0");
 const right = ref("0");
-const opacity = ref(1);
 
 const underlayLeft = useTemplateRef("underlay-left");
 const underlayRight = useTemplateRef("underlay-right");
@@ -40,24 +36,25 @@ const underlayRight = useTemplateRef("underlay-right");
 const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, {
     passive: false,
     onSwipe(e: TouchEvent) {
+        // debugger;
         if (containerWidth.value) {
             console.log(direction.value);
             if (
                 direction.value == "right" &&
-                underlayRight.value.clientWidth > 0
-            ) {
-                const length = Math.min(
-                    Math.abs(lengthX.value),
-                    underlayRight.value.clientWidth
-                );
-                left.value = `${length}px`;
-            } else if (
-                direction.value == "left" &&
                 underlayLeft.value.clientWidth > 0
             ) {
                 const length = Math.min(
                     Math.abs(lengthX.value),
                     underlayLeft.value.clientWidth
+                );
+                left.value = `${length}px`;
+            } else if (
+                direction.value == "left" &&
+                underlayRight.value.clientWidth > 0
+            ) {
+                const length = Math.min(
+                    Math.abs(lengthX.value),
+                    underlayRight.value.clientWidth
                 );
                 left.value = `${-1 * length}px`;
             }
@@ -75,7 +72,6 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, {
         //     opacity.value = 1;
         // } else {
         left.value = "0";
-        opacity.value = 1;
         // }
     },
     threshold: 40,

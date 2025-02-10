@@ -18,16 +18,17 @@
                                 v-for="index in 5"
                                 :key="index"
                                 :class="[
+                                    'border',
                                     {
-                                        'rounded-t-lg': index == 1,
-                                        'rounded-b-lg': index == 5,
+                                        'rounded-t': index == 1,
+                                        'rounded-b': index == 5,
                                     },
                                 ]"
                             >
                                 <template #overlay>Overlay</template>
                                 <template #underlay-left>
                                     <Button
-                                        class="border-r-lg border-l-0 border-accent h-full"
+                                        class="rounded-none border-none bg-accent h-full"
                                     >
                                         <FontAwesomeIcon :icon="faPencil" />
                                         Edit
@@ -73,7 +74,7 @@
 
 <script setup lang="ts">
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
-
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 const displayMode = useDisplayMode();
 
 definePageMeta({
