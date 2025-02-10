@@ -50,35 +50,35 @@
             </section>
             <footer
                 v-if="displayMode.isMobile.value"
-                class="bg-primary w-full py-1 flex justify-center gap-3 px-2 h-[7.5%] min-h-fit"
+                class="bg-primary w-full py-1 flex justify-center gap-3 px-2 h-fit"
             >
                 <div class="grid grid-cols-3 grid-rows-1 items-center">
                     <NuxtLink to="/jobs">
                         <Button
-                            class="bg-primary shadow-none text-center flex flex-col h-fit"
+                            class="bg-primary shadow-none text-center flex flex-col h-fit p-1"
                         >
                             <div>
-                                <FontAwesomeIcon :icon="faPersonRunning" />
+                                <FontAwesomeIcon :icon="faPersonRunning" size="sm"/>
                             </div>
                             <div class="text-sm">Jobs</div>
                         </Button>
                     </NuxtLink>
                     <NuxtLink to="/drafts">
                         <Button
-                            class="bg-primary shadow-none text-center flex flex-col h-fit"
+                            class="bg-primary shadow-none text-center flex flex-col h-fit p-1"
                         >
                             <div>
-                                <FontAwesomeIcon :icon="faAddressBook" />
+                                <FontAwesomeIcon :icon="faAddressBook" size="sm"/>
                             </div>
                             <div class="text-sm">Drafts</div>
                         </Button>
                     </NuxtLink>
                     <NuxtLink to="/profile">
                         <Button
-                            class="bg-primary shadow-none text-center flex flex-col h-fit"
+                            class="bg-primary shadow-none text-center flex flex-col h-fit p-1"
                         >
                             <div>
-                                <FontAwesomeIcon :icon="faCircleUser" />
+                                <FontAwesomeIcon :icon="faCircleUser" size="sm"/>
                             </div>
                             <div class="text-sm">Your Profile</div>
                         </Button>
