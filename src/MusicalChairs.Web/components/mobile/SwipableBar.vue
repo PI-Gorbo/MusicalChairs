@@ -24,6 +24,11 @@ import type { UseSwipeDirection } from "@vueuse/core";
 import { useSwipe } from "@vueuse/core";
 import { computed, ref } from "vue";
 
+const emit = defineEmits<{
+    "underlay-left-activated": [];
+    "underlay-right-activated": [];
+}>();
+
 const target = useTemplateRef("target");
 const container = useTemplateRef("container");
 const containerWidth = computed(() => container.value?.offsetWidth);
@@ -38,7 +43,6 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, {
     onSwipe(e: TouchEvent) {
         // debugger;
         if (containerWidth.value) {
-            console.log(direction.value);
             if (
                 direction.value == "right" &&
                 underlayLeft.value.clientWidth > 0
@@ -63,24 +67,23 @@ const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, {
         }
     },
     onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection) {
-        // if (
-        //     lengthX.value < 0 &&
-        //     containerWidth.value &&
-        //     Math.abs(lengthX.value) / containerWidth.value >= 0.5
-        // ) {
-        //     left.value = "100%";
-        //     opacity.value = 1;
-        // } else {
-        left.value = "0";
-        // }
+        setTimeout(() => {
+            left.value = "0";
+        }, 100);
+
+        if (
+            Number(left.value.replace("px", "")) ==
+            underlayLeft.value.clientWidth
+        ) {
+            emit("underlay-left-activated");
+        }
     },
-    threshold: 40,
 });
 </script>
 
 <style scoped>
 .overlay.animated {
-    transition: all 0.2s ease-in-out;
+    transition: left 10s ease-in-out;
 }
 
 .status {

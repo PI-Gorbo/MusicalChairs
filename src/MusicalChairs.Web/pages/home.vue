@@ -24,6 +24,7 @@
                                         'rounded-b': index == 5,
                                     },
                                 ]"
+                                @underlay-left-activated="() => onEdit(index)"
                             >
                                 <template #overlay>Overlay</template>
                                 <template #underlay-left>
@@ -76,6 +77,10 @@
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 const displayMode = useDisplayMode();
+
+async function onEdit(id: string) {
+    await navigateTo(`/jobs/${id}`)
+}
 
 definePageMeta({
     requiresAuth: true,
