@@ -24,17 +24,13 @@
                                         'rounded-b': index == 5,
                                     },
                                 ]"
-                                @underlay-left-activated="() => onEdit(index)"
+                                :left-overlay="{
+                                    icon: faPencil,
+                                    colour: 'primary',
+                                    triggered: () => onEdit(index),
+                                }"
                             >
                                 <template #overlay>Overlay</template>
-                                <template #underlay-left>
-                                    <Button
-                                        class="rounded-none border-none bg-accent h-full"
-                                    >
-                                        <FontAwesomeIcon :icon="faPencil" />
-                                        Edit
-                                    </Button>
-                                </template>
                             </MobileSwipableBar>
                         </template>
                         <template v-else>
@@ -79,7 +75,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 const displayMode = useDisplayMode();
 
 async function onEdit(id: string) {
-    await navigateTo(`/jobs/${id}`)
+    await navigateTo(`/jobs/${id}`);
 }
 
 definePageMeta({
