@@ -3,12 +3,12 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "concurrently \"bun run genTS\" \"bun run server\" \"bun run web\" -n \"genTS,server,web\"",
+        "dev": "bun run devDb:start && concurrently \"bun run genTS\" \"bun run server\" \"bun run web\" -n \"genTS,server,web\"",
         "genTS": "cd src/MusicalChairs.Client && dotnet fable watch --lang ts -o ../MusicalChairs.Web/utils/generated/",
         "server": "cd src/MusicalChairs.Server && dotnet watch run --no-hot-reload",
         "web": "cd src/MusicalChairs.Web && bun run dev --host",
-        "devDb": "docker run -p 5432:5432 --name musicalChairsDb -e POSTGRES_PASSWORD=postgres -d postgres",
-        
+        "devDb:create": "docker run -p 5432:5432 --name musicalChairsDb -e POSTGRES_PASSWORD=postgres -d postgres",
+        "devDb:start": "docker start musicalChairsDb",
         "docker:build:server": "cd src/MusicalCHairs.Server && docker build . --build-arg GITHUB_TOKEN=$Env:personal_github_token"
     },
     "devDependencies": {

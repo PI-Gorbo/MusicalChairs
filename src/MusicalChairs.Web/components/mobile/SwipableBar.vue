@@ -9,7 +9,7 @@
             <slot name="overlay" />
         </div>
         <div
-            class="z-0 w-full h-full flex justify-between bg-black text-white "
+            class="z-0 w-full h-full flex justify-between bg-black text-white"
             :class="[direction == 'right' && `bg-${props.leftOverlay.colour}`]"
         >
             <div ref="underlay-left">
@@ -64,59 +64,42 @@ const pixels = (number: number) => `${number}px`;
 const { direction, isSwiping, lengthX, lengthY } = useSwipe(target, {
     passive: false,
     onSwipe(e: TouchEvent) {
-        // debugger;
         if (containerWidth.value) {
-            if (
-                direction.value == "right" &&
-                underlayLeft.value.clientWidth > 0
-            ) {
-                const length = Math.abs(lengthX.value);
-                // Math.min(
-                //     underlayLeft.value.clientWidth
-                // );
-                left.value = pixels(length);
-            } else if (
-                direction.value == "left" &&
-                underlayRight.value.clientWidth > 0
-            ) {
-                const length = Math.abs(lengthX.value);
+            let length = lengthX.value;
 
-                //     Math.min(
-
-                //     underlayRight.value.clientWidth
-                // );
-                left.value = pixels(-length);
+            // If there is no left, ensure the left.value cannot be negative.
+            if (underlayLeft.value.clientWidth == 0) {
+                length = Math.max(0, length);
             }
+
+            // If there is no right, ensure the left.value cannot be greater than zero
+            if (underlayRight.value.clientWidth == 0) {
+                length = Math.min(0, length);
+            }
+
+            left.value = pixels(-length);
         } else {
             left.value = "0";
         }
     },
     onSwipeEnd(e: TouchEvent, direction: UseSwipeDirection) {
-        // debugger;
-        console.log(container.value.getBoundingClientRect().left);
-        console.log(container.value.clientWidth * 0.3);
-        console.log(Number(left.value.replace("px", "")));
-
         if (
-            underlayLeft.value.getBoundingClientRect().right <=
+            underlayLeft.value.getBoundingClientRect().right + 10 <=
             Number(left.value.replace("px", ""))
         ) {
             props.leftOverlay.triggered();
             left.value = "100%";
-        } else { 
-            left.value = pixels(0)
+        } else {
+            left.value = pixels(0);
         }
     },
+    threshold: 1,
 });
 </script>
 
 <style scoped>
 .overlay.animated {
-      transition: all 0.2s ease-in-out;
-}
-
-.overlay.return {
-    transition: left 3s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 
 .status {
