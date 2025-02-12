@@ -34,7 +34,7 @@ import { definePageMeta } from "../.nuxt/typed-router/__definePageMeta";
 definePageMeta({
     layoutTransition: {
         name: "index-to-auth",
-        
+        mode: 'out-in'
     },
 });
 
@@ -56,34 +56,12 @@ useAsyncData(
 </script>
 
 <style lang="css" scoped>
-.index-to-auth-enter-active,
-.index-to-auth-leave-active {
-    position: relative;
+.layout-enter-active,
+.layout-leave-active {
+  transition: all 0.4s;
 }
-
-.index-to-auth-enter-from::after,
-.index-to-auth-leave-to::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--primary);
-    transform: translateY(100%);
-    transition: transform 0.4s ease-in-out;
-}
-
-.index-to-auth-enter-active::after {
-    transform: translateY(0);
-}
-
-.index-to-auth-leave-active {
-    opacity: 1;
-    transition: opacity 0.4s ease-in-out;
-}
-
-.index-to-auth-leave-to {
-    opacity: 0;
+.layout-enter-from,
+.layout-leave-to {
+  filter: grayscale(1);
 }
 </style>
