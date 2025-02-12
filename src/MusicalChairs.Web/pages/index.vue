@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="relative">
         <header>
             <nav class="flex bg-primary items-center px-2">
                 <div class="p-4 text-primary-foreground font-semibold text-lg">
@@ -29,6 +29,14 @@
 </template>
 <script setup lang="ts">
 import Button from "~/components/ui/button/Button.vue";
+import { definePageMeta } from "../.nuxt/typed-router/__definePageMeta";
+
+definePageMeta({
+    layoutTransition: {
+        name: "index-to-auth",
+        
+    },
+});
 
 useAsyncData(
     "check-logged-in-index",
@@ -46,3 +54,36 @@ useAsyncData(
     }
 );
 </script>
+
+<style lang="css" scoped>
+.index-to-auth-enter-active,
+.index-to-auth-leave-active {
+    position: relative;
+}
+
+.index-to-auth-enter-from::after,
+.index-to-auth-leave-to::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary);
+    transform: translateY(100%);
+    transition: transform 0.4s ease-in-out;
+}
+
+.index-to-auth-enter-active::after {
+    transform: translateY(0);
+}
+
+.index-to-auth-leave-active {
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.index-to-auth-leave-to {
+    opacity: 0;
+}
+</style>
