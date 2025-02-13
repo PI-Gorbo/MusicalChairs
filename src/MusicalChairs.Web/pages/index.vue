@@ -13,18 +13,15 @@
                     <h2 class="mb-0">Welcome to Musical Chairs</h2>
                     <h5>Co-Ordination Platform</h5>
                 </div>
-                <div class="flex justify-between">
-                    <NuxtLink to="/register">
-                        <Button> Sign up for free </Button>
+                <div class="grid grid-col-1 grid-rows-2">
+                    <NuxtLink to="/register" >
+                        <Button class="w-full"> Sign up for free </Button>
                     </NuxtLink>
                     <NuxtLink to="/login">
-                        <Button class="bg-accent hover:brightness-95">
-                            Log in
-                        </Button>
+                        <div class="text-sm text-muted-foreground">Already got an account? Login instead </div>
                     </NuxtLink>
                 </div>
             </article>
-            <NuxtLink to="/about-us"> About Us </NuxtLink>
         </section>
     </div>
 </template>
