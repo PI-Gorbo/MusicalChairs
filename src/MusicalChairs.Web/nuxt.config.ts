@@ -40,7 +40,7 @@ export default defineNuxtConfig({
             theme_color: 'hsl(109 24% 27%)',
         },
         devOptions: {
-            enabled: true,
+            enabled: false,
             suppressWarnings: true
         },
     },
@@ -61,7 +61,11 @@ export default defineNuxtConfig({
             title: 'Musical Chairs'
         },
         pageTransition: {
-            name: 'page',
+            name: 'slide',
+            mode: 'out-in'
+        },
+        layoutTransition: {
+            name: 'slide',
             mode: 'out-in'
         }
     },

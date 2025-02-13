@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-center">
+    <div class="flex justify-center w-full h-full ">
         <div class="max-w-page w-full">
             <section>
                 <header class="text-xl font-semibold py-2">Jobs</header>

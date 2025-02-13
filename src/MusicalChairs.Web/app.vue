@@ -7,14 +7,23 @@
 </template>
 <script setup lang="ts"></script>
 <style>
-.page-enter-active,
-.page-leave-active {
-    transition: all 0.1s;
+.slide-enter-active {
+    transition: all 0.5s;
+    position: relative;
 }
-.page-enter-from,
-.page-leave-to {
+
+.slide-leave-active {
+    transition: all 0.5s;
+    position: relative;
+}
+
+.slide-enter-from {
+    transform: translateY(100%);
     opacity: 0;
 }
 
-
+.slide-leave-to {
+    transform: translateY(100%);
+    opacity: 0;
+}
 </style>
