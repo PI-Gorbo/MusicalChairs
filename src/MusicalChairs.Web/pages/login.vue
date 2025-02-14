@@ -1,49 +1,67 @@
 <template>
-    <Card class="p-4 bg-background">
-        <CardHeader>
-            <CardTitle>Welcome Back</CardTitle>
-        </CardHeader>
-        <AutoForm
-            :form="form"
-            :schema="loginSchema"
-            :fieldConfig="{
-                email: {
-                    inputProps: {
-                        type: 'email',
-                        class: 'text-black',
+    <div>
+        <div class="prose">
+            <NuxtLink to="/" class="no-underline">
+                <h2 class="text-white m-0">Musical Chairs</h2>
+            </NuxtLink>
+        </div>
+        <Card class="p-4 bg-background">
+            <CardHeader>
+                <CardTitle>Welcome Back</CardTitle>
+            </CardHeader>
+            <AutoForm
+                :form="form"
+                :schema="loginSchema"
+                :fieldConfig="{
+                    email: {
+                        inputProps: {
+                            type: 'email',
+                            class: 'text-black',
+                        },
                     },
-                },
-                password: {
-                    inputProps: {
-                        type: 'password',
-                        class: 'text-black ',
+                    password: {
+                        inputProps: {
+                            type: 'password',
+                            class: 'text-black ',
+                        },
                     },
-                },
-            }"
-            :handleSubmit="onSubmit"
-            v-slot="{ submitting }"
-        >
-            <div class="flex flex-col gap-2 mt-2">
-                <div
-                    v-if="submitError != null"
-                    class="border border-dashed border-destructive bg-destructive text-destructive-foreground rounded text-sm px-4"
-                >
-                    {{ submitError }}
-                </div>
-                <div class="flex justify-between items-center">
-                    <Button type="submit">
-                        {{ !submitting ? "Login" : "Logging in..." }}
-                    </Button>
-                    <NuxtLink
-                        to="/register"
-                        class="underline text-sm cursor-pointer"
+                }"
+                :handleSubmit="onSubmit"
+                v-slot="{ submitting }"
+            >
+                <div class="flex flex-col gap-2 mt-2">
+                    <div
+                        v-if="submitError != null"
+                        class="border border-dashed border-destructive bg-destructive text-destructive-foreground rounded text-sm px-4"
                     >
-                        Register Instead
-                    </NuxtLink>
+                        {{ submitError }}
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <Button type="submit">
+                            {{ !submitting ? "Login" : "Logging in..." }}
+                        </Button>
+                        <NuxtLink
+                            to="/anonymous-request-reset-password"
+                            class="underline text-sm cursor-pointer"
+                        >
+                            Reset your password
+                        </NuxtLink>
+                    </div>
+                    <div class="w-full flex flex-col items-center">
+                        <div class="prose">
+                            <h4>Dont't have an account?</h4>
+                        </div>
+                        <NuxtLink
+                            to="/register"
+                            class="underline text-sm cursor-pointer"
+                        >
+                            Create one
+                        </NuxtLink>
+                    </div>
                 </div>
-            </div>
-        </AutoForm>
-    </Card>
+            </AutoForm>
+        </Card>
+    </div>
 </template>
 <script setup lang="ts">
 import { toTypedSchema } from "@vee-validate/zod";

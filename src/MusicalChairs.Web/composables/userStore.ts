@@ -28,16 +28,10 @@ export const useUserStore = defineStore('user-store', () => {
     }
 
     async function isLoggedIn() {
-        const cookie = useCookie<string>(".AspNetCore.Cookies", { readonly: true })
-        console.log(cookie.value)
+
         if (state.user != null) {
             return true;
         }
-
-        // if (cookie.value == null) {
-        //     return false;
-        // }
-
         const result = await init()
         return result.authorized
     }

@@ -1,5 +1,5 @@
 <template>
-    <main class="bg-background w-[100dvw] h-[100dvh]">
+    <main class="w-[100dvw] h-[100dvh]">
         <slot />
         <Dialog :open="appState.hasError">
             <DialogContent>

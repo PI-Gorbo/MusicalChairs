@@ -1,5 +1,5 @@
 <template>
-    <div class="relative">
+    <div class="bg-background h-full w-full">
         <header>
             <nav class="flex bg-primary items-center px-2">
                 <div class="p-4 text-primary-foreground font-semibold text-lg">
@@ -13,14 +13,14 @@
                     <h2 class="mb-0">Welcome to Musical Chairs</h2>
                     <h5>Co-Ordination Platform</h5>
                 </div>
-                <div class="flex justify-between">
+                <div class="grid grid-col-1 grid-rows-2">
                     <NuxtLink to="/register">
-                        <Button> Sign up for free </Button>
+                        <Button class="w-full"> Sign up for free </Button>
                     </NuxtLink>
                     <NuxtLink to="/login">
-                        <Button class="bg-accent hover:brightness-95">
-                            Log in
-                        </Button>
+                        <div class="text-sm text-muted-foreground">
+                            Already got an account? Login instead
+                        </div>
                     </NuxtLink>
                 </div>
             </article>
@@ -29,12 +29,11 @@
 </template>
 <script setup lang="ts">
 import Button from "~/components/ui/button/Button.vue";
-import { definePageMeta } from "../.nuxt/typed-router/__definePageMeta";
 
 definePageMeta({
     layoutTransition: {
         name: "index-to-auth",
-        mode: 'out-in'
+        mode: "out-in",
     },
 });
 
@@ -53,15 +52,17 @@ useAsyncData(
         server: false,
     }
 );
+
+definePageMeta({});
 </script>
 
 <style lang="css" scoped>
 .layout-enter-active,
 .layout-leave-active {
-  transition: all 0.4s;
+    transition: all 0.4s;
 }
 .layout-enter-from,
 .layout-leave-to {
-  filter: grayscale(1);
+    filter: grayscale(1);
 }
 </style>

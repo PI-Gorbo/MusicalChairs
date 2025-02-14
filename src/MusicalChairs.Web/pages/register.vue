@@ -1,105 +1,115 @@
 <template>
-    <Card class="p-4 bg-background">
-        <CardHeader>
-            <CardTitle>Sign up for free</CardTitle>
-        </CardHeader>
-        <AutoForm
-            :form="form"
-            :schema="registerSchema"
-            :fieldConfig="{
-                email: {
-                    inputProps: {
-                        type: 'email',
-                        class: 'text-black',
+    <div>
+        <div class="prose">
+            <NuxtLink to="/" class="no-underline">
+                <h2 class="text-white m-0">Musical Chairs</h2>
+            </NuxtLink>
+        </div>
+        <Card class="p-4 bg-background">
+            <CardHeader>
+                <CardTitle>Sign up for free</CardTitle>
+            </CardHeader>
+            <AutoForm
+                :form="form"
+                :schema="registerSchema"
+                :fieldConfig="{
+                    email: {
+                        inputProps: {
+                            type: 'email',
+                            class: 'text-black',
+                        },
                     },
-                },
-                password: {
-                    inputProps: {
-                        type: 'password',
-                        class: 'text-black ',
+                    password: {
+                        inputProps: {
+                            type: 'password',
+                            class: 'text-black ',
+                        },
                     },
-                },
-                confirmPassword: {
-                    inputProps: {
-                        type: 'password',
-                        class: 'text-black ',
+                    confirmPassword: {
+                        inputProps: {
+                            type: 'password',
+                            class: 'text-black ',
+                        },
                     },
-                },
-            }"
-            :handleSubmit="onSubmit"
-            v-slot="{ submitting }"
-        >
-            <div class="rounded-md border border-ms-accent mt-4 p-2 text-sm">
-                <label class="italic">Password Requirements</label>
-                <section class="grid grid-flow-row grid-cols-1 lg:grid-cols-2">
-                    <div>
-                        <FontAwesomeIcon
-                            :icon="validPasswordLength ? 'check' : 'x'"
-                            :class="
-                                validPasswordLength
-                                    ? 'text-primary'
-                                    : 'text-destructive'
-                            "
-                        />
-                        6 or more characters
-                    </div>
-                    <div>
-                        <FontAwesomeIcon
-                            :icon="validPasswordHasLower ? 'check' : 'x'"
-                            :class="
-                                validPasswordHasLower
-                                    ? 'text-primary'
-                                    : 'text-destructive'
-                            "
-                        />
-                        At least one lowercase character
-                    </div>
-                    <div>
-                        <FontAwesomeIcon
-                            :icon="validPasswordHasUpper ? 'check' : 'x'"
-                            :class="
-                                validPasswordHasUpper
-                                    ? 'text-primary'
-                                    : 'text-destructive'
-                            "
-                        />
-                        At least one uppercase character
-                    </div>
-                    <div>
-                        <FontAwesomeIcon
-                            :icon="validPasswordHasDigit ? 'check' : 'x'"
-                            :class="
-                                validPasswordHasDigit
-                                    ? 'text-primary'
-                                    : 'text-destructive'
-                            "
-                        />
-                        At least one digit
-                    </div>
-                    <div>
-                        <FontAwesomeIcon
-                            :icon="validPasswordHasSpecial ? 'check' : 'x'"
-                            :class="
-                                validPasswordHasSpecial
-                                    ? 'text-primary'
-                                    : 'text-destructive'
-                            "
-                        />
-                        At least one special character
-                    </div>
-                </section>
-            </div>
-            <div class="flex justify-between items-center mt-4">
-                <Button type="submit">
-                    {{ !submitting ? "Register" : "Registering..." }}
-                </Button>
-
-                <NuxtLink to="/login" class="text-sm cursor-pointer">
-                    <span class="underline">Login Instead</span>
-                </NuxtLink>
-            </div>
-        </AutoForm>
-    </Card>
+                }"
+                :handleSubmit="onSubmit"
+                v-slot="{ submitting }"
+            >
+                <div
+                    class="rounded-md border border-ms-accent mt-4 p-2 text-sm"
+                >
+                    <label class="italic">Password Requirements</label>
+                    <section
+                        class="grid grid-flow-row grid-cols-1 lg:grid-cols-2"
+                    >
+                        <div>
+                            <FontAwesomeIcon
+                                :icon="validPasswordLength ? 'check' : 'x'"
+                                :class="
+                                    validPasswordLength
+                                        ? 'text-primary'
+                                        : 'text-destructive'
+                                "
+                            />
+                            6 or more characters
+                        </div>
+                        <div>
+                            <FontAwesomeIcon
+                                :icon="validPasswordHasLower ? 'check' : 'x'"
+                                :class="
+                                    validPasswordHasLower
+                                        ? 'text-primary'
+                                        : 'text-destructive'
+                                "
+                            />
+                            At least one lowercase character
+                        </div>
+                        <div>
+                            <FontAwesomeIcon
+                                :icon="validPasswordHasUpper ? 'check' : 'x'"
+                                :class="
+                                    validPasswordHasUpper
+                                        ? 'text-primary'
+                                        : 'text-destructive'
+                                "
+                            />
+                            At least one uppercase character
+                        </div>
+                        <div>
+                            <FontAwesomeIcon
+                                :icon="validPasswordHasDigit ? 'check' : 'x'"
+                                :class="
+                                    validPasswordHasDigit
+                                        ? 'text-primary'
+                                        : 'text-destructive'
+                                "
+                            />
+                            At least one digit
+                        </div>
+                        <div>
+                            <FontAwesomeIcon
+                                :icon="validPasswordHasSpecial ? 'check' : 'x'"
+                                :class="
+                                    validPasswordHasSpecial
+                                        ? 'text-primary'
+                                        : 'text-destructive'
+                                "
+                            />
+                            At least one special character
+                        </div>
+                    </section>
+                </div>
+                <div class="flex justify-between items-center mt-4">
+                    <Button type="submit">
+                        {{ !submitting ? "Register" : "Registering..." }}
+                    </Button>
+                    <NuxtLink to="/login" class="text-sm cursor-pointer">
+                        <span class="underline">Login Instead</span>
+                    </NuxtLink>
+                </div>
+            </AutoForm>
+        </Card>
+    </div>
 </template>
 <script setup lang="ts">
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
