@@ -26,7 +26,6 @@ type RegisterResult = Result<unit, RegisterFailure>
 
 // request reset password token
 type RequestResetPasswordTokenRequest = { email: string }
-type RequestResetPasswordToken = RequestResetPasswordTokenRequest -> Async<unit>
 
 // reset password with token
 type ResetPasswordRequest =
@@ -38,13 +37,11 @@ type ResetPasswordError =
     | InvalidToken
     | InvalidNewPassword of error: string
 
-type ResetPasswordResponse = Result<unit, ResetPasswordError>
-
 // api
 type IUserApi =
     { me: unit -> Async<Result<UserDto, string>>
       login: LoginRequest -> Async<Result<unit, string>>
       logout: unit -> Async<unit>
       register: RegisterRequest -> Async<RegisterResult>
-      requestResetPasswordToken: RequestResetPasswordToken
-      resetPassword: ResetPasswordRequest -> Async<ResetPasswordResponse> }
+      requestResetPasswordToken: RequestResetPasswordTokenRequest -> Async<unit>
+      resetPassword: ResetPasswordRequest -> Async<Result<unit, ResetPasswordError>> }

@@ -41,10 +41,21 @@
                             {{ !submitting ? "Login" : "Logging in..." }}
                         </Button>
                         <NuxtLink
+                            to="/anonymous-request-reset-password"
+                            class="underline text-sm cursor-pointer"
+                        >
+                            Reset your password
+                        </NuxtLink>
+                    </div>
+                    <div class="w-full flex flex-col items-center">
+                        <div class="prose">
+                            <h4>Dont't have an account?</h4>
+                        </div>
+                        <NuxtLink
                             to="/register"
                             class="underline text-sm cursor-pointer"
                         >
-                            Register Instead
+                            Create one
                         </NuxtLink>
                     </div>
                 </div>
