@@ -40,7 +40,7 @@ export default defineNuxtConfig({
             theme_color: 'hsl(109 24% 27%)',
         },
         devOptions: {
-            enabled: false,
+            enabled: true,
             suppressWarnings: true
         },
     },

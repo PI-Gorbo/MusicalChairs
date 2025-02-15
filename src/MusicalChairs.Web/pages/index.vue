@@ -43,6 +43,4 @@ useAsyncData(
         server: false,
     }
 );
-
-definePageMeta({});
 </script>
