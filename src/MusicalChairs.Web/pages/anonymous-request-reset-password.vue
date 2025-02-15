@@ -27,7 +27,7 @@
                 :handleSubmit="onSubmit"
                 v-slot="{ submitting }"
             >
-                <div>
+                <div class="flex gap-2 justify-between items-center">
                     <Button type="submit">
                         {{
                             !submitting
@@ -35,6 +35,12 @@
                                 : "Requesting..."
                         }}
                     </Button>
+                    <NuxtLink
+                        to="/login"
+                        class="underline text-sm cursor-pointer"
+                    >
+                        Try logging in instead
+                    </NuxtLink>
                 </div>
                 <div
                     v-if="showSubmitted"
