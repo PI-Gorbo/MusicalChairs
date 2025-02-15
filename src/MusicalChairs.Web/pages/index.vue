@@ -30,13 +30,6 @@
 <script setup lang="ts">
 import Button from "~/components/ui/button/Button.vue";
 
-definePageMeta({
-    layoutTransition: {
-        name: "index-to-auth",
-        mode: "out-in",
-    },
-});
-
 useAsyncData(
     "check-logged-in-index",
     async () => {
@@ -52,17 +45,4 @@ useAsyncData(
         server: false,
     }
 );
-
-definePageMeta({});
 </script>
-
-<style lang="css" scoped>
-.layout-enter-active,
-.layout-leave-active {
-    transition: all 0.4s;
-}
-.layout-enter-from,
-.layout-leave-to {
-    filter: grayscale(1);
-}
-</style>

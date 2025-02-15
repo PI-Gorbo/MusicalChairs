@@ -29,7 +29,7 @@
                 :handleSubmit="onSubmit"
                 v-slot="{ submitting }"
             >
-                <div class="flex flex-col gap-2 mt-2">
+                <div class="flex flex-col gap-4">
                     <div
                         v-if="submitError != null"
                         class="border border-dashed border-destructive bg-destructive text-destructive-foreground rounded text-sm px-4"
@@ -44,7 +44,7 @@
                             to="/anonymous-request-reset-password"
                             class="underline text-sm cursor-pointer"
                         >
-                            Reset your password
+                            Forgot your password?
                         </NuxtLink>
                     </div>
                     <div class="w-full flex flex-col items-center">

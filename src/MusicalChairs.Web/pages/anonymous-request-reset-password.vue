@@ -8,11 +8,11 @@
         <Card class="p-4 bg-background">
             <CardHeader>
                 <CardTitle>Forgot your password?</CardTitle>
-                <CardDescription>
-                    Give us your email, and if we find a matching account, we'll
-                    send you a link to reset your password.
-                </CardDescription>
             </CardHeader>
+            <header class="text-muted-foreground">
+                Give us your email, and if we find a matching account, we'll
+                send you a link to reset your password.
+            </header>
             <AutoForm
                 :form="form"
                 :schema="emailSchema"
@@ -27,21 +27,29 @@
                 :handleSubmit="onSubmit"
                 v-slot="{ submitting }"
             >
-                <Button type="submit">
-                    {{ !submitting ? "Login" : "Logging in..." }}
-                </Button>
-            </AutoForm>
-            <div
-                v-if="showSubmitted"
-                class="border border-accent rounded flex gap-4"
-            >
-                <div><FontAwesomeIcon :icon="faCheck" /></div>
                 <div>
-                    If a user with email the email
-                    {{ form.values.email }} exists, we will send a password
-                    reset email now.
+                    <Button type="submit">
+                        {{
+                            !submitting
+                                ? "Request Reset Password Email"
+                                : "Requesting..."
+                        }}
+                    </Button>
                 </div>
-            </div>
+                <div
+                    v-if="showSubmitted"
+                    class="border border-accent rounded flex gap-4"
+                >
+                    <div class="flex justify-center items-center px-4">
+                        <FontAwesomeIcon :icon="faCheck" />
+                    </div>
+                    <div clas="text-sm text-muted-foreground">
+                        If a user with email the email
+                        {{ form.values.email }} exists, we will send a password
+                        reset email now.
+                    </div>
+                </div>
+            </AutoForm>
         </Card>
     </div>
 </template>

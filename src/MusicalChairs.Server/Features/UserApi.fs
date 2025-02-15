@@ -110,13 +110,13 @@ let createUserApi (deps: IUserApiDeps) : IUserApi =
                           member this.SendEmail req =
                               deps
                                   .getLogger()
-                                  .LogDebug($"PASSWORD RESET TOKEN for {req.user.Email} - {req.token}")
+                                  .LogInformation($"PASSWORD RESET TOKEN for {req.user.Email} - {req.token}")
 
                               TaskResult.ok () }
 
                   let logger = deps.getLogger ()
                   let userManager = deps.getUserManager ()
-
+                  logger.LogInformation("TESTING DEBUG")
                   // Find by email
                   let! user =
                       req.email
@@ -129,12 +129,13 @@ let createUserApi (deps: IUserApiDeps) : IUserApi =
                       )
 
                       return ()
+                  else
 
-                  match! ResetPassword.send userManager user emailSender
-                         |> Async.AwaitTask
-                      with
-                  | Ok _ -> ()
-                  | Error err -> logger.LogError("failed to reset password {err}", err)
+                      match! ResetPassword.send userManager user emailSender
+                             |> Async.AwaitTask
+                          with
+                      | Ok _ -> ()
+                      | Error err -> logger.LogError("failed to reset password {err}", err)
 
               }
       resetPassword =
@@ -157,6 +158,7 @@ let createUserApi (deps: IUserApiDeps) : IUserApi =
                             | UserNotFound -> Ok()
                             | FailedToSetPassword error ->
                                 logger.LogError("User with email {email} failed to reset password.", req.email)
+
                                 ResetPasswordError.InvalidNewPassword error
                                 |> Error)
             }

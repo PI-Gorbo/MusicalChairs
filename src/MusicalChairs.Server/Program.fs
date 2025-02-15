@@ -31,6 +31,9 @@ let main args =
         .AddEnvironmentVariables()
     |> ignore
 
+    let environment =
+        builder.Configuration.GetValue<string>("ASPNET_ENVIRONMENT")
+
     // Add Database Reference
     builder.Services
         .AddMarten(
@@ -124,6 +127,9 @@ let main args =
 
     // Add Logger
     builder.Logging.AddConsole() |> ignore
+
+    // TODO: MUST CHANGE.
+    builder.Logging.SetMinimumLevel(if environment = "Development" then LogLevel.Debug else LogLevel.Information) |> ignore
 
     let app = builder.Build()
 
