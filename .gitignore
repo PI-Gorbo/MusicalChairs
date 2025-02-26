@@ -489,3 +489,5 @@ node_modules
 MusicalChairs.sln.DotSettings.user
 src/MusicalChairs.Web/*.crt
 src/MusicalChairs.Web/*.key
+
+*/**/appsettings.Development.json
