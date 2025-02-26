@@ -133,7 +133,6 @@ let main args =
 
     let app = builder.Build()
 
-    app.UseCors() |> ignore
 
     let errorHandler (logger: ILogger) (ex: Exception) (routeInfo: RouteInfo<HttpContext>) =
         // Do some logging
@@ -149,6 +148,7 @@ let main args =
         |> Remoting.fromContext (fun ctx -> createUserApiDeps ctx (ctx.GetService<IDocumentSession>()) |> createUserApi)
         |> Remoting.withErrorHandler (errorHandler app.Logger)
 
+    app.UseCors() |> ignore
     app.UseRemoting(webApp)
     app.Run()
     0 // Exit code
