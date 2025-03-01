@@ -35,6 +35,7 @@ useAsyncData(
     async () => {
         const userStore = useUserStore();
         const isLoggedIn = await userStore.isLoggedIn();
+        console.log('navigating to home!')
         if (isLoggedIn) {
             return navigateTo({
                 path: "/home",

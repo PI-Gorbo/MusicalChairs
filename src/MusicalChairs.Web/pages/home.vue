@@ -5,27 +5,57 @@
                 <header class="prose"><h3>Actve Jobs</h3></header>
                 <div
                     v-if="displayMode.isMobile.value"
-                    class="flex flex-col gap-2"
+                    class="flex flex-col bg-background-surface divide-y divide-muted-foreground *:py-2 *:px-1"
                 >
-                    <template v-for="index in 5" :key="index">
-                        
-                        <article
-                            v-ripple
-                            class="flex items-center bg-background-surface v-ripple rounded px-2"
-                        >
-                            <div class="prose flex-1 select-none">
-                                <h5>Fringe Festival Covers</h5>
-                                <div class="text-sm">
-                                    <FontAwesomeIcon :icon="faCheck" /> One
+                    <article v-ripple class="flex items-center">
+                        <div class="prose flex-1 select-none">
+                            <h5>Fringe Festival</h5>
+                            <div
+                                class="prose-sm flex *:px-2 divide-x divide-muted-foreground"
+                            >
+                                <div>
+                                    <FontAwesomeIcon
+                                        :icon="faCheck"
+                                        class="text-primary"
+                                    />
+                                    Tenor (1/1)
+                                </div>
+                                <div class="text-wrap">
+                                    <FontAwesomeIcon
+                                        :icon="faExclamationCircle"
+                                        shake
+                                        class="text-secondary"
+                                    />
+                                    Soprano (0/1) - Confirm Required
                                 </div>
                             </div>
-                            <FontAwesomeIcon
-                                :icon="faChevronRight"
-                                class="text-muted-foreground "
-                            />
-                        </article>
-                        <Separator/>
-                    </template>
+                        </div>
+                        <FontAwesomeIcon
+                            :icon="faChevronRight"
+                            class="text-muted-foreground"
+                        />
+                    </article>
+
+                    <article v-ripple class="flex items-center">
+                        <div class="prose flex-1 select-none">
+                            <h5>Cover for Mg'Gaths Churth 25th May</h5>
+                            <div
+                                class="prose-sm flex *:px-2 divide-x divide-muted-foreground"
+                            >
+                                <div>
+                                    <FontAwesomeIcon
+                                        :icon="faStopwatch"
+                                        class="text-accent"
+                                    />
+                                    Pending Response from 'Jasper G.'...
+                                </div>
+                            </div>
+                        </div>
+                        <FontAwesomeIcon
+                            :icon="faChevronRight"
+                            class="text-muted-foreground"
+                        />
+                    </article>
                 </div>
                 <!-- <Card>
                     <CardContent
@@ -96,7 +126,9 @@
 import {
     faCheck,
     faChevronRight,
+    faExclamationCircle,
     faPencil,
+    faStopwatch,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 const displayMode = useDisplayMode();
