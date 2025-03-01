@@ -9,113 +9,167 @@
             <CardHeader>
                 <CardTitle>Sign up for free</CardTitle>
             </CardHeader>
-            <AutoForm
-                :form="form"
-                :schema="registerSchema"
-                :fieldConfig="{
-                    email: {
-                        inputProps: {
-                            type: 'email',
-                            class: 'text-black',
+            <div class="flex flex-col gap-2">
+                <AutoForm
+                    :form="form"
+                    :schema="registerSchema"
+                    :fieldConfig="{
+                        email: {
+                            inputProps: {
+                                type: 'email',
+                                class: 'text-black',
+                            },
                         },
-                    },
-                    password: {
-                        inputProps: {
-                            type: 'password',
-                            class: 'text-black ',
+                        password: {
+                            inputProps: {
+                                type: 'password',
+                                class: 'text-black ',
+                            },
                         },
-                    },
-                    confirmPassword: {
-                        inputProps: {
-                            type: 'password',
-                            class: 'text-black ',
+                        confirmPassword: {
+                            inputProps: {
+                                type: 'password',
+                                class: 'text-black ',
+                            },
                         },
-                    },
-                }"
-                :handleSubmit="onSubmit"
-                v-slot="{ submitting }"
-            >
-                <div
-                    class="rounded-md border border-ms-accent mt-4 p-2 text-sm"
+                    }"
+                    :handleSubmit="onSubmit"
+                    v-slot="{ submitting }"
                 >
-                    <label class="italic">Password Requirements</label>
-                    <section
-                        class="grid grid-flow-row grid-cols-1 lg:grid-cols-2"
+                    <Transition name="fade" mode="out-in">
+                        <div
+                            key="Submit"
+                            v-if="
+                                validPasswordLength &&
+                                validPasswordHasLower &&
+                                validPasswordHasUpper &&
+                                validPasswordHasDigit &&
+                                validPasswordHasSpecial
+                            "
+                            class="w-full"
+                        >
+                        
+                            <Button type="submit" class="w-full" :disabled="!form.meta.value.valid">
+                                {{
+                                    !submitting ? "Register" : "Registering..."
+                                }}
+                            </Button>
+                        </div>
+                        <div v-else key="Password Requirements">
+                            <div
+                                class="rounded-md border border-ms-accent mt-4 p-2 text-sm transition-all"
+                                :class="{
+                                    'opacity-50 hidden':
+                                        validPasswordLength &&
+                                        validPasswordHasLower &&
+                                        validPasswordHasUpper &&
+                                        validPasswordHasDigit &&
+                                        validPasswordHasSpecial,
+                                }"
+                            >
+                                <label class="italic"
+                                    >Password Requirements</label
+                                >
+                                <section
+                                    class="grid grid-flow-row grid-cols-1 lg:grid-cols-2"
+                                >
+                                    <div>
+                                        <FontAwesomeIcon
+                                            :icon="
+                                                validPasswordLength
+                                                    ? 'check'
+                                                    : 'x'
+                                            "
+                                            :class="
+                                                validPasswordLength
+                                                    ? 'text-primary'
+                                                    : 'text-destructive'
+                                            "
+                                        />
+                                        6 or more characters
+                                    </div>
+                                    <div>
+                                        <FontAwesomeIcon
+                                            :icon="
+                                                validPasswordHasLower
+                                                    ? 'check'
+                                                    : 'x'
+                                            "
+                                            :class="
+                                                validPasswordHasLower
+                                                    ? 'text-primary'
+                                                    : 'text-destructive'
+                                            "
+                                        />
+                                        At least one lowercase character
+                                    </div>
+                                    <div>
+                                        <FontAwesomeIcon
+                                            :icon="
+                                                validPasswordHasUpper
+                                                    ? 'check'
+                                                    : 'x'
+                                            "
+                                            :class="
+                                                validPasswordHasUpper
+                                                    ? 'text-primary'
+                                                    : 'text-destructive'
+                                            "
+                                        />
+                                        At least one uppercase character
+                                    </div>
+                                    <div>
+                                        <FontAwesomeIcon
+                                            :icon="
+                                                validPasswordHasDigit
+                                                    ? 'check'
+                                                    : 'x'
+                                            "
+                                            :class="
+                                                validPasswordHasDigit
+                                                    ? 'text-primary'
+                                                    : 'text-destructive'
+                                            "
+                                        />
+                                        At least one digit
+                                    </div>
+                                    <div>
+                                        <FontAwesomeIcon
+                                            :icon="
+                                                validPasswordHasSpecial
+                                                    ? 'check'
+                                                    : 'x'
+                                            "
+                                            :class="
+                                                validPasswordHasSpecial
+                                                    ? 'text-primary'
+                                                    : 'text-destructive'
+                                            "
+                                        />
+                                        At least one special character
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </Transition>
+
+                    <Separator label="Or" />
+                    <NuxtLink
+                        to="/login"
+                        class="text-sm cursor-pointer text-center"
                     >
-                        <div>
-                            <FontAwesomeIcon
-                                :icon="validPasswordLength ? 'check' : 'x'"
-                                :class="
-                                    validPasswordLength
-                                        ? 'text-primary'
-                                        : 'text-destructive'
-                                "
-                            />
-                            6 or more characters
-                        </div>
-                        <div>
-                            <FontAwesomeIcon
-                                :icon="validPasswordHasLower ? 'check' : 'x'"
-                                :class="
-                                    validPasswordHasLower
-                                        ? 'text-primary'
-                                        : 'text-destructive'
-                                "
-                            />
-                            At least one lowercase character
-                        </div>
-                        <div>
-                            <FontAwesomeIcon
-                                :icon="validPasswordHasUpper ? 'check' : 'x'"
-                                :class="
-                                    validPasswordHasUpper
-                                        ? 'text-primary'
-                                        : 'text-destructive'
-                                "
-                            />
-                            At least one uppercase character
-                        </div>
-                        <div>
-                            <FontAwesomeIcon
-                                :icon="validPasswordHasDigit ? 'check' : 'x'"
-                                :class="
-                                    validPasswordHasDigit
-                                        ? 'text-primary'
-                                        : 'text-destructive'
-                                "
-                            />
-                            At least one digit
-                        </div>
-                        <div>
-                            <FontAwesomeIcon
-                                :icon="validPasswordHasSpecial ? 'check' : 'x'"
-                                :class="
-                                    validPasswordHasSpecial
-                                        ? 'text-primary'
-                                        : 'text-destructive'
-                                "
-                            />
-                            At least one special character
-                        </div>
-                    </section>
-                </div>
-                <div class="flex justify-between items-center mt-4">
-                    <Button type="submit">
-                        {{ !submitting ? "Register" : "Registering..." }}
-                    </Button>
-                    <NuxtLink to="/login" class="text-sm cursor-pointer">
-                        <span class="underline">Login Instead</span>
+                        <span class="underline">Login instead</span>
                     </NuxtLink>
-                </div>
-            </AutoForm>
+                </AutoForm>
+            </div>
         </Card>
     </div>
 </template>
+
 <script setup lang="ts">
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { toTypedSchema } from "@vee-validate/zod";
-import type { ArgumentsType } from "@vueuse/core";
-import { useForm, type SubmissionContext } from "vee-validate";
+import { useForm } from "vee-validate";
 import { z } from "zod";
 import { RegisterRequest } from "~/utils/generated/MusicalChairs.Shared/UserApi/UserApi";
 
@@ -184,7 +238,7 @@ async function onSubmit(data: RegisterDto) {
         return;
     }
 
-    await navigateTo("/home");
+    await navigateTo("/app/home");
 }
 
 type RegisterDto = z.infer<typeof registerSchema>;
@@ -206,3 +260,15 @@ const validPasswordHasSpecial = computed(() =>
     testPasswordHasSpecial(form.values.password ?? "")
 );
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.1s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+</style>

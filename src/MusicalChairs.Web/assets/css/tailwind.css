@@ -24,7 +24,7 @@
         --card: 0 0% 100%;
         --card-foreground: 20 14.3% 4.1%;
 
-        --border:  0 0% 16%;
+        --border: 0 0% 16%;
         --input: 20 5.9% 90%;
 
         --destructive: 0 84.2% 60.2%;
@@ -44,6 +44,12 @@
 
         --accent: 217 48% 26%;
         --accent-foreground: 60 9.1% 97.8%;
+
+        Button.shadow-square-sm:active  {
+            transform: translateY(0.1rem);
+            box-shadow: 
+                0 0.1rem hsl(var(--border))
+        }
     }
 
     .max-w-page {

@@ -15,7 +15,9 @@
                 </div>
                 <div class="grid grid-col-1 grid-rows-2">
                     <NuxtLink to="/register">
-                        <Button class="w-full"> Sign up for free </Button>
+                        <Button class="w-full border shadow-square-sm">
+                            Sign up for free
+                        </Button>
                     </NuxtLink>
                     <NuxtLink to="/login">
                         <div class="text-sm text-muted-foreground">
@@ -35,10 +37,10 @@ useAsyncData(
     async () => {
         const userStore = useUserStore();
         const isLoggedIn = await userStore.isLoggedIn();
-        console.log('navigating to home!')
+        console.log("navigating to home!");
         if (isLoggedIn) {
             return navigateTo({
-                path: "/home",
+                path: "/app/home",
             });
         }
     },
@@ -47,3 +49,16 @@ useAsyncData(
     }
 );
 </script>
+
+<style scoped>
+/* .box-shadow-big {
+    border-color: hsl(var(--border));
+    box-shadow: 
+        0 0.2rem hsl(var(--border))
+}
+.box-shadow-big:active {
+    transform: translateY(0.1rem);
+    box-shadow: 
+        0 0.1rem hsl(var(--border))
+} */
+</style>

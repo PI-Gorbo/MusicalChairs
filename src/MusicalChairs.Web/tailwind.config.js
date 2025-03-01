@@ -62,7 +62,7 @@ module.exports = {
                 sm: "calc(var(--radius) - 4px)",
             },
             boxShadow: {
-                "square-sm": `0 0.6px black, 0 1px black, 0 1.4px black, 0 1.8px black, 0 2.2px black`,
+                "square-sm": `0 0.2rem hsl(var(--border))`,
             },
             keyframes: {
                 "accordion-down": {
