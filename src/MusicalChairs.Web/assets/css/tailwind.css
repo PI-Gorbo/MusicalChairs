@@ -12,7 +12,7 @@
 
     :root {
         --background: 46 100% 97%;
-        --background-surface: 56 100% 97%;
+        --background-surface: 56 50% 97%;
         --foreground: 20 14.3% 4.1%;
 
         --popover: 0 0% 100%;
@@ -24,7 +24,7 @@
         --card: 0 0% 100%;
         --card-foreground: 20 14.3% 4.1%;
 
-        --border: 0 100% 0%;
+        --border:  0 0% 16%;
         --input: 20 5.9% 90%;
 
         --destructive: 0 84.2% 60.2%;

@@ -29,6 +29,7 @@
     "embla-carousel-vue": "^8.5.2",
     "lucide-vue-next": "^0.473.0",
     "nuxt": "^3.15.2",
+    "nuxt-ripple": "^0.0.8",
     "nuxt-typed-router": "3.7.3",
     "pinia": "^2.3.0",
     "prettier": "^2.5.x || 3.x",

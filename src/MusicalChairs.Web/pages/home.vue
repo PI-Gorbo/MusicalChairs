@@ -1,15 +1,32 @@
 <template>
-    <div class="flex justify-center w-full h-full ">
+    <div class="flex justify-center w-full h-full">
         <div class="max-w-page w-full">
             <section>
-                <header class="sm:text-xl font-semibold py-2">Your Jobs</header>
-
-                <template v-if="displayMode.isMobile.value" class="flex flex-col divide-y divide-black">
-                    <article v-for="index in 5" >
-                        <header>Fringe Festival Covers</header>
-                        <div class="text-sm"></div>
-                    </article>
-                </template>
+                <header class="prose"><h3>Actve Jobs</h3></header>
+                <div
+                    v-if="displayMode.isMobile.value"
+                    class="flex flex-col gap-2"
+                >
+                    <template v-for="index in 5" :key="index">
+                        
+                        <article
+                            v-ripple
+                            class="flex items-center bg-background-surface v-ripple rounded px-2"
+                        >
+                            <div class="prose flex-1 select-none">
+                                <h5>Fringe Festival Covers</h5>
+                                <div class="text-sm">
+                                    <FontAwesomeIcon :icon="faCheck" /> One
+                                </div>
+                            </div>
+                            <FontAwesomeIcon
+                                :icon="faChevronRight"
+                                class="text-muted-foreground "
+                            />
+                        </article>
+                        <Separator/>
+                    </template>
+                </div>
                 <!-- <Card>
                     <CardContent
                         class="rounded bg-background"
@@ -76,7 +93,12 @@
 </template>
 
 <script setup lang="ts">
-import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCheck,
+    faChevronRight,
+    faPencil,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 const displayMode = useDisplayMode();
 
 async function onEdit(id: string) {

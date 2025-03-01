@@ -9,6 +9,7 @@ export default defineNuxtConfig({
         "@pinia/nuxt",
         "@vite-pwa/nuxt",
         "@nuxtjs/device",
+        'nuxt-ripple'
     ],
     shadcn: {
         /**
@@ -73,4 +74,7 @@ export default defineNuxtConfig({
         typeCheck: false,
         strict: false
     },
+    ripple: {
+        color: 'rgba(0, 0, 0, 0.4)',
+    }
 });
