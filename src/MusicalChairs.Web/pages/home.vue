@@ -2,9 +2,15 @@
     <div class="flex justify-center w-full h-full ">
         <div class="max-w-page w-full">
             <section>
-                <header class="text-xl font-semibold py-2">Jobs</header>
+                <header class="sm:text-xl font-semibold py-2">Your Jobs</header>
 
-                <Card>
+                <template v-if="displayMode.isMobile.value" class="flex flex-col divide-y divide-black">
+                    <article v-for="index in 5" >
+                        <header>Fringe Festival Covers</header>
+                        <div class="text-sm"></div>
+                    </article>
+                </template>
+                <!-- <Card>
                     <CardContent
                         class="rounded bg-background"
                         :class="[
@@ -44,7 +50,7 @@
                             </section>
                         </template>
                     </CardContent>
-                </Card>
+                </Card> -->
             </section>
 
             <!-- <section>
@@ -71,7 +77,6 @@
 
 <script setup lang="ts">
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 const displayMode = useDisplayMode();
 
 async function onEdit(id: string) {
