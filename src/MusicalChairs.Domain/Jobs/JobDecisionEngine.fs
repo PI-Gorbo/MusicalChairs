@@ -15,7 +15,7 @@ type IApplyJobDependencies =
     abstract member generatePositionId: unit -> Guid
     abstract member generateMessageId: unit -> Guid
 
-    abstract member getPlannedJob: Guid -> TaskResult<PlannedJob, string>
+    abstract member getPlannedJob: Guid -> TaskResult<DraftJob, string>
     abstract member deletePlannedJob: Guid -> TaskResult<unit, string>
 
     abstract member getJob: Guid -> TaskResult<Job, string>

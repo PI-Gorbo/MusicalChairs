@@ -24,7 +24,7 @@ let verifySettings =
     )
     settings
 
-type ProcessCommandDeps(jobId: Guid, plannedJob: PlannedJob, startJobCommand: StartJobCommand) =
+type ProcessCommandDeps(jobId: Guid, plannedJob: DraftJob, startJobCommand: StartJobCommand) =
 
     let mutable commands = [ StartJob startJobCommand ]
     let mutable facts = []
@@ -114,7 +114,7 @@ type JobDecisionEngineTests() =
     let alexUserId = Guid.CreateVersion7()
     let templateId = Guid.CreateVersion7()
 
-    let plannedJob: PlannedJob =
+    let plannedJob: DraftJob =
         { Id = Guid.CreateVersion7()
           CreatorId = alexUserId
           Positions =

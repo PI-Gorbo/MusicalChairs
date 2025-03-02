@@ -13,22 +13,23 @@ type Template =
       TemplateDetails: TemplateContactMethod }
 
 // Planned Jobs
-type PlannedContact =
+type DraftContact =
     { Name: string
       UserId: Guid
       TemplateId: Guid
       ContactMethod: ContactMethod }
 
-type PlannedPosition =
+type DraftPosition =
     { PositionName: string
       PositionsAvailable: uint
-      Contacts: PlannedContact list }
+      Contacts: DraftContact list }
 
-type PlannedJob =
+type DraftJob =
     { Id: Guid
+      Name: string
       CreatorId: Guid
       Templates: Template list
-      Positions: PlannedPosition list }
+      Positions: DraftPosition list }
 
 // Jobs
 type ContactedOutcome =
@@ -62,7 +63,7 @@ type Contact =
 
     static member tryFromPlannedContact
         (generateId: unit -> Guid)
-        (plannedContact: PlannedContact)
+        (plannedContact: DraftContact)
         : Result<Contact, string> =
         Ok
             { Id = generateId ()

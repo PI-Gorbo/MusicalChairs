@@ -1,4 +1,4 @@
-﻿module MusicalChairs.Shared.UserApi
+﻿module MusicalChairs.Shared.Apis.UserApi
 
 open System
 open Fable.Core
