@@ -29,4 +29,5 @@ import {
     faCircleUser,
     faHouse,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 </script>
