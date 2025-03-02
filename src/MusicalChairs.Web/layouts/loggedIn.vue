@@ -45,18 +45,21 @@
                     <Tabs :modelValue="useRoute().path">
                         <TabsList>
                             <TabsTrigger value="/app/home">
-                                <NuxtLink to="/app/home">
+                                <NuxtLink to="/app/home" class="flex items-center gap-1">
                                     <FontAwesomeIcon :icon="faHouse" />
+                                    <div>Home</div>
                                 </NuxtLink>
                             </TabsTrigger>
                             <TabsTrigger value="/app/drafts">
-                                <NuxtLink to="/app/drafts">
+                                <NuxtLink to="/app/drafts" class="flex items-center gap-1">
                                     <FontAwesomeIcon :icon="faAddressBook" />
+                                    <div>Drafts</div>
                                 </NuxtLink>
                             </TabsTrigger>
                             <TabsTrigger value="/app/profile">
-                                <NuxtLink to="/app/profile">
+                                <NuxtLink to="/app/profile" class="flex items-center gap-1">
                                     <FontAwesomeIcon :icon="faCircleUser" />
+                                    <div>Profile</div>
                                 </NuxtLink>
                             </TabsTrigger>
                         </TabsList>
