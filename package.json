@@ -3,6 +3,7 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "install": "cd ./src/MusicalChairs.Web/ && bun i",
         "dev": "bun run devDb:start && concurrently \"bun run genTS\" \"bun run server\" \"bun run web\" -n \"genTS,server,web\"",
         "genTS": "cd src/MusicalChairs.Client && dotnet fable watch --lang ts -o ../MusicalChairs.Web/utils/generated/",
         "server": "cd src/MusicalChairs.Server && dotnet watch run --no-hot-reload",

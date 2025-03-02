@@ -1,6 +1,5 @@
 export default defineNuxtRouteMiddleware(async (to) => {
 
-    console.log("02.checkAuth.global.ts");
     if (!to.meta.requiresAuth) return;
 
     const userStore = useUserStore();
