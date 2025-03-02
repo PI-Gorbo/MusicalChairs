@@ -55,8 +55,6 @@ function sendAndRead<$a>(preparation: Option<((arg0: any) => void)>, resultMappe
     return singleton.Delay<$a>((): Async<$a> => singleton.Bind<any, $a>(cancellationToken(), (_arg: any): Async<$a> => {
         const token: any = _arg;
         const request_1: Async<$a> = fromContinuations<$a>((tupledArg: [((arg0: $a) => void), ((arg0: Error) => void), ((arg0: any) => void)]): void => {
-            const resolve: ((arg0: $a) => void) = tupledArg[0];
-            const cancel: ((arg0: any) => void) = tupledArg[2];
             const xhr: any = new XMLHttpRequest();
             if (req.HttpMethod.tag === /* POST */ 1) {
                 xhr.open("POST", req.Url);
@@ -65,20 +63,17 @@ function sendAndRead<$a>(preparation: Option<((arg0: any) => void)>, resultMappe
                 xhr.open("GET", req.Url);
             }
             if (preparation != null) {
-                const f: ((arg0: any) => void) = value_1(preparation);
-                f(xhr);
+                value_1(preparation)(xhr);
             }
             const cancellationTokenRegistration: any = token.register((): void => {
                 xhr.abort();
-                cancel(new Error(token));
+                tupledArg[2](new Error(token));
             });
             const enumerator: IEnumerator<[string, string]> = getEnumerator(req.Headers);
             try {
                 while (enumerator["System.Collections.IEnumerator.MoveNext"]()) {
                     const forLoopVar: [string, string] = enumerator["System.Collections.Generic.IEnumerator`1.get_Current"]();
-                    const value: string = forLoopVar[1];
-                    const key: string = forLoopVar[0];
-                    xhr.setRequestHeader(key, value);
+                    xhr.setRequestHeader(forLoopVar[0], forLoopVar[1]);
                 }
             }
             finally {
@@ -102,7 +97,7 @@ function sendAndRead<$a>(preparation: Option<((arg0: any) => void)>, resultMappe
                 switch (matchResult) {
                     case 0: {
                         disposeSafe(cancellationTokenRegistration);
-                        resolve(resultMapper(xhr));
+                        tupledArg[0](resultMapper(xhr));
                         break;
                     }
                     case 1: {
@@ -134,8 +129,5 @@ export const send = (req: HttpRequest): Async<HttpResponse> => sendAndRead<HttpR
 
 export const sendAndReadBinary = (req: HttpRequest): Async<[uint8[], int32]> => sendAndRead<[uint8[], int32]>((xhr: any): void => {
     xhr.responseType = "arraybuffer";
-}, (xhr_1: any): [uint8[], int32] => {
-    const bytes: uint8[] = new Uint8Array(xhr_1.response);
-    return [bytes, xhr_1.status] as [uint8[], int32];
-}, req);
+}, (xhr_1: any): [uint8[], int32] => ([new Uint8Array(xhr_1.response), xhr_1.status] as [uint8[], int32]), req);
 

@@ -2,7 +2,7 @@
 
 open Fable.Remoting.Client
 open Fable.Core
-open MusicalChairs.Shared.UserApi
+open MusicalChairs.Shared.Apis.UserApi
 let createApi (url: string)=
 
     let _userApi: IUserApi =

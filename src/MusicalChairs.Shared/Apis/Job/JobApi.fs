@@ -21,8 +21,8 @@ type MyJobsResponse = {
 type UpdateJobDraftRequest = {
     id: Guid
     name: string Option
-    templates: DraftTemplate list Option
-    positions:
+    // templates: DraftTemplate list Option
+    // positions:
 }
 
 type IJobApi = {

@@ -13,7 +13,7 @@ open Microsoft.AspNetCore.Identity
 open Microsoft.Extensions.Logging
 open MusicalChairs.Domain.User
 open MusicalChairs.Server.Utils.AuthUtils
-open MusicalChairs.Shared.UserApi
+open MusicalChairs.Shared.Apis.UserApi
 open FsToolkit.ErrorHandling
 open System.Linq
 

@@ -97,11 +97,7 @@ export function $007CNullable$007C_$007C(t: any): Option<any> {
 
 export function $007CUnionType$007C_$007C(t: any): Option<[string, any, any[]][]> {
     if (isUnion(t)) {
-        return map<any, [string, any, any[]]>((info: any): [string, any, any[]] => {
-            const caseName: string = name(info);
-            const caseTypes: any[] = map<any, any>((prop: any): any => prop[1], getUnionCaseFields(info));
-            return [caseName, info, caseTypes] as [string, any, any[]];
-        }, getUnionCases(t));
+        return map<any, [string, any, any[]]>((info: any): [string, any, any[]] => ([name(info), info, map<any, any>((prop: any): any => prop[1], getUnionCaseFields(info))] as [string, any, any[]]), getUnionCases(t));
     }
     else {
         return undefined;
@@ -131,9 +127,7 @@ export function flattenFuncTypes(typeDef: any): any[] {
     return toArray<any>(delay<any>((): Iterable<any> => {
         if (isFunction(typeDef)) {
             const patternInput: [any, any] = getFunctionElements(typeDef);
-            const range: any = patternInput[1];
-            const domain: any = patternInput[0];
-            return append<any>(flattenFuncTypes(domain), delay<any>((): Iterable<any> => flattenFuncTypes(range)));
+            return append<any>(flattenFuncTypes(patternInput[0]), delay<any>((): Iterable<any> => flattenFuncTypes(patternInput[1])));
         }
         else {
             return singleton<any>(typeDef);
@@ -262,27 +256,14 @@ function _createTypeInfo(resolvedType: any): TypeInfo_$union {
             const activePatternResult_2: Option<[any, string, any][]> = $007CRecordType$007C_$007C(resolvedType);
             if (activePatternResult_2 != null) {
                 const fields: [any, string, any][] = value(activePatternResult_2);
-                const l_1: any = new Lazy<[RecordField[], any]>((): [RecordField[], any] => {
-                    const fields_1: RecordField[] = toArray<RecordField>(delay<RecordField>((): Iterable<RecordField> => collect<[any, string, any], Iterable<RecordField>, RecordField>((matchValue: [any, string, any]): Iterable<RecordField> => {
-                        const fieldType: any = matchValue[2];
-                        const fieldName: string = matchValue[1];
-                        const field: any = matchValue[0];
-                        return singleton<RecordField>(new RecordField(fieldName, createTypeInfo(fieldType), field));
-                    }, fields)));
-                    return [fields_1, resolvedType] as [RecordField[], any];
-                });
+                const l_1: any = new Lazy<[RecordField[], any]>((): [RecordField[], any] => ([toArray<RecordField>(delay<RecordField>((): Iterable<RecordField> => collect<[any, string, any], Iterable<RecordField>, RecordField>((matchValue: [any, string, any]): Iterable<RecordField> => singleton<RecordField>(new RecordField(matchValue[1], createTypeInfo(matchValue[2]), matchValue[0])), fields))), resolvedType] as [RecordField[], any]));
                 return TypeInfo_Record((): [RecordField[], any] => lazyToDelayed<[RecordField[], any]>(l_1, undefined));
             }
             else {
                 const activePatternResult_3: Option<[string, any, any[]][]> = $007CUnionType$007C_$007C(resolvedType);
                 if (activePatternResult_3 != null) {
                     const cases: [string, any, any[]][] = value(activePatternResult_3);
-                    const l_2: any = new Lazy<[UnionCase[], any]>((): [UnionCase[], any] => ([toArray<UnionCase>(delay<UnionCase>((): Iterable<UnionCase> => collect<[string, any, any[]], Iterable<UnionCase>, UnionCase>((matchValue_1: [string, any, any[]]): Iterable<UnionCase> => {
-                        const caseTypes: any[] = matchValue_1[2];
-                        const caseName: string = matchValue_1[0];
-                        const caseInfo: any = matchValue_1[1];
-                        return singleton<UnionCase>(new UnionCase(caseName, map<any, TypeInfo_$union>(createTypeInfo, caseTypes), caseInfo));
-                    }, cases))), resolvedType] as [UnionCase[], any]));
+                    const l_2: any = new Lazy<[UnionCase[], any]>((): [UnionCase[], any] => ([toArray<UnionCase>(delay<UnionCase>((): Iterable<UnionCase> => collect<[string, any, any[]], Iterable<UnionCase>, UnionCase>((matchValue_1: [string, any, any[]]): Iterable<UnionCase> => singleton<UnionCase>(new UnionCase(matchValue_1[0], map<any, TypeInfo_$union>(createTypeInfo, matchValue_1[2]), matchValue_1[1])), cases))), resolvedType] as [UnionCase[], any]));
                     return TypeInfo_Union((): [UnionCase[], any] => lazyToDelayed<[UnionCase[], any]>(l_2, undefined));
                 }
                 else {
@@ -405,13 +386,11 @@ export function createTypeInfo(resolvedType: any): TypeInfo_$union {
         outArg = v;
     })), outArg] as [boolean, TypeInfo_$union]);
     if (matchValue[0]) {
-        const ti: TypeInfo_$union = matchValue[1];
-        return ti;
+        return matchValue[1];
     }
     else {
         const ti_1: TypeInfo_$union = _createTypeInfo(resolvedType);
-        const notAnonymousRecord: boolean = (!isNullOrEmpty(fullName(resolvedType)) && !fullName(resolvedType).endsWith("`1[]")) && !fullName(resolvedType).endsWith("`2[]");
-        if (notAnonymousRecord) {
+        if ((!isNullOrEmpty(fullName(resolvedType)) && !fullName(resolvedType).endsWith("`1[]")) && !fullName(resolvedType).endsWith("`2[]")) {
             typeInfoCache.set(resolvedType, ti_1);
             return ti_1;
         }
@@ -447,10 +426,8 @@ export function isPrimitive(_arg: TypeInfo_$union): boolean {
         case /* Guid */ 21:
         case /* Option */ 27:
             return true;
-        default: {
-            const otherwise: TypeInfo_$union = _arg;
+        default:
             return false;
-        }
     }
 }
 
@@ -459,12 +436,10 @@ export function isPrimitive(_arg: TypeInfo_$union): boolean {
  */
 export function enumUnion(_arg: TypeInfo_$union): boolean {
     if (_arg.tag === /* Union */ 40) {
-        const getCases: (() => [UnionCase[], any]) = _arg.fields[0];
-        const array: UnionCase[] = getCases()[0];
+        const array: UnionCase[] = _arg.fields[0]()[0];
         return array.every((case$: UnionCase): boolean => (case$.CaseTypes.length === 0));
     }
     else {
-        const otherwise: TypeInfo_$union = _arg;
         return false;
     }
 }
