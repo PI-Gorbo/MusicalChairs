@@ -26,8 +26,7 @@ function cacheGetOrAdd(typ: any, f: ((arg0: any, arg1: uint8[]) => void)): ((arg
         outArg = v;
     })), outArg] as [boolean, ((arg0: any, arg1: uint8[]) => void)]);
     if (matchValue[0]) {
-        const f_1: ((arg0: any, arg1: uint8[]) => void) = matchValue[1];
-        return f_1;
+        return matchValue[1];
     }
     else {
         addToDict(serializerCache, fullName(typ), f);
@@ -258,8 +257,7 @@ function writeArray(out: uint8[], t: any, arr: Iterable): void {
     const enumerator: IEnumerator<any> = getEnumerator(arr);
     try {
         while (enumerator["System.Collections.IEnumerator.MoveNext"]()) {
-            const x: any = enumerator["System.Collections.IEnumerator.get_Current"]();
-            writeObject(x, t, out);
+            writeObject(enumerator["System.Collections.IEnumerator.get_Current"](), t, out);
         }
     }
     finally {
@@ -331,8 +329,7 @@ function writeSet(out: uint8[], t: any, set$: Iterable): void {
     const enumerator: IEnumerator<any> = getEnumerator(set$);
     try {
         while (enumerator["System.Collections.IEnumerator.MoveNext"]()) {
-            const x: any = enumerator["System.Collections.IEnumerator.get_Current"]();
-            writeObject(x, t, out);
+            writeObject(enumerator["System.Collections.IEnumerator.get_Current"](), t, out);
         }
     }
     finally {
@@ -373,8 +370,7 @@ export function writeObject(x: any, t: any, out: uint8[]): void {
             outArg = v;
         })), outArg] as [boolean, ((arg0: any, arg1: uint8[]) => void)]);
         if (matchValue[0]) {
-            const writer: ((arg0: any, arg1: uint8[]) => void) = matchValue[1];
-            writer(x, out);
+            matchValue[1](x, out);
         }
         else if (isRecord(t, true)) {
             const fieldTypes: any[] = map<any, any>((x_1: any): any => x_1[1], getRecordElements(t, true));
@@ -396,10 +392,9 @@ export function writeObject(x: any, t: any, out: uint8[]): void {
         else if (isUnion(t, true)) {
             cacheGetOrAdd(t, (x_4: any, out_5: uint8[]): void => {
                 const patternInput: [any, any[]] = getUnionFields(x_4, t, true);
-                const fields: any[] = patternInput[1];
                 const case$: any = patternInput[0];
                 const fieldTypes_1: any[] = map<any, any>((x_5: any): any => x_5[1], getUnionCaseFields(case$));
-                writeUnion(out_5, case$.tag, fieldTypes_1, fields);
+                writeUnion(out_5, case$.tag, fieldTypes_1, patternInput[1]);
             })(x, out);
         }
         else if (isTuple(t)) {
@@ -431,9 +426,7 @@ export function writeObject(x: any, t: any, out: uint8[]): void {
                 cacheGetOrAdd(t, (x_9: any, out_11: uint8[]): void => {
                     const opt: Option<any> = x_9 as Option<any>;
                     const patternInput_1: [int32, any[]] = (opt != null) ? ([1, [value_7(opt)]] as [int32, any[]]) : ([0, []] as [int32, any[]]);
-                    const values: any[] = patternInput_1[1];
-                    const tag: int32 = patternInput_1[0] | 0;
-                    writeUnion(out_11, tag, genArgs, values);
+                    writeUnion(out_11, patternInput_1[0], genArgs, patternInput_1[1]);
                 })(x, out);
             }
             else if (equals(tDef, class_type("System.Collections.Generic.Dictionary`2", [obj_type, obj_type])) ? true : equals(tDef, class_type("Microsoft.FSharp.Collections.FSharpMap`2", [obj_type, obj_type]))) {

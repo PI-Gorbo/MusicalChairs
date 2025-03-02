@@ -9,6 +9,7 @@
     <Compile Include="RegisteredUserAuthRequirement.fs" />
     <Compile Include="Utils\AuthUtils.fs" />
     <Compile Include="Features\UserApi.fs" />
+    <Compile Include="Features\JobApi.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 

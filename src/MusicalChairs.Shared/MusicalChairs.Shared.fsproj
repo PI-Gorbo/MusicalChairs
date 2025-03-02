@@ -8,8 +8,8 @@
   <ItemGroup>
     <Compile Include="Apis\UserApi.fs" />
     <Compile Include="Apis\Email\Email.fs" />
-    <Compile Include="Apis\Job\JobApi.fs" />
     <Compile Include="Apis\Job\Job.fs" />
+    <Compile Include="Apis\Job\JobApi.fs" />
     <Content Include=".gitignore" />
   </ItemGroup>
 

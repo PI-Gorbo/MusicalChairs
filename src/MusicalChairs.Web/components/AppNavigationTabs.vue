@@ -1,16 +1,16 @@
 <template>
     <Tabs :modelValue="useRoute().path">
-        <TabsList>
-            <TabsTrigger value="/app/home">
-                <NuxtLink to="/app/home" class="flex items-center gap-1">
-                    <FontAwesomeIcon :icon="faHouse" size="lg" />
-                    <div>Home</div>
-                </NuxtLink>
-            </TabsTrigger>
+        <TabsList class="border border-black shadow-square-sm">
             <TabsTrigger value="/app/drafts">
                 <NuxtLink to="/app/drafts" class="flex items-center gap-1">
                     <FontAwesomeIcon :icon="faAddressBook" size="lg" />
                     <div>Drafts</div>
+                </NuxtLink>
+            </TabsTrigger>
+            <TabsTrigger value="/app/home">
+                <NuxtLink to="/app/home" class="flex items-center gap-1">
+                    <FontAwesomeIcon :icon="faHouse" size="lg" />
+                    <div>Home</div>
                 </NuxtLink>
             </TabsTrigger>
             <TabsTrigger value="/app/profile">

@@ -51,8 +51,7 @@ export function SimpleJson_parse(input: string): Json_$union {
         return toFail(printf("Could not parse the JSON input: %s"))(input);
     }
     else {
-        const result: Json_$union = value_5(matchValue);
-        return result;
+        return value_5(matchValue);
     }
 }
 
@@ -84,10 +83,8 @@ export function SimpleJson_toString(_arg: Json_$union): string {
         case /* JObject */ 5: {
             const map: FSharpMap<string, Json_$union> = _arg.fields[0];
             const arg_4: string = join(",", map_1<[string, Json_$union], string>((tupledArg: [string, Json_$union]): string => {
-                const key: string = tupledArg[0];
-                const value: Json_$union = tupledArg[1];
-                const arg_3: string = SimpleJson_toString(value);
-                return toText(printf("\"%s\":%s"))(key)(arg_3);
+                const arg_3: string = SimpleJson_toString(tupledArg[1]);
+                return toText(printf("\"%s\":%s"))(tupledArg[0])(arg_3);
             }, toList<string, Json_$union>(map)));
             return toText(printf("{%s}"))(arg_4);
         }
@@ -98,22 +95,15 @@ export function SimpleJson_toString(_arg: Json_$union): string {
 
 export function SimpleJson_toPlainObject(input: Json_$union): any {
     switch (input.tag) {
-        case /* JBool */ 2: {
-            const value: boolean = input.fields[0];
-            return value;
-        }
-        case /* JNumber */ 0: {
-            const value_1: float64 = input.fields[0];
-            return value_1;
-        }
-        case /* JString */ 1: {
-            const value_2: string = input.fields[0];
-            return value_2;
-        }
+        case /* JBool */ 2:
+            return input.fields[0];
+        case /* JNumber */ 0:
+            return input.fields[0];
+        case /* JString */ 1:
+            return input.fields[0];
         case /* JArray */ 4: {
-            const values: FSharpList<Json_$union> = input.fields[0];
             const array: any[] = [];
-            const enumerator: IEnumerator<Json_$union> = getEnumerator(values);
+            const enumerator: IEnumerator<Json_$union> = getEnumerator(input.fields[0]);
             try {
                 while (enumerator["System.Collections.IEnumerator.MoveNext"]()) {
                     const value_3: Json_$union = enumerator["System.Collections.Generic.IEnumerator`1.get_Current"]();
@@ -132,9 +122,7 @@ export function SimpleJson_toPlainObject(input: Json_$union): any {
             try {
                 while (enumerator_1["System.Collections.IEnumerator.MoveNext"]()) {
                     const forLoopVar: [string, Json_$union] = enumerator_1["System.Collections.Generic.IEnumerator`1.get_Current"]();
-                    const value_4: Json_$union = forLoopVar[1];
-                    const key: string = forLoopVar[0];
-                    jsObject[key] = SimpleJson_toPlainObject(value_4);
+                    jsObject[forLoopVar[0]] = SimpleJson_toPlainObject(forLoopVar[1]);
                 }
             }
             finally {
@@ -157,12 +145,8 @@ export function SimpleJson_stringify<a>(value: a): string {
                 const bigInt: bigint = jsonValue;
                 return toDecimal(bigInt).toString();
             }
-            else if (jsonValue instanceof Date) {
-                const dateOffset: Date = jsonValue;
-                return toString(dateOffset, "o");
-            }
             else {
-                return (typeof jsonValue === "string") ? jsonValue : (isIterable(jsonValue) ? (Array.isArray(jsonValue) ? jsonValue : (Array.from(jsonValue))) : (InteropUtil_isBigInt(jsonValue) ? toDecimal(jsonValue).toString() : (InteropUtil_isDateOffset(jsonValue) ? toString(jsonValue, "O") : jsonValue)));
+                return (jsonValue instanceof Date) ? toString(jsonValue, "o") : ((typeof jsonValue === "string") ? jsonValue : (isIterable(jsonValue) ? (Array.isArray(jsonValue) ? jsonValue : (Array.from(jsonValue))) : (InteropUtil_isBigInt(jsonValue) ? toDecimal(jsonValue).toString() : (InteropUtil_isDateOffset(jsonValue) ? toString(jsonValue, "O") : jsonValue))));
             }
         }, some(0));
     }
@@ -216,8 +200,7 @@ export function SimpleJson_parseNative$0027(x: any): Json_$union {
  * Parses and converts the input string to Json using Javascript's native parsing capabilities
  */
 export function SimpleJson_parseNative(input: string): Json_$union {
-    const parsed: any = JSON.parse(input);
-    return SimpleJson_parseNative$0027(parsed);
+    return SimpleJson_parseNative$0027(JSON.parse(input));
 }
 
 export function SimpleJson_tryParseNative(input: string): Option<Json_$union> {
@@ -246,24 +229,14 @@ export function SimpleJson_fromObjectLiteral<a>(x: a): Option<Json_$union> {
  */
 export function SimpleJson_mapKeys(f: ((arg0: string) => string), _arg: Json_$union): Json_$union {
     switch (_arg.tag) {
-        case /* JObject */ 5: {
-            const dictionary: FSharpMap<string, Json_$union> = _arg.fields[0];
-            return Json_JObject(ofList<string, Json_$union>(map_1<[string, Json_$union], [string, Json_$union]>((tupledArg: [string, Json_$union]): [string, Json_$union] => {
-                const key: string = tupledArg[0];
-                const value: Json_$union = tupledArg[1];
-                return [f(key), SimpleJson_mapKeys(f, value)] as [string, Json_$union];
-            }, toList<string, Json_$union>(dictionary)), {
+        case /* JObject */ 5:
+            return Json_JObject(ofList<string, Json_$union>(map_1<[string, Json_$union], [string, Json_$union]>((tupledArg: [string, Json_$union]): [string, Json_$union] => ([f(tupledArg[0]), SimpleJson_mapKeys(f, tupledArg[1])] as [string, Json_$union]), toList<string, Json_$union>(_arg.fields[0])), {
                 Compare: comparePrimitives,
             }));
-        }
-        case /* JArray */ 4: {
-            const values: FSharpList<Json_$union> = _arg.fields[0];
-            return Json_JArray(map_1<Json_$union, Json_$union>((_arg_1: Json_$union): Json_$union => SimpleJson_mapKeys(f, _arg_1), values));
-        }
-        default: {
-            const otherJsonValue: Json_$union = _arg;
-            return otherJsonValue;
-        }
+        case /* JArray */ 4:
+            return Json_JArray(map_1<Json_$union, Json_$union>((_arg_1: Json_$union): Json_$union => SimpleJson_mapKeys(f, _arg_1), _arg.fields[0]));
+        default:
+            return _arg;
     }
 }
 
@@ -272,24 +245,17 @@ export function SimpleJson_mapKeys(f: ((arg0: string) => string), _arg: Json_$un
  */
 export function SimpleJson_mapbyKey(f: ((arg0: string, arg1: Json_$union) => Json_$union), _arg: Json_$union): Json_$union {
     switch (_arg.tag) {
-        case /* JObject */ 5: {
-            const dictionary: FSharpMap<string, Json_$union> = _arg.fields[0];
+        case /* JObject */ 5:
             return Json_JObject(ofList<string, Json_$union>(map_1<[string, Json_$union], [string, Json_$union]>((tupledArg: [string, Json_$union]): [string, Json_$union] => {
                 const key: string = tupledArg[0];
-                const value: Json_$union = tupledArg[1];
-                return [key, f(key, value)] as [string, Json_$union];
-            }, toList<string, Json_$union>(dictionary)), {
+                return [key, f(key, tupledArg[1])] as [string, Json_$union];
+            }, toList<string, Json_$union>(_arg.fields[0])), {
                 Compare: comparePrimitives,
             }));
-        }
-        case /* JArray */ 4: {
-            const values: FSharpList<Json_$union> = _arg.fields[0];
-            return Json_JArray(map_1<Json_$union, Json_$union>((_arg_1: Json_$union): Json_$union => SimpleJson_mapbyKey(f, _arg_1), values));
-        }
-        default: {
-            const otherJsonValue: Json_$union = _arg;
-            return otherJsonValue;
-        }
+        case /* JArray */ 4:
+            return Json_JArray(map_1<Json_$union, Json_$union>((_arg_1: Json_$union): Json_$union => SimpleJson_mapbyKey(f, _arg_1), _arg.fields[0]));
+        default:
+            return _arg;
     }
 }
 
@@ -299,8 +265,7 @@ export function SimpleJson_mapbyKey(f: ((arg0: string, arg1: Json_$union) => Jso
 export function SimpleJson_mapKeysByPath(f: ((arg0: FSharpList<string>) => Option<string>), json: Json_$union): Json_$union {
     const mapKey = (xs: FSharpList<string>, _arg: Json_$union): Json_$union => {
         switch (_arg.tag) {
-            case /* JObject */ 5: {
-                const dictionary: FSharpMap<string, Json_$union> = _arg.fields[0];
+            case /* JObject */ 5:
                 return Json_JObject(ofList<string, Json_$union>(map_1<[string, Json_$union], [string, Json_$union]>((tupledArg: [string, Json_$union]): [string, Json_$union] => {
                     const key: string = tupledArg[0];
                     const value: Json_$union = tupledArg[1];
@@ -310,21 +275,17 @@ export function SimpleJson_mapKeysByPath(f: ((arg0: FSharpList<string>) => Optio
                         return [key, mapKey(keyPath, value)] as [string, Json_$union];
                     }
                     else {
-                        const nextKey: string = value_5(matchValue);
-                        return [nextKey, mapKey(keyPath, value)] as [string, Json_$union];
+                        return [value_5(matchValue), mapKey(keyPath, value)] as [string, Json_$union];
                     }
-                }, toList<string, Json_$union>(dictionary)), {
+                }, toList<string, Json_$union>(_arg.fields[0])), {
                     Compare: comparePrimitives,
                 }));
-            }
             case /* JArray */ 4: {
                 const values: FSharpList<Json_$union> = _arg.fields[0];
                 return Json_JArray(map_1<Json_$union, Json_$union>(curry2(mapKey)(xs), values));
             }
-            default: {
-                const otherJsonValue: Json_$union = _arg;
-                return otherJsonValue;
-            }
+            default:
+                return _arg;
         }
     };
     return mapKey(empty<string>(), json);

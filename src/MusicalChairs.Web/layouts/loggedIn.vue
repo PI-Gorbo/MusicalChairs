@@ -3,17 +3,14 @@
         <NuxtLayout name="default">
             <div class="flex flex-col h-full relative">
                 <nav class="flex bg-primary items-center px-2 justify-between">
-                    <NuxtLink
-                        to="/app/home"
-                        class="p-4 text-primary-foreground font-semibold text-lg"
-                    >
-                        Musical Chairs
+                    <NuxtLink to="/app/home" class="p-4 font-semibold prose">
+                        <h2 class="text-primary-foreground">Musical Chairs</h2>
                     </NuxtLink>
                     <div
                         v-if="displayMode.isWeb.value"
                         class="flex flex-1 justify-end gap-1"
                     >
-                       <AppNavigationTabs />
+                        <AppNavigationTabs />
                     </div>
                 </nav>
                 <section class="flex-1 overflow-y-auto">
@@ -39,8 +36,7 @@ import {
     faPersonRunning,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import AppNavigationTabs from '../components/AppNavigationTabs.vue'
+import AppNavigationTabs from "../components/AppNavigationTabs.vue";
 
 const displayMode = useDisplayMode();
-
 </script>
