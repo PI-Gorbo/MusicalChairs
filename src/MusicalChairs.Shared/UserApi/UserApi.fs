@@ -1,6 +1,7 @@
 ﻿module MusicalChairs.Shared.UserApi
 
 open System
+open Fable.Core
 
 type PlannedJobId = Guid
 type JobId = Guid

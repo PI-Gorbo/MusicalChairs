@@ -31,4 +31,22 @@
 </template>
 <script setup lang="ts">
 import Button from "~/components/ui/button/Button.vue";
+
+useAsyncData(
+    "check-logged-in-index",
+    async () => {
+        const userStore = useUserStore();
+        const isLoggedIn = await userStore.isLoggedIn();
+        console.log("navigating to home!");
+        if (isLoggedIn) {
+            return navigateTo({
+                path: "/app/home",
+            });
+        }
+    },
+    {
+        server: false,
+    }
+);
 </script>
+

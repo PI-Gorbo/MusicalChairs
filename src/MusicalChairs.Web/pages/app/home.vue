@@ -58,6 +58,44 @@
                         </article>
                     </template>
                 </div>
+                <div
+                    v-if="displayMode.isWeb.value"
+                    class="grid grid-cols-2 md:grid-cols-3 gap-2 bg-background-surface"
+                >
+                    <template v-for="index in 10">
+                        <Card
+                            v-ripple
+                            class="cursor-pointer flex flex-col gap-2 p-2"
+                        >
+                            <CardHeader class="p-0">
+                                <h4>Fringe Festival</h4>
+                            </CardHeader>
+                            <CardContent class="p-0">
+                                <div class="prose flex-1 select-none">
+                                    <div
+                                        class="prose-sm flex *:px-2 divide-x divide-muted-foreground"
+                                    >
+                                        <div>
+                                            <FontAwesomeIcon
+                                                :icon="faCheck"
+                                                class="text-primary"
+                                            />
+                                            Tenor (1/1)
+                                        </div>
+                                        <div class="text-wrap">
+                                            <FontAwesomeIcon
+                                                :icon="faExclamationCircle"
+                                                shake
+                                                class="text-secondary"
+                                            />
+                                            Soprano (0/1) - Confirm Required
+                                        </div>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </template>
+                </div>
                 <!-- <Card>
                     <CardContent
                         class="rounded bg-background"
