@@ -76,5 +76,8 @@ export default defineNuxtConfig({
     },
     ripple: {
         color: 'rgba(0, 0, 0, 0.4)',
+    },
+    routeRules: {
+        "/app/**": { ssr: false }
     }
 });
