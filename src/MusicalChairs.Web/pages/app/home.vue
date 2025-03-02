@@ -71,26 +71,26 @@
                                 <h4>Fringe Festival</h4>
                             </CardHeader>
                             <CardContent class="p-0">
-                                <div class="prose flex-1 select-none">
-                                    <div
-                                        class="prose-sm flex *:px-2 divide-x divide-muted-foreground"
+                                <div class="flex gap-1">
+                                    <Badge
+                                        class="bg-background text-foreground flex gap-1 hover:bg-background select-none"
                                     >
-                                        <div>
-                                            <FontAwesomeIcon
-                                                :icon="faCheck"
-                                                class="text-primary"
-                                            />
-                                            Tenor (1/1)
-                                        </div>
-                                        <div class="text-wrap">
-                                            <FontAwesomeIcon
-                                                :icon="faExclamationCircle"
-                                                shake
-                                                class="text-secondary"
-                                            />
-                                            Soprano (0/1) - Confirm Required
-                                        </div>
-                                    </div>
+                                        <FontAwesomeIcon
+                                            :icon="faCheck"
+                                            class="text-primary"
+                                        />
+                                        Tenor (1/1)
+                                    </Badge>
+                                    <Badge
+                                        class="text-wrap bg-background text-foreground flex gap-1 hover:bg-background select-none"
+                                    >
+                                        <FontAwesomeIcon
+                                            :icon="faExclamationCircle"
+                                            shake
+                                            class="text-secondary"
+                                        />
+                                        Soprano (0/1) - Confirm Required
+                                    </Badge>
                                 </div>
                             </CardContent>
                         </Card>
@@ -170,6 +170,7 @@ import {
     faStopwatch,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+
 const displayMode = useDisplayMode();
 
 async function onEdit(id: string) {

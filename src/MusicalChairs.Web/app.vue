@@ -8,13 +8,15 @@
 <script setup lang="ts"></script>
 <style>
 .slide-enter-active {
-    transition: all 0.5s;
+    transition: all 0.3s;
     position: relative;
+    overflow: hidden;
 }
 
 .slide-leave-active {
-    transition: all 0.5s;
+    transition: all 0.3s;
     position: relative;
+    overflow: hidden;
 }
 
 .slide-enter-from {
