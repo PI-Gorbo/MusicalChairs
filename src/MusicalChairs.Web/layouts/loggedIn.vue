@@ -46,19 +46,19 @@
                         <TabsList>
                             <TabsTrigger value="/app/home">
                                 <NuxtLink to="/app/home" class="flex items-center gap-1">
-                                    <FontAwesomeIcon :icon="faHouse" />
+                                    <FontAwesomeIcon :icon="faHouse" size="lg"/>
                                     <div>Home</div>
                                 </NuxtLink>
                             </TabsTrigger>
                             <TabsTrigger value="/app/drafts">
                                 <NuxtLink to="/app/drafts" class="flex items-center gap-1">
-                                    <FontAwesomeIcon :icon="faAddressBook" />
+                                    <FontAwesomeIcon :icon="faAddressBook" size="lg"/>
                                     <div>Drafts</div>
                                 </NuxtLink>
                             </TabsTrigger>
                             <TabsTrigger value="/app/profile">
                                 <NuxtLink to="/app/profile" class="flex items-center gap-1">
-                                    <FontAwesomeIcon :icon="faCircleUser" />
+                                    <FontAwesomeIcon :icon="faCircleUser" size="lg"/>
                                     <div>Profile</div>
                                 </NuxtLink>
                             </TabsTrigger>
