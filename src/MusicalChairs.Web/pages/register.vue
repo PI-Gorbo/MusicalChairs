@@ -9,33 +9,33 @@
             <CardHeader>
                 <CardTitle>Sign up for free</CardTitle>
             </CardHeader>
-            <div class="flex flex-col gap-2">
-                <AutoForm
-                    :form="form"
-                    :schema="registerSchema"
-                    :fieldConfig="{
-                        email: {
-                            inputProps: {
-                                type: 'email',
-                                class: 'text-black',
-                            },
+            <AutoForm
+                :form="form"
+                :schema="registerSchema"
+                :fieldConfig="{
+                    email: {
+                        inputProps: {
+                            type: 'email',
+                            class: 'text-black',
                         },
-                        password: {
-                            inputProps: {
-                                type: 'password',
-                                class: 'text-black ',
-                            },
+                    },
+                    password: {
+                        inputProps: {
+                            type: 'password',
+                            class: 'text-black ',
                         },
-                        confirmPassword: {
-                            inputProps: {
-                                type: 'password',
-                                class: 'text-black ',
-                            },
+                    },
+                    confirmPassword: {
+                        inputProps: {
+                            type: 'password',
+                            class: 'text-black ',
                         },
-                    }"
-                    :handleSubmit="onSubmit"
-                    v-slot="{ submitting }"
-                >
+                    },
+                }"
+                :handleSubmit="onSubmit"
+                v-slot="{ submitting }"
+            >
+                <div class="flex flex-col gap-4">
                     <Transition name="fade" mode="out-in">
                         <div
                             key="Submit"
@@ -48,8 +48,11 @@
                             "
                             class="w-full"
                         >
-                        
-                            <Button type="submit" class="w-full" :disabled="!form.meta.value.valid">
+                            <Button
+                                type="submit"
+                                class="w-full shadow-square-sm"
+                                :disabled="!form.meta.value.valid"
+                            >
                                 {{
                                     !submitting ? "Register" : "Registering..."
                                 }}
@@ -152,7 +155,6 @@
                             </div>
                         </div>
                     </Transition>
-
                     <Separator label="Or" />
                     <NuxtLink
                         to="/login"
@@ -160,8 +162,8 @@
                     >
                         <span class="underline">Login instead</span>
                     </NuxtLink>
-                </AutoForm>
-            </div>
+                </div>
+            </AutoForm>
         </Card>
     </div>
 </template>

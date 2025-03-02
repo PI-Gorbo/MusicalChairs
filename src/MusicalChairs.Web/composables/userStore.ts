@@ -46,7 +46,7 @@ export const useUserStore = defineStore('user-store', () => {
 
         await init()
 
-        await navigateTo("/home");
+        await navigateTo("/app/home");
 
         return { error: false }
     }

@@ -36,8 +36,10 @@
                     >
                         {{ submitError }}
                     </div>
-                    <div class="flex justify-between items-center">
-                        <Button type="submit">
+                    <div
+                        class="flex flex-col gap-2 justify-between items-center"
+                    >
+                        <Button type="submit" class="w-full shadow-square-sm">
                             {{ !submitting ? "Login" : "Logging in..." }}
                         </Button>
                         <NuxtLink
@@ -47,15 +49,14 @@
                             Forgot your password?
                         </NuxtLink>
                     </div>
-                    <div class="w-full flex flex-col items-center">
-                        <div class="prose">
-                            <h4>Dont't have an account?</h4>
-                        </div>
+
+                    <Separator label="Or" />
+                    <div class="w-full flex justify-center items-center">
                         <NuxtLink
                             to="/register"
                             class="underline text-sm cursor-pointer"
                         >
-                            Create one
+                            Create an account
                         </NuxtLink>
                     </div>
                 </div>
