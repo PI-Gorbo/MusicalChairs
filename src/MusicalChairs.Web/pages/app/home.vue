@@ -65,9 +65,9 @@
                     <template v-for="index in 10">
                         <Card
                             v-ripple
-                            class="cursor-pointer flex flex-col gap-2 p-2"
+                            class="cursor-pointer flex flex-col gap-2 p-2 pressable"
                         >
-                            <CardHeader class="p-0">
+                            <CardHeader class="p-0 select-none">
                                 <h4>Fringe Festival</h4>
                             </CardHeader>
                             <CardContent class="p-0">

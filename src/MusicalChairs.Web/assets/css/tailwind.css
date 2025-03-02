@@ -70,6 +70,11 @@
             box-shadow: 0 0.1rem hsl(var(--border));
         }
 
+        .pressable.shadow-square-sm:active {
+            transform: translateY(0.1rem);
+            box-shadow: 0 0.1rem hsl(var(--border));
+        }
+
         --chart-1: 12 76% 61%;
 
         --chart-2: 173 58% 39%;
