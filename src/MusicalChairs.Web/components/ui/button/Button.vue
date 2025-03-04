@@ -3,6 +3,7 @@
         :as="as"
         :as-child="asChild"
         :class="cn(buttonVariants({ variant, size }), props.class)"
+        v-ripple
     >
         <slot />
     </Primitive>

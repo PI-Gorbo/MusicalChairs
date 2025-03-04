@@ -20,7 +20,7 @@
                 </section>
                 <footer
                     v-if="displayMode.isMobile.value"
-                    class="absolute bottom-0 w-full py-4 flex justify-center gap-3 px-2 h-fit"
+                    class="w-full"
                 >
                     <AppNavigationTabs />
                 </footer>
