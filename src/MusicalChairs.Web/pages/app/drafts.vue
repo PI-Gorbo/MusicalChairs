@@ -3,7 +3,17 @@
         <header class="prose flex justify-between py-2">
             <h3>Your Drafts</h3>
         </header>
-        <div class="absolute bottom-2 right-0">
+        <div
+            :class="
+                cn([
+                    'absolute right-0',
+                    {
+                        'bottom-2': displayMode.isMobile.value,
+                        'top-2': displayMode.isWeb.value,
+                    },
+                ])
+            "
+        >
             <AsyncButton
                 :async="{
                     type: 'Click',
@@ -18,9 +28,12 @@
 <script setup lang="ts">
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { cn } from "~/utils";
 
 definePageMeta({
     requiresAuth: true,
     layout: "logged-in",
 });
+
+const displayMode = useDisplayMode();
 </script>
