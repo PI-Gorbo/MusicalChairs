@@ -54,13 +54,13 @@ let main args =
             )
 
             storeOptions.RegisterIdentityModels<User, UserRole>() |> ignore
-            storeOptions
-                .Schema
-                .For<DraftJob>()
-                .Index(
-                       toLinq <@ _.CreatorId @>
-                       )
-                |> ignore
+            // storeOptions
+            //     .Schema
+            //     .For<DraftJob>()
+            //     .Index(
+            //            toLinq Func(fun x -> x.CreatorId) <@ fun x -> x.CreatorId @>
+            //            )
+            //     |> ignore
 
             // if builder.Environment.IsDevelopment() then
             storeOptions.AutoCreateSchemaObjects <- AutoCreate.All
