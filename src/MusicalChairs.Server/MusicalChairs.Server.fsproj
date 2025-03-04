@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MusicalChairs.Server.Configuration\MusicalChairs.Server.Configuration.csproj" />
     <ProjectReference Include="..\MusicalChairs.Shared\MusicalChairs.Shared.fsproj" />
     <ProjectReference Include="..\MusicalChairs.Domain\MusicalChairs.Domain.fsproj" />
   </ItemGroup>

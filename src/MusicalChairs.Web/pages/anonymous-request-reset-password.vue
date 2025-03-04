@@ -64,7 +64,7 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { refDebounced } from "@vueuse/core";
 import { useForm } from "vee-validate";
 import { z } from "zod";
-import { RequestResetPasswordTokenRequest } from "~/utils/generated/MusicalChairs.Shared/UserApi/UserApi";
+import { RequestResetPasswordTokenRequest } from "~/utils/generated/MusicalChairs.Shared/Apis/UserApi"; 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 

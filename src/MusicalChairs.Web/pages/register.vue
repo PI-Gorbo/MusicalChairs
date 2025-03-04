@@ -173,7 +173,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import { z } from "zod";
-import { RegisterRequest } from "~/utils/generated/MusicalChairs.Shared/UserApi/UserApi";
+import { RegisterRequest } from "~/utils/generated/MusicalChairs.Shared/Apis/UserApi";
 
 definePageMeta({
     layout: "auth",

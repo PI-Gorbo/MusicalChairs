@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { LoginRequest, type UserDto } from "~/utils/generated/MusicalChairs.Shared/UserApi/UserApi"
+import { LoginRequest, UserDto } from "~/utils/generated/MusicalChairs.Shared/Apis/UserApi"
 
 export const useUserStore = defineStore('user-store', () => {
 

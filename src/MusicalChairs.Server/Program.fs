@@ -18,6 +18,7 @@ open Microsoft.Extensions.Logging
 open MusicalChairs.Domain.Job
 open MusicalChairs.Domain.User
 open MusicalChairs.Server
+open MusicalChairs.Server.Configuration
 open MusicalChairs.Server.Features.UserApi
 open MusicalChairs.Server.Utils.LambdaUtils
 open Weasel.Core
@@ -54,13 +55,7 @@ let main args =
             )
 
             storeOptions.RegisterIdentityModels<User, UserRole>() |> ignore
-            // storeOptions
-            //     .Schema
-            //     .For<DraftJob>()
-            //     .Index(
-            //            toLinq Func(fun x -> x.CreatorId) <@ fun x -> x.CreatorId @>
-            //            )
-            //     |> ignore
+            MartenConfiguration.AddSchemaConfiguration(storeOptions) |> ignore
 
             // if builder.Environment.IsDevelopment() then
             storeOptions.AutoCreateSchemaObjects <- AutoCreate.All

@@ -1,6 +1,6 @@
 import { head, find, map, setItem, item, fill } from "../fable-library-ts.4.24.0/Array.js";
 import { float64, float32, uint32, uint16, int16, int8, int32, uint8 } from "../fable-library-ts.4.24.0/Int32.js";
-import { isEnum, int8_type, uint16_type, uint32_type, bigint_type, array_type, uint8_type, fullName, decimal_type, int16_type, int64_type, getTupleElements, makeTuple, isTuple, getElementType, isArray, list_type, option_type, isGenericType, makeUnion, getUnionCaseFields, getUnionCases, int32_type, isUnion, getRecordElements, makeRecord, isRecord, obj_type, getGenericTypeDefinition, equals, name, getGenerics, class_type, TypeInfo } from "../fable-library-ts.4.24.0/Reflection.js";
+import { isEnum, int8_type, uint16_type, uint32_type, bigint_type, array_type, uint8_type, fullName, decimal_type, int16_type, int64_type, getTupleElements, makeTuple, isTuple, getElementType, isArray, list_type, option_type, isGenericType, makeUnion, getUnionCaseFields, getUnionCases, int32_type, isUnion, makeRecord, getRecordElements, isRecord, obj_type, getGenericTypeDefinition, equals, name, getGenerics, class_type, TypeInfo } from "../fable-library-ts.4.24.0/Reflection.js";
 import { get_UTF8 } from "../fable-library-ts.4.24.0/Encoding.js";
 import { fromUInt64, fromUInt32, fromUInt16, fromInt16, fromInt32, toFloat64, toInt8, toUInt8, toUInt16, toUInt32, toInt16, toInt32, fromInt8, fromUInt8, toInt64 as toInt64_1, fromByteArray, equals as equals_2, int64, uint64, fromInt64, toUInt64 } from "../fable-library-ts.4.24.0/BigInt.js";
 import { isLittleEndian, toDouble, toSingle, toInt64 } from "../fable-library-ts.4.24.0/BitConverter.js";
@@ -158,16 +158,33 @@ export function Reader__ReadRawArray_412036CA(x: Reader, len: int32, elementType
 
 export function Reader__ReadArray_412036CA(x: Reader, len: int32, t: any): any {
     if (isRecord(t)) {
-        return makeRecord(t, map<any, any>((prop: any): any => Reader__Read_24524716(x, prop[1]), getRecordElements(t)));
+        const props: any[] = getRecordElements(t);
+        return makeRecord(t, map<any, any>((prop: any): any => Reader__Read_24524716(x, prop[1]), props));
     }
     else if (isUnion(t, true)) {
         const tag: int32 = (Reader__Read_24524716(x, int32_type) as int32) | 0;
         const case$: any = find<any>((x_1: any): boolean => (x_1.tag === tag), getUnionCases(t, true));
         const fieldTypes: any[] = map<any, any>((x_2: any): any => x_2[1], getUnionCaseFields(case$));
-        return makeUnion(case$, (fieldTypes.length === 1) ? [Reader__Read_24524716(x, item(0, fieldTypes))] : ((fieldTypes.length === 0) ? [] : ((void Reader__ReadByte(x), map<any, any>((t_1: any): any => Reader__Read_24524716(x, t_1), fieldTypes)))), true);
+        let fields: any[];
+        switch (fieldTypes.length) {
+            case 1: {
+                fields = [Reader__Read_24524716(x, item(0, fieldTypes))];
+                break;
+            }
+            case 0: {
+                fields = [];
+                break;
+            }
+            default: {
+                Reader__ReadByte(x);
+                fields = map<any, any>((t_1: any): any => Reader__Read_24524716(x, t_1), fieldTypes);
+            }
+        }
+        return makeUnion(case$, fields, true);
     }
     else if (isGenericType(t) && equals(getGenericTypeDefinition(t), option_type(obj_type))) {
-        if (Reader__ReadByte(x) === 0) {
+        const tag_1: uint8 = Reader__ReadByte(x);
+        if (tag_1 === 0) {
             return defaultOf();
         }
         else {
@@ -187,10 +204,13 @@ export function Reader__ReadArray_412036CA(x: Reader, len: int32, t: any): any {
     else if (equals(t, class_type("System.DateTime"))) {
         const dateTimeTicks = Reader__Read_24524716(x, int64_type) as int64;
         const kindAsInt = Reader__Read_24524716(x, int64_type) as int64;
-        return fromTicks(dateTimeTicks, equals_2(kindAsInt, 1n) ? 1 : (equals_2(kindAsInt, 2n) ? 2 : 0));
+        const kind: int32 = (equals_2(kindAsInt, 1n) ? 1 : (equals_2(kindAsInt, 2n) ? 2 : 0)) | 0;
+        return fromTicks(dateTimeTicks, kind);
     }
     else if (equals(t, class_type("System.DateTimeOffset"))) {
-        return fromTicks_1(Reader__Read_24524716(x, int64_type) as int64, fromMinutes(Reader__Read_24524716(x, int16_type) as int16));
+        const dateTimeTicks_1 = Reader__Read_24524716(x, int64_type) as int64;
+        const timeSpanMinutes: int16 = (Reader__Read_24524716(x, int16_type) as int16) | 0;
+        return fromTicks_1(dateTimeTicks_1, fromMinutes(timeSpanMinutes));
     }
     else if (isGenericType(t) && equals(getGenericTypeDefinition(t), class_type("Microsoft.FSharp.Collections.FSharpSet`1", [obj_type]))) {
         return Reader__ReadSet_412036CA(x, len, t);
@@ -223,19 +243,20 @@ export function Reader__ReadBin_412036CA(x: Reader, len: int32, t: any): any {
 }
 
 export function Reader__Read_24524716(x: Reader, t: any): any {
+    let b: uint8, b_1: uint8, b_2: uint8, b_3: uint8, b_4: uint8, b_5: uint8, b_6: uint8, b_7: uint8, b_8: uint8, b_9: uint8, b_10: uint8, b_11: uint8, b_12: uint8, b_13: uint8, b_14: uint8, b_15: uint8, b_16: uint8, b_17: uint8, b_18: uint8, b_19: uint8, b_20: uint8, b_21: uint8, b_22: uint8, b_23: uint8, b_24: uint8, b_25: uint8, b_26: uint8, b_27: uint8, b_28: uint8, b_29: uint8, b_30: uint8, b_31: uint8, b_32: uint8, b_33: uint8, b_34: uint8, b_35: uint8, b_36: uint8, b_37: uint8, b_38: uint8, b_39: uint8, b_40: uint8, b_41: uint8, b_42: uint8, b_43: uint8, b_44: uint8, b_45: uint8, b_46: uint8, b_47: uint8, b_48: uint8, b_49: uint8, b_50: uint8, b_51: uint8, b_52: uint8, b_53: uint8, b_54: uint8, b_55: uint8, b_56: uint8;
     const matchValue: uint8 = Reader__ReadByte(x);
     let matchResult: int32, b_58: uint8, b_59: uint8, b_60: uint8, b_61: uint8;
-    if ((matchValue | 31) === 191) {
+    if ((b = matchValue, (b | 31) === 191)) {
         matchResult = 0;
     }
     else {
         switch (matchValue) {
             case 192: {
-                if ((matchValue | 127) === 127) {
+                if ((b_1 = matchValue, (b_1 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_2 = matchValue, (b_2 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -245,11 +266,11 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 194: {
-                if ((matchValue | 127) === 127) {
+                if ((b_3 = matchValue, (b_3 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_4 = matchValue, (b_4 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -259,11 +280,11 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 195: {
-                if ((matchValue | 127) === 127) {
+                if ((b_5 = matchValue, (b_5 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_6 = matchValue, (b_6 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -273,19 +294,19 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 196: {
-                if ((matchValue | 127) === 127) {
+                if ((b_7 = matchValue, (b_7 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_8 = matchValue, (b_8 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
-                else if ((matchValue | 15) === 159) {
+                else if ((b_9 = matchValue, (b_9 | 15) === 159)) {
                     matchResult = 19;
                     b_60 = matchValue;
                 }
-                else if ((matchValue | 15) === 143) {
+                else if ((b_10 = matchValue, (b_10 | 15) === 143)) {
                     matchResult = 22;
                     b_61 = matchValue;
                 }
@@ -295,19 +316,19 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 197: {
-                if ((matchValue | 127) === 127) {
+                if ((b_11 = matchValue, (b_11 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_12 = matchValue, (b_12 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
-                else if ((matchValue | 15) === 159) {
+                else if ((b_13 = matchValue, (b_13 | 15) === 159)) {
                     matchResult = 19;
                     b_60 = matchValue;
                 }
-                else if ((matchValue | 15) === 143) {
+                else if ((b_14 = matchValue, (b_14 | 15) === 143)) {
                     matchResult = 22;
                     b_61 = matchValue;
                 }
@@ -317,19 +338,19 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 198: {
-                if ((matchValue | 127) === 127) {
+                if ((b_15 = matchValue, (b_15 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_16 = matchValue, (b_16 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
-                else if ((matchValue | 15) === 159) {
+                else if ((b_17 = matchValue, (b_17 | 15) === 159)) {
                     matchResult = 19;
                     b_60 = matchValue;
                 }
-                else if ((matchValue | 15) === 143) {
+                else if ((b_18 = matchValue, (b_18 | 15) === 143)) {
                     matchResult = 22;
                     b_61 = matchValue;
                 }
@@ -339,11 +360,11 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 202: {
-                if ((matchValue | 127) === 127) {
+                if ((b_19 = matchValue, (b_19 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_20 = matchValue, (b_20 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -353,11 +374,11 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 203: {
-                if ((matchValue | 127) === 127) {
+                if ((b_21 = matchValue, (b_21 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_22 = matchValue, (b_22 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -367,11 +388,11 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 204: {
-                if ((matchValue | 127) === 127) {
+                if ((b_23 = matchValue, (b_23 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_24 = matchValue, (b_24 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -381,11 +402,11 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 205: {
-                if ((matchValue | 127) === 127) {
+                if ((b_25 = matchValue, (b_25 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_26 = matchValue, (b_26 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -395,11 +416,11 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 206: {
-                if ((matchValue | 127) === 127) {
+                if ((b_27 = matchValue, (b_27 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_28 = matchValue, (b_28 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -409,11 +430,11 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 207: {
-                if ((matchValue | 127) === 127) {
+                if ((b_29 = matchValue, (b_29 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_30 = matchValue, (b_30 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -423,11 +444,11 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 208: {
-                if ((matchValue | 127) === 127) {
+                if ((b_31 = matchValue, (b_31 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_32 = matchValue, (b_32 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -437,11 +458,11 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 209: {
-                if ((matchValue | 127) === 127) {
+                if ((b_33 = matchValue, (b_33 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_34 = matchValue, (b_34 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -451,11 +472,11 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 210: {
-                if ((matchValue | 127) === 127) {
+                if ((b_35 = matchValue, (b_35 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_36 = matchValue, (b_36 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -465,11 +486,11 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 211: {
-                if ((matchValue | 127) === 127) {
+                if ((b_37 = matchValue, (b_37 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_38 = matchValue, (b_38 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
@@ -491,15 +512,15 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 220: {
-                if ((matchValue | 127) === 127) {
+                if ((b_39 = matchValue, (b_39 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_40 = matchValue, (b_40 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
-                else if ((matchValue | 15) === 159) {
+                else if ((b_41 = matchValue, (b_41 | 15) === 159)) {
                     matchResult = 19;
                     b_60 = matchValue;
                 }
@@ -509,15 +530,15 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 221: {
-                if ((matchValue | 127) === 127) {
+                if ((b_42 = matchValue, (b_42 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_43 = matchValue, (b_43 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
-                else if ((matchValue | 15) === 159) {
+                else if ((b_44 = matchValue, (b_44 | 15) === 159)) {
                     matchResult = 19;
                     b_60 = matchValue;
                 }
@@ -527,19 +548,19 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 222: {
-                if ((matchValue | 127) === 127) {
+                if ((b_45 = matchValue, (b_45 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_46 = matchValue, (b_46 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
-                else if ((matchValue | 15) === 159) {
+                else if ((b_47 = matchValue, (b_47 | 15) === 159)) {
                     matchResult = 19;
                     b_60 = matchValue;
                 }
-                else if ((matchValue | 15) === 143) {
+                else if ((b_48 = matchValue, (b_48 | 15) === 143)) {
                     matchResult = 22;
                     b_61 = matchValue;
                 }
@@ -549,19 +570,19 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             case 223: {
-                if ((matchValue | 127) === 127) {
+                if ((b_49 = matchValue, (b_49 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_50 = matchValue, (b_50 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
-                else if ((matchValue | 15) === 159) {
+                else if ((b_51 = matchValue, (b_51 | 15) === 159)) {
                     matchResult = 19;
                     b_60 = matchValue;
                 }
-                else if ((matchValue | 15) === 143) {
+                else if ((b_52 = matchValue, (b_52 | 15) === 143)) {
                     matchResult = 22;
                     b_61 = matchValue;
                 }
@@ -571,19 +592,19 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
                 break;
             }
             default:
-                if ((matchValue | 127) === 127) {
+                if ((b_53 = matchValue, (b_53 | 127) === 127)) {
                     matchResult = 4;
                     b_58 = matchValue;
                 }
-                else if ((matchValue | 31) === 255) {
+                else if ((b_54 = matchValue, (b_54 | 31) === 255)) {
                     matchResult = 5;
                     b_59 = matchValue;
                 }
-                else if ((matchValue | 15) === 159) {
+                else if ((b_55 = matchValue, (b_55 | 15) === 159)) {
                     matchResult = 19;
                     b_60 = matchValue;
                 }
-                else if ((matchValue | 15) === 143) {
+                else if ((b_56 = matchValue, (b_56 | 15) === 143)) {
                     matchResult = 22;
                     b_61 = matchValue;
                 }
@@ -593,8 +614,10 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
         }
     }
     switch (matchResult) {
-        case 0:
-            return interpretStringAs(t, Reader__ReadString_Z524259A4(x, ~~(matchValue & 31)));
+        case 0: {
+            const b_57: uint8 = matchValue;
+            return interpretStringAs(t, Reader__ReadString_Z524259A4(x, ~~(b_57 & 31)));
+        }
         case 1:
             return interpretStringAs(t, Reader__ReadString_Z524259A4(x, ~~Reader__ReadByte(x)));
         case 2:
@@ -1163,26 +1186,41 @@ export function Reader__Read_24524716(x: Reader, t: any): any {
             return false;
         case 19:
             return Reader__ReadArray_412036CA(x, ~~(b_60! & 15), t);
-        case 20:
-            return Reader__ReadArray_412036CA(x, ~~Reader__ReadUInt16(x), t);
-        case 21:
-            return Reader__ReadArray_412036CA(x, ~~Reader__ReadUInt32(x), t);
+        case 20: {
+            const len_4: int32 = ~~Reader__ReadUInt16(x) | 0;
+            return Reader__ReadArray_412036CA(x, len_4, t);
+        }
+        case 21: {
+            const len_5: int32 = ~~Reader__ReadUInt32(x) | 0;
+            return Reader__ReadArray_412036CA(x, len_5, t);
+        }
         case 22:
             return Reader__ReadMap_412036CA(x, ~~(b_61! & 15), t);
-        case 23:
-            return Reader__ReadMap_412036CA(x, ~~Reader__ReadUInt16(x), t);
-        case 24:
-            return Reader__ReadMap_412036CA(x, ~~Reader__ReadUInt32(x), t);
-        case 25:
-            return Reader__ReadBin_412036CA(x, ~~Reader__ReadByte(x), t);
-        case 26:
-            return Reader__ReadBin_412036CA(x, ~~Reader__ReadUInt16(x), t);
-        case 27:
-            return Reader__ReadBin_412036CA(x, ~~Reader__ReadUInt32(x), t);
+        case 23: {
+            const len_6: int32 = ~~Reader__ReadUInt16(x) | 0;
+            return Reader__ReadMap_412036CA(x, len_6, t);
+        }
+        case 24: {
+            const len_7: int32 = ~~Reader__ReadUInt32(x) | 0;
+            return Reader__ReadMap_412036CA(x, len_7, t);
+        }
+        case 25: {
+            const len_8: int32 = ~~Reader__ReadByte(x) | 0;
+            return Reader__ReadBin_412036CA(x, len_8, t);
+        }
+        case 26: {
+            const len_9: int32 = ~~Reader__ReadUInt16(x) | 0;
+            return Reader__ReadBin_412036CA(x, len_9, t);
+        }
+        case 27: {
+            const len_10: int32 = ~~Reader__ReadUInt32(x) | 0;
+            return Reader__ReadBin_412036CA(x, len_10, t);
+        }
         default: {
+            const b_62: uint8 = matchValue;
             const arg_11: int32 = x.pos | 0;
             const arg_13: string = name(t);
-            return toFail(printf("Position %d, byte %d, expected type %s."))(arg_11)(matchValue)(arg_13);
+            return toFail(printf("Position %d, byte %d, expected type %s."))(arg_11)(b_62)(arg_13);
         }
     }
 }

@@ -13,7 +13,7 @@
                     <h2 class="mb-0">Welcome to Musical Chairs</h2>
                     <h5>Co-Ordination Platform</h5>
                 </div>
-                <div class="grid grid-col-1 grid-rows-2">
+                <div class="grid grid-col-1 grid-rows-2 gap-4">
                     <NuxtLink to="/register">
                         <Button class="w-full border shadow-square-sm">
                             Sign up for free
