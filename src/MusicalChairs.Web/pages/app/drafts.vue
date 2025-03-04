@@ -3,15 +3,16 @@
         <header class="prose flex justify-between py-2">
             <h3>Your Drafts</h3>
         </header>
-        <AsyncButton
-            class="absolute bottom-2 right-0"
-            :async="{
-                type: 'Click',
-                label: 'Create Draft',
-                icon: faPlus,
-                loadingLabel: 'Creating...',
-            }"
-        />
+        <div class="absolute bottom-2 right-0">
+            <AsyncButton
+                :async="{
+                    type: 'Click',
+                    label: 'Create Draft',
+                    icon: faPlus,
+                    loadingLabel: 'Creating...',
+                }"
+            />
+        </div>
     </div>
 </template>
 <script setup lang="ts">
