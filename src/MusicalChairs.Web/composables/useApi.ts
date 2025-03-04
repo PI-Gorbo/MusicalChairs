@@ -23,6 +23,7 @@ export function useApi() {
     }
 
     return {
-        user: wrapper(api)
+        user: wrapper(api.userApi),
+        job: wrapper(api.jobAPi)
     }
 }

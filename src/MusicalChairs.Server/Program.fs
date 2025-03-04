@@ -15,10 +15,13 @@ open Microsoft.Extensions.Hosting
 open Fable.Remoting.Server
 open Fable.Remoting.AspNetCore
 open Microsoft.Extensions.Logging
+open MusicalChairs.Domain.Job
 open MusicalChairs.Domain.User
 open MusicalChairs.Server
 open MusicalChairs.Server.Features.UserApi
+open MusicalChairs.Server.Utils.LambdaUtils
 open Weasel.Core
+open Microsoft.FSharp.Linq.RuntimeHelpers.LeafExpressionConverter
 
 [<EntryPoint>]
 let main args =
@@ -51,6 +54,13 @@ let main args =
             )
 
             storeOptions.RegisterIdentityModels<User, UserRole>() |> ignore
+            storeOptions
+                .Schema
+                .For<DraftJob>()
+                .Index(
+                       toLinq <@ _.CreatorId @>
+                       )
+                |> ignore
 
             // if builder.Environment.IsDevelopment() then
             storeOptions.AutoCreateSchemaObjects <- AutoCreate.All

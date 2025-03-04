@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="UserApi.fs" />
+    <Compile Include="createApi.fs" />
     <Content Include=".gitignore" />
   </ItemGroup>
 

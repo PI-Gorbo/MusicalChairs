@@ -1,4 +1,4 @@
-import { createApi } from "~/utils/generated/UserApi"
+import { createApi } from "~/utils/generated/createApi"
 
 export default defineNuxtPlugin(nuxtApp => {
 

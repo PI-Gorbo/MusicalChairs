@@ -24,9 +24,10 @@ type DraftPosition =
       PositionsAvailable: uint
       Contacts: DraftContact list }
 
+[<CLIMutable>]
 type DraftJob =
     { Id: Guid
-      Name: string
+      Name: string option
       CreatorId: Guid
       Templates: Template list
       Positions: DraftPosition list }
@@ -83,6 +84,7 @@ type JobState =
     | Started
     | Complete
 
+[<CLIMutable>]
 type Job =
     { Id: Guid
       CreatorId: Guid
