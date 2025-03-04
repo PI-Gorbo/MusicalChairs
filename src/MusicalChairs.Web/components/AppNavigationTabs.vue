@@ -3,7 +3,7 @@
         <TabsList
             class=""
             :class="{
-                'w-full border-t border-black rounded-none': displayMode.isMobile.value,
+                'w-full border-t border-black rounded-none py-2': displayMode.isMobile.value,
                 'border border-black shadow-square-sm': displayMode.isWeb.value,
             }"
         >
