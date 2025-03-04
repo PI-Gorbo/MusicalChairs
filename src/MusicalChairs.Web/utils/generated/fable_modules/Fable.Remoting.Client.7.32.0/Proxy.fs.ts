@@ -1,7 +1,7 @@
 import { fromContinuations } from "../fable-library-ts.4.24.0/Async.js";
 import { singleton as singleton_1, Async } from "../fable-library-ts.4.24.0/AsyncBuilder.js";
-import { defaultArg, map, Option, value as value_2 } from "../fable-library-ts.4.24.0/Option.js";
 import { toFail, printf, toText, trimEnd } from "../fable-library-ts.4.24.0/String.js";
+import { defaultArg, map, Option, value as value_2 } from "../fable-library-ts.4.24.0/Option.js";
 import { RecordField, TypeInfo_Array, TypeInfo_Tuple, TypeInfo_$union } from "../Fable.SimpleJson.3.24.0/TypeInfo.fs.js";
 import { fullName, getGenerics, isGenericType, getFunctionElements, isFunction } from "../fable-library-ts.4.24.0/Reflection.js";
 import { tryHead, take, item, equalsWith, last, head } from "../fable-library-ts.4.24.0/Array.js";
@@ -21,11 +21,10 @@ import { Convert_serialize, Convert_arrayLike, Convert_fromJsonAs } from "../Fab
  */
 export function Blob_readBlobAsText(blob: any): Async<string> {
     return fromContinuations<string>((tupledArg: [((arg0: string) => void), ((arg0: Error) => void), ((arg0: any) => void)]): void => {
-        const resolve: ((arg0: string) => void) = tupledArg[0];
         const reader: any = new FileReader();
         reader.onload = ((_arg_2: any): void => {
             if (reader.readyState === 2) {
-                resolve(reader.result);
+                tupledArg[0](reader.result);
             }
         });
         reader.readAsText(blob);
@@ -34,8 +33,7 @@ export function Blob_readBlobAsText(blob: any): Async<string> {
 
 export function Proxy_combineRouteWithBaseUrl(route: string, baseUrl: Option<string>): string {
     if (baseUrl != null) {
-        const url: string = value_2(baseUrl);
-        const arg: string = trimEnd(url, "/");
+        const arg: string = trimEnd(value_2(baseUrl), "/");
         return toText(printf("%s%s"))(arg)(route);
     }
     else {
@@ -45,44 +43,34 @@ export function Proxy_combineRouteWithBaseUrl(route: string, baseUrl: Option<str
 
 export function Proxy_isByteArray(_arg: TypeInfo_$union): boolean {
     if (_arg.tag === /* Array */ 30) {
-        const getElemType: (() => TypeInfo_$union) = _arg.fields[0];
-        const matchValue: TypeInfo_$union = getElemType();
-        if (matchValue.tag === /* Byte */ 13) {
+        if (_arg.fields[0]().tag === /* Byte */ 13) {
             return true;
         }
         else {
-            const otherwise: TypeInfo_$union = matchValue;
             return false;
         }
     }
     else {
-        const otherwise_1: TypeInfo_$union = _arg;
         return false;
     }
 }
 
 export function Proxy_isAsyncOfByteArray(_arg: TypeInfo_$union): boolean {
     if (_arg.tag === /* Async */ 25) {
-        const getAsyncType: (() => TypeInfo_$union) = _arg.fields[0];
-        const matchValue: TypeInfo_$union = getAsyncType();
+        const matchValue: TypeInfo_$union = _arg.fields[0]();
         if (matchValue.tag === /* Array */ 30) {
-            const getElemType: (() => TypeInfo_$union) = matchValue.fields[0];
-            const matchValue_1: TypeInfo_$union = getElemType();
-            if (matchValue_1.tag === /* Byte */ 13) {
+            if (matchValue.fields[0]().tag === /* Byte */ 13) {
                 return true;
             }
             else {
-                const otherwise: TypeInfo_$union = matchValue_1;
                 return false;
             }
         }
         else {
-            const otherwise_1: TypeInfo_$union = matchValue;
             return false;
         }
     }
     else {
-        const otherwise_2: TypeInfo_$union = _arg;
         return false;
     }
 }
@@ -92,8 +80,7 @@ export function Proxy_getReturnType(typ_mut: any): any {
     while (true) {
         const typ: any = typ_mut;
         if (isFunction(typ)) {
-            const res: any = getFunctionElements(typ)[1];
-            typ_mut = res;
+            typ_mut = getFunctionElements(typ)[1];
             continue Proxy_getReturnType;
         }
         else if (isGenericType(typ)) {
@@ -107,7 +94,6 @@ export function Proxy_getReturnType(typ_mut: any): any {
 }
 
 export function Proxy_proxyFetch<$a, $b, $c, $d, $e, $f, $g, $h>(options: RemoteBuilderOptions, typeName: string, func: RecordField, fieldType: any): ((arg0: $a) => ((arg0: $b) => ((arg0: $c) => ((arg0: $d) => ((arg0: $e) => ((arg0: $f) => ((arg0: $g) => ((arg0: $h) => Async<any>)))))))) {
-    let otherwise_2: TypeInfo_$union[];
     let funcArgs: TypeInfo_$union[];
     const matchValue: TypeInfo_$union = func.FieldType;
     switch (matchValue.tag) {
@@ -122,8 +108,7 @@ export function Proxy_proxyFetch<$a, $b, $c, $d, $e, $f, $g, $h>(options: Remote
             break;
         }
         case /* Func */ 37: {
-            const getArgs: (() => TypeInfo_$union[]) = matchValue.fields[0];
-            funcArgs = getArgs();
+            funcArgs = matchValue.fields[0]();
             break;
         }
         default:
@@ -134,25 +119,20 @@ export function Proxy_proxyFetch<$a, $b, $c, $d, $e, $f, $g, $h>(options: Remote
     let binaryInput: boolean;
     const matchValue_1: TypeInfo_$union = func.FieldType;
     if (matchValue_1.tag === /* Func */ 37) {
-        const getArgs_1: (() => TypeInfo_$union[]) = matchValue_1.fields[0];
-        const matchValue_2: TypeInfo_$union[] = getArgs_1();
+        const matchValue_2: TypeInfo_$union[] = matchValue_1.fields[0]();
         if (!equalsWith(equals, matchValue_2, defaultOf()) && (matchValue_2.length === 2)) {
             const output: TypeInfo_$union = item(1, matchValue_2);
-            const input: TypeInfo_$union = item(0, matchValue_2);
-            binaryInput = Proxy_isByteArray(input);
+            binaryInput = Proxy_isByteArray(item(0, matchValue_2));
         }
         else {
-            const otherwise: TypeInfo_$union[] = matchValue_2;
             binaryInput = false;
         }
     }
     else {
-        const otherwise_1: TypeInfo_$union = matchValue_1;
         binaryInput = false;
     }
-    const route: string = options.RouteBuilder(typeName, func.FieldName);
-    const url: string = Proxy_combineRouteWithBaseUrl(route, options.BaseUrl);
-    const funcNeedParameters: boolean = (!equalsWith(equals, funcArgs, defaultOf()) && (funcArgs.length === 1)) ? ((item(0, funcArgs).tag === /* Async */ 25) ? false : ((item(0, funcArgs).tag === /* Promise */ 26) ? false : ((otherwise_2 = funcArgs, true)))) : ((!equalsWith(equals, funcArgs, defaultOf()) && (funcArgs.length === 2)) ? ((item(0, funcArgs).tag === /* Unit */ 0) ? ((item(1, funcArgs).tag === /* Async */ 25) ? false : ((otherwise_2 = funcArgs, true))) : ((otherwise_2 = funcArgs, true))) : ((otherwise_2 = funcArgs, true)));
+    const url: string = Proxy_combineRouteWithBaseUrl(options.RouteBuilder(typeName, func.FieldName), options.BaseUrl);
+    const funcNeedParameters: boolean = (!equalsWith(equals, funcArgs, defaultOf()) && (funcArgs.length === 1)) ? ((item(0, funcArgs).tag === /* Async */ 25) ? false : (!(item(0, funcArgs).tag === /* Promise */ 26))) : ((!equalsWith(equals, funcArgs, defaultOf()) && (funcArgs.length === 2)) ? ((item(0, funcArgs).tag === /* Unit */ 0) ? (!(item(1, funcArgs).tag === /* Async */ 25)) : true) : true);
     const contentType: string = binaryInput ? "application/octet-stream" : "application/json; charset=utf-8";
     const inputArgumentTypes: TypeInfo_$union[] = take<TypeInfo_$union>(argumentCount, funcArgs);
     const headers: FSharpList<[string, string]> = toList<[string, string]>(delay<[string, string]>((): Iterable<[string, string]> => append<[string, string]>(singleton<[string, string]>(["Content-Type", contentType] as [string, string]), delay<[string, string]>((): Iterable<[string, string]> => append<[string, string]>(singleton<[string, string]>(["x-remoting-proxy", "true"] as [string, string]), delay<[string, string]>((): Iterable<[string, string]> => append<[string, string]>(options.CustomHeaders, delay<[string, string]>((): Iterable<[string, string]> => {
@@ -161,8 +141,7 @@ export function Proxy_proxyFetch<$a, $b, $c, $d, $e, $f, $g, $h>(options: Remote
             return empty<[string, string]>();
         }
         else {
-            const authToken: string = value_2(matchValue_3);
-            return singleton<[string, string]>(["Authorization", authToken] as [string, string]);
+            return singleton<[string, string]>(["Authorization", value_2(matchValue_3)] as [string, string]);
         }
     }))))))));
     let executeRequest: ((arg0: RequestBody_$union) => Async<any>);
@@ -187,8 +166,7 @@ export function Proxy_proxyFetch<$a, $b, $c, $d, $e, $f, $g, $h>(options: Remote
                 const n: int32 = statusCode | 0;
                 const responseAsBlob: any = new Blob([response_1.buffer], { type: 'text/plain' });
                 return singleton_1.Bind<string, any>(Blob_readBlobAsText(responseAsBlob), (_arg_1: string): Async<any> => {
-                    const responseText: string = _arg_1;
-                    const response_2: HttpResponse = new HttpResponse(statusCode, responseText);
+                    const response_2: HttpResponse = new HttpResponse(statusCode, _arg_1);
                     const errorMsg: string = (n === 500) ? toText(printf("Internal server error (500) while making request to %s"))(url) : toText(printf("Http error (%d) while making request to %s"))(n)(url);
                     return singleton_1.ReturnFrom<any>((() => {
                         throw ProxyRequestException_$ctor_76BC5104(response_2, errorMsg, response_2.ResponseBody);
@@ -201,18 +179,15 @@ export function Proxy_proxyFetch<$a, $b, $c, $d, $e, $f, $g, $h>(options: Remote
         let returnType_1: TypeInfo_$union;
         switch (returnTypeAsync.tag) {
             case /* Async */ 25: {
-                const getAsyncTypeArgument: (() => TypeInfo_$union) = returnTypeAsync.fields[0];
-                returnType_1 = getAsyncTypeArgument();
+                returnType_1 = returnTypeAsync.fields[0]();
                 break;
             }
             case /* Promise */ 26: {
-                const getPromiseTypeArgument: (() => TypeInfo_$union) = returnTypeAsync.fields[0];
-                returnType_1 = getPromiseTypeArgument();
+                returnType_1 = returnTypeAsync.fields[0]();
                 break;
             }
             case /* Any */ 24: {
-                const getReturnType: (() => any) = returnTypeAsync.fields[0];
-                const t: any = getReturnType();
+                const t: any = returnTypeAsync.fields[0]();
                 returnType_1 = (fullName(t).startsWith("System.Threading.Tasks.Task`1") ? createTypeInfo(item(0, getGenerics(t))) : toFail(printf("Expected field %s to have a return type of Async<\'t> or Task<\'t>"))(func.FieldName));
                 break;
             }
@@ -231,42 +206,17 @@ export function Proxy_proxyFetch<$a, $b, $c, $d, $e, $f, $g, $h>(options: Remote
                     return singleton_1.ReturnFrom<any>((() => {
                         throw ProxyRequestException_$ctor_76BC5104(response_3, toText(printf("Internal server error (500) while making request to %s"))(url), response_3.ResponseBody);
                     })());
-                default: {
-                    const n_1: int32 = matchValue_5 | 0;
+                default:
                     return singleton_1.ReturnFrom<any>((() => {
-                        throw ProxyRequestException_$ctor_76BC5104(response_3, toText(printf("Http error (%d) from server occured while making request to %s"))(n_1)(url), response_3.ResponseBody);
+                        throw ProxyRequestException_$ctor_76BC5104(response_3, toText(printf("Http error (%d) from server occured while making request to %s"))(matchValue_5)(url), response_3.ResponseBody);
                     })());
-                }
             }
         })));
     }
     return (arg0: $a): ((arg0: $b) => ((arg0: $c) => ((arg0: $d) => ((arg0: $e) => ((arg0: $f) => ((arg0: $g) => ((arg0: $h) => Async<any>))))))) => ((arg1: $b): ((arg0: $c) => ((arg0: $d) => ((arg0: $e) => ((arg0: $f) => ((arg0: $g) => ((arg0: $h) => Async<any>)))))) => ((arg2: $c): ((arg0: $d) => ((arg0: $e) => ((arg0: $f) => ((arg0: $g) => ((arg0: $h) => Async<any>))))) => ((arg3: $d): ((arg0: $e) => ((arg0: $f) => ((arg0: $g) => ((arg0: $h) => Async<any>)))) => ((arg4: $e): ((arg0: $f) => ((arg0: $g) => ((arg0: $h) => Async<any>))) => ((arg5: $f): ((arg0: $g) => ((arg0: $h) => Async<any>)) => ((arg6: $g): ((arg0: $h) => Async<any>) => ((arg7: $h): Async<any> => {
+        let matchValue_6: int32;
         const inputArguments: any[] = funcNeedParameters ? take<any>(argumentCount, [arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7]) : [];
-        let requestBody_2: RequestBody_$union;
-        if (binaryInput) {
-            requestBody_2 = RequestBody_Binary(arg0);
-        }
-        else {
-            const matchValue_6: int32 = inputArgumentTypes.length | 0;
-            if (matchValue_6 === 1) {
-                if (!Convert_arrayLike(item(0, inputArgumentTypes))) {
-                    const typeInfo: TypeInfo_$union = TypeInfo_Tuple((): TypeInfo_$union[] => inputArgumentTypes);
-                    const requestBodyJson: string = defaultArg(map<any, string>((arg_9: any): string => Convert_serialize(arg_9, typeInfo), tryHead<any>(inputArguments)), "{}");
-                    requestBody_2 = RequestBody_Json(requestBodyJson);
-                }
-                else {
-                    const requestBodyJson_1: string = Convert_serialize([item(0, inputArguments)], TypeInfo_Array((): TypeInfo_$union => item(0, inputArgumentTypes)));
-                    requestBody_2 = RequestBody_Json(requestBodyJson_1);
-                }
-            }
-            else {
-                const n_2: int32 = matchValue_6 | 0;
-                const typeInfo_1: TypeInfo_$union = TypeInfo_Tuple((): TypeInfo_$union[] => inputArgumentTypes);
-                const requestBodyJson_2: string = Convert_serialize(inputArguments, typeInfo_1);
-                requestBody_2 = RequestBody_Json(requestBodyJson_2);
-            }
-        }
-        return executeRequest(requestBody_2);
+        return executeRequest(binaryInput ? RequestBody_Binary(arg0) : ((matchValue_6 = (inputArgumentTypes.length | 0), (matchValue_6 === 1) ? (!Convert_arrayLike(item(0, inputArgumentTypes)) ? RequestBody_Json(defaultArg(map<any, string>((arg_9: any): string => Convert_serialize(arg_9, TypeInfo_Tuple((): TypeInfo_$union[] => inputArgumentTypes)), tryHead<any>(inputArguments)), "{}")) : RequestBody_Json(Convert_serialize([item(0, inputArguments)], TypeInfo_Array((): TypeInfo_$union => item(0, inputArgumentTypes))))) : RequestBody_Json(Convert_serialize(inputArguments, TypeInfo_Tuple((): TypeInfo_$union[] => inputArgumentTypes))))));
     })))))));
 }
 
