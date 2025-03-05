@@ -12,13 +12,14 @@ RUN dotnet nuget add source --store-password-in-clear-text --name "GitHubPackage
 COPY ./src/MusicalChairs.Domain/MusicalChairs.Domain.fsproj ./src/MusicalChairs.Domain/MusicalChairs.Domain.fsproj
 COPY ./src/MusicalChairs.Shared/MusicalChairs.Shared.fsproj ./src/MusicalChairs.Shared/MusicalChairs.Shared.fsproj
 COPY ./src/MusicalChairs.Server/MusicalChairs.Server.fsproj ./src/MusicalChairs.Server/MusicalChairs.Server.fsproj
-COPY ./src/MusicalChairs.Server/MusicalChairs.Server.Configuration.fsproj ./src/MusicalChairs.Server/MusicalChairs.Server.Configuration.fsproj
+COPY ./src/MusicalChairs.Server/MusicalChairs.Server.Configuration.csproj ./src/MusicalChairs.Server/MusicalChairs.Server.Configuration.csproj
 RUN dotnet restore ./src/MusicalChairs.Server/
 
 # Copy the rest of the application code
 COPY ./src/MusicalChairs.Domain/ ./src/MusicalChairs.Domain/
 COPY ./src/MusicalChairs.Shared/ ./src/MusicalChairs.Shared/
 COPY ./src/MusicalChairs.Server/ ./src/MusicalChairs.Server/
+COPY ./src/MusicalChairs.Server.Configuration/ ./src/MusicalChairs.Server.Configuration/
 
 # Publish the application
 RUN cd src/MusicalChairs.Server/ && dotnet publish -c Release -o out
