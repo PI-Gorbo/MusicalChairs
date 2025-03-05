@@ -2,12 +2,12 @@
     <Tabs :modelValue="useRoute().path">
         <TabsList
             :class="{
-                'w-full border-t border-black rounded-none py-2 bg-primary':
+                'w-full border-t border-black rounded-none py-2 bg-primary [&>*]:text-white':
                     displayMode.isMobile.value,
                 'border border-black shadow-square-sm': displayMode.isWeb.value,
             }"
         >
-            <TabsTrigger value="/app/drafts" v-ripple asChild class="text-white">
+            <TabsTrigger value="/app/drafts" v-ripple asChild>
                 <NuxtLink to="/app/drafts" class="flex items-center gap-1">
                     <FontAwesomeIcon
                         :icon="faAddressBook"
@@ -16,7 +16,7 @@
                     <div>Drafts</div>
                 </NuxtLink>
             </TabsTrigger>
-            <TabsTrigger value="/app/home" v-ripple asChild class="text-white">
+            <TabsTrigger value="/app/home" v-ripple asChild>
                 <NuxtLink to="/app/home" class="flex items-center gap-1">
                     <FontAwesomeIcon
                         :icon="faHouse"
@@ -25,7 +25,7 @@
                     <div>Home</div>
                 </NuxtLink>
             </TabsTrigger>
-            <TabsTrigger value="/app/profile" v-ripple asChild class="text-white">
+            <TabsTrigger value="/app/profile" v-ripple asChild>
                 <NuxtLink to="/app/profile" class="flex items-center gap-1">
                     <FontAwesomeIcon
                         :icon="faCircleUser"
