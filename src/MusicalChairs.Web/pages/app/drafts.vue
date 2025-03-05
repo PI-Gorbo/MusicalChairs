@@ -26,13 +26,47 @@
                 }"
             />
         </div>
+        <section>
+            <AdaptableItemList :items="jobStore.state.myJobs.draftJobs">
+                <template #web="draftJobDto">
+                    <CardHeader class="p-0 select-none">
+                        <h4>{{ draftJobDto.item.name ?? 'UNTITLED' }}</h4>
+                    </CardHeader>
+                    <CardContent class="p-0">
+                        
+                    </CardContent>
+                </template>
+                <template #mobile="draftJobDto">
+                    <h5>Fringe Festival</h5>
+                    <div
+                        class="prose-sm flex *:px-2 divide-x divide-muted-foreground"
+                    >
+                        <div>
+                            <FontAwesomeIcon
+                                :icon="faCheck"
+                                class="text-primary"
+                            />
+                            Tenor (1/1)
+                        </div>
+                        <div class="text-wrap">
+                            <FontAwesomeIcon
+                                :icon="faExclamationCircle"
+                                shake
+                                class="text-secondary"
+                            />
+                            Soprano (0/1) - Confirm Required
+                        </div>
+                    </div>
+                </template>
+            </AdaptableItemList>
+        </section>
         <div>
             {{ jobStore.state.myJobs.draftJobs }}
         </div>
     </div>
 </template>
 <script setup lang="ts">
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faExclamationCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { cn } from "~/utils";
 import { toast } from "vue-sonner";

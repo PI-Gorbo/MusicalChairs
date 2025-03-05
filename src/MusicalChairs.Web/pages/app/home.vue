@@ -3,160 +3,59 @@
         <div class="max-w-page w-full">
             <section>
                 <header class="prose"><h3>Actve Jobs</h3></header>
-                <div
-                    v-if="displayMode.isMobile.value"
-                    class="flex flex-col bg-background-surface divide-y divide-muted-foreground *:py-2 *:px-1"
-                >
-                    <template v-for="index in 10">
-                        <article v-ripple class="flex items-center">
-                            <div class="prose flex-1 select-none">
-                                <h5>Fringe Festival</h5>
-                                <div
-                                    class="prose-sm flex *:px-2 divide-x divide-muted-foreground"
+                <AdaptableItemList :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
+                    <template #web>
+                        <CardHeader class="p-0 select-none">
+                            <h4>Fringe Festival</h4>
+                        </CardHeader>
+                        <CardContent class="p-0">
+                            <div class="flex gap-1">
+                                <Badge
+                                    class="bg-background text-foreground flex gap-1 hover:bg-background select-none"
                                 >
-                                    <div>
-                                        <FontAwesomeIcon
-                                            :icon="faCheck"
-                                            class="text-primary"
-                                        />
-                                        Tenor (1/1)
-                                    </div>
-                                    <div class="text-wrap">
-                                        <FontAwesomeIcon
-                                            :icon="faExclamationCircle"
-                                            shake
-                                            class="text-secondary"
-                                        />
-                                        Soprano (0/1) - Confirm Required
-                                    </div>
-                                </div>
-                            </div>
-                            <FontAwesomeIcon
-                                :icon="faChevronRight"
-                                class="text-muted-foreground"
-                            />
-                        </article>
-                        <article v-ripple class="flex items-center">
-                            <div class="prose flex-1 select-none">
-                                <h5>Cover for Mg'Gaths Churth 25th May</h5>
-                                <div
-                                    class="prose-sm flex *:px-2 divide-x divide-muted-foreground"
+                                    <FontAwesomeIcon
+                                        :icon="faCheck"
+                                        class="text-primary"
+                                    />
+                                    Tenor (1/1)
+                                </Badge>
+                                <Badge
+                                    class="text-wrap bg-background text-foreground flex gap-1 hover:bg-background select-none"
                                 >
-                                    <div>
-                                        <FontAwesomeIcon
-                                            :icon="faStopwatch"
-                                            class="text-accent"
-                                        />
-                                        Pending Response from 'Jasper G.'...
-                                    </div>
-                                </div>
+                                    <FontAwesomeIcon
+                                        :icon="faExclamationCircle"
+                                        shake
+                                        class="text-secondary"
+                                    />
+                                    Soprano (0/1) - Confirm Required
+                                </Badge>
                             </div>
-                            <FontAwesomeIcon
-                                :icon="faChevronRight"
-                                class="text-muted-foreground"
-                            />
-                        </article>
+                        </CardContent>
                     </template>
-                </div>
-                <div
-                    v-if="displayMode.isWeb.value"
-                    class="grid grid-cols-2 md:grid-cols-3 gap-2 bg-background-surface"
-                >
-                    <template v-for="index in 10">
-                        <Card
-                            v-ripple
-                            class="cursor-pointer flex flex-col gap-2 p-2 pressable"
+                    <template #mobile>
+                        <h5>Fringe Festival</h5>
+                        <div
+                            class="prose-sm flex *:px-2 divide-x divide-muted-foreground"
                         >
-                            <CardHeader class="p-0 select-none">
-                                <h4>Fringe Festival</h4>
-                            </CardHeader>
-                            <CardContent class="p-0">
-                                <div class="flex gap-1">
-                                    <Badge
-                                        class="bg-background text-foreground flex gap-1 hover:bg-background select-none"
-                                    >
-                                        <FontAwesomeIcon
-                                            :icon="faCheck"
-                                            class="text-primary"
-                                        />
-                                        Tenor (1/1)
-                                    </Badge>
-                                    <Badge
-                                        class="text-wrap bg-background text-foreground flex gap-1 hover:bg-background select-none"
-                                    >
-                                        <FontAwesomeIcon
-                                            :icon="faExclamationCircle"
-                                            shake
-                                            class="text-secondary"
-                                        />
-                                        Soprano (0/1) - Confirm Required
-                                    </Badge>
-                                </div>
-                            </CardContent>
-                        </Card>
+                            <div>
+                                <FontAwesomeIcon
+                                    :icon="faCheck"
+                                    class="text-primary"
+                                />
+                                Tenor (1/1)
+                            </div>
+                            <div class="text-wrap">
+                                <FontAwesomeIcon
+                                    :icon="faExclamationCircle"
+                                    shake
+                                    class="text-secondary"
+                                />
+                                Soprano (0/1) - Confirm Required
+                            </div>
+                        </div>
                     </template>
-                </div>
-                <!-- <Card>
-                    <CardContent
-                        class="rounded bg-background"
-                        :class="[
-                            displayMode.isWeb.value
-                                ? 'p-3 grid grid-rows-2 grid-flow-col-dense w-fit overflow-x-auto gap-3'
-                                : 'p-0 w-full flex flex-col relative overflow-x-hidden',
-                        ]"
-                    >
-                        <template v-if="displayMode.isMobile.value">
-                            <MobileSwipableBar
-                                v-for="index in 5"
-                                :key="index"
-                                :class="[
-                                    'border',
-                                    {
-                                        'rounded-t': index == 1,
-                                        'rounded-b': index == 5,
-                                    },
-                                ]"
-                                :left-overlay="{
-                                    icon: faPencil,
-                                    colour: 'primary',
-                                    triggered: () => onEdit(index),
-                                }"
-                            >
-                                <template #overlay>Overlay</template>
-                            </MobileSwipableBar>
-                        </template>
-                        <template v-else>
-                            <section
-                                v-for="index in 5"
-                                ref="jobItems"
-                                :index="index"
-                                :class="['rounded']"
-                            >
-                                Web
-                            </section>
-                        </template>
-                    </CardContent>
-                </Card> -->
+                </AdaptableItemList>
             </section>
-
-            <!-- <section>
-                <header class="text-xl font-semibold py-2">
-                    Your Draft Jobs
-                </header>
-                <Card>
-                    <CardContent v-for="index in 5" class="py-2 px-4 text-sm">
-                        <div>Job Name</div>
-                        <div>
-                            <FontAwesomeIcon size="sm" :icon="faCheck" />
-                            Completed Email
-                        </div>
-                        <div>
-                            <FontAwesomeIcon size="sm" :icon="faX" />
-                            Missing Contacts
-                        </div>
-                    </CardContent>
-                </Card>
-            </section> -->
         </div>
     </div>
 </template>

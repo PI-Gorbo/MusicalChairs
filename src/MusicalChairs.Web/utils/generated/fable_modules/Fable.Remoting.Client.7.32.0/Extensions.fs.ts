@@ -21,10 +21,11 @@ export function InternalUtilities_toUInt8Array(data: uint8[]): uint8[] {
  */
 export function Browser_Types_File__File_ReadAsByteArray(instance: any): Async<uint8[]> {
     return fromContinuations<uint8[]>((tupledArg: [((arg0: uint8[]) => void), ((arg0: Error) => void), ((arg0: any) => void)]): void => {
+        const resolve: ((arg0: uint8[]) => void) = tupledArg[0];
         const reader: any = new FileReader();
         reader.onload = ((_arg_2: any): void => {
             if (reader.readyState === 2) {
-                tupledArg[0](new Uint8Array(reader.result));
+                resolve(new Uint8Array(reader.result));
             }
         });
         reader.readAsArrayBuffer(instance);
@@ -36,10 +37,11 @@ export function Browser_Types_File__File_ReadAsByteArray(instance: any): Async<u
  */
 export function Browser_Types_File__File_ReadAsDataUrl(instance: any): Async<string> {
     return fromContinuations<string>((tupledArg: [((arg0: string) => void), ((arg0: Error) => void), ((arg0: any) => void)]): void => {
+        const resolve: ((arg0: string) => void) = tupledArg[0];
         const reader: any = new FileReader();
         reader.onload = ((_arg_2: any): void => {
             if (reader.readyState === 2) {
-                tupledArg[0](reader.result);
+                resolve(reader.result);
             }
         });
         reader.readAsDataURL(instance);
@@ -51,10 +53,11 @@ export function Browser_Types_File__File_ReadAsDataUrl(instance: any): Async<str
  */
 export function Browser_Types_File__File_ReadAsText(instance: any): Async<string> {
     return fromContinuations<string>((tupledArg: [((arg0: string) => void), ((arg0: Error) => void), ((arg0: any) => void)]): void => {
+        const resolve: ((arg0: string) => void) = tupledArg[0];
         const reader: any = new FileReader();
         reader.onload = ((_arg_2: any): void => {
             if (reader.readyState === 2) {
-                tupledArg[0](reader.result);
+                resolve(reader.result);
             }
         });
         reader.readAsText(instance);
@@ -77,8 +80,9 @@ export function ByteArrayExtensions_SaveFileAs_5EF83E14(content: uint8[], fileNa
     if (isNullOrWhiteSpace(fileName)) {
     }
     else {
+        const mimeType = "application/octet-stream";
         const binaryData: uint8[] = InternalUtilities_toUInt8Array(content);
-        const blob: any = new Blob([binaryData.buffer], { type: "application/octet-stream" });
+        const blob: any = new Blob([binaryData.buffer], { type: mimeType });
         const dataUrl: string = window.URL.createObjectURL(blob);
         const anchor: any = document.createElement("a");
         anchor.style = "display: none";
@@ -122,7 +126,8 @@ export function ByteArrayExtensions_SaveFileAs_Z4C1C8351(content: uint8[], fileN
 export function ByteArrayExtensions_AsDataUrl_Z3F6BC7B1(content: uint8[]): string {
     const binaryData: uint8[] = InternalUtilities_toUInt8Array(content);
     const blob: any = new Blob([binaryData.buffer], { type: "application/octet-stream" });
-    return window.URL.createObjectURL(blob);
+    const dataUrl: string = window.URL.createObjectURL(blob);
+    return dataUrl;
 }
 
 /**
@@ -131,6 +136,7 @@ export function ByteArrayExtensions_AsDataUrl_Z3F6BC7B1(content: uint8[]): strin
 export function ByteArrayExtensions_AsDataUrl_5EF83E14(content: uint8[], mimeType: string): string {
     const binaryData: uint8[] = InternalUtilities_toUInt8Array(content);
     const blob: any = new Blob([binaryData.buffer], { type: mimeType });
-    return window.URL.createObjectURL(blob);
+    const dataUrl: string = window.URL.createObjectURL(blob);
+    return dataUrl;
 }
 
