@@ -12,6 +12,7 @@ RUN dotnet nuget add source --store-password-in-clear-text --name "GitHubPackage
 COPY ./src/MusicalChairs.Domain/MusicalChairs.Domain.fsproj ./src/MusicalChairs.Domain/MusicalChairs.Domain.fsproj
 COPY ./src/MusicalChairs.Shared/MusicalChairs.Shared.fsproj ./src/MusicalChairs.Shared/MusicalChairs.Shared.fsproj
 COPY ./src/MusicalChairs.Server/MusicalChairs.Server.fsproj ./src/MusicalChairs.Server/MusicalChairs.Server.fsproj
+COPY ./src/MusicalChairs.Server/MusicalChairs.Server.Configuration.fsproj ./src/MusicalChairs.Server/MusicalChairs.Server.Configuration.fsproj
 RUN dotnet restore ./src/MusicalChairs.Server/
 
 # Copy the rest of the application code

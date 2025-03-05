@@ -30,10 +30,17 @@
             <AdaptableItemList :items="jobStore.state.myJobs.draftJobs">
                 <template #web="draftJobDto">
                     <CardHeader class="p-0 select-none">
-                        <h4>{{ draftJobDto.item.name ?? 'UNTITLED' }}</h4>
+                        <h4>{{ draftJobDto.item.name ?? "UNTITLED" }}</h4>
                     </CardHeader>
                     <CardContent class="p-0">
-                        
+                        <Badge class="bg-background text-foreground">
+                            <TimeAgo
+                                :time="new Date(draftJobDto.item.createdAt)"
+                                v-slot="{ timeAge }"
+                            >
+                                Created {{ timeAge }}
+                            </TimeAgo>
+                        </Badge>
                     </CardContent>
                 </template>
                 <template #mobile="draftJobDto">
@@ -66,7 +73,11 @@
     </div>
 </template>
 <script setup lang="ts">
-import { faCheck, faExclamationCircle, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+    faCheck,
+    faExclamationCircle,
+    faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { cn } from "~/utils";
 import { toast } from "vue-sonner";
