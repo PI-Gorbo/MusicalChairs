@@ -2,7 +2,7 @@
     <div>
         <div
             v-if="displayMode.isMobile.value"
-            class="flex flex-col bg-background-surface divide-y divide-muted-foreground *:py-2 *:px-1"
+            class="flex flex-col bg-background-surface divide-y divide-muted-foreground *:py-2 *:px-1 border-b border-t"
         >
             <template v-for="(item, index) in props.items">
                 <article v-ripple class="flex items-center">

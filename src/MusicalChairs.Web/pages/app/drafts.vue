@@ -52,7 +52,7 @@
                         </header>
                         <div class="">
                             <Badge
-                                class="bg-background text-foreground hover:bg-background"
+                                class="bg-background text-foreground hover:bg-background border border-black shadow-square-xs"
                             >
                                 <UseTimeAgo
                                     v-slot="{ timeAgo }"

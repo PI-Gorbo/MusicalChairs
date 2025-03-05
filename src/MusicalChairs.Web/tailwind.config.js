@@ -63,6 +63,7 @@ module.exports = {
             },
             boxShadow: {
                 "square-sm": `0 0.2rem hsl(var(--border))`,
+                "square-xs": `0 0.1rem hsl(var(--border))`,
             },
             keyframes: {
                 "accordion-down": {
