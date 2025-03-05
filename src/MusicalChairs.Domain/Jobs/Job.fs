@@ -24,15 +24,22 @@ type DraftPosition =
       PositionsAvailable: uint
       Contacts: DraftContact list }
 
-[<CLIMutable>]
-type DraftJob =
-    { Id: Guid
-      Name: string option
-      CreatorId: Guid
-      Templates: Template list
-      Positions: DraftPosition list
-      CreatedAt: DateTimeOffset
-      LastModifiedAt: DateTimeOffset  }
+type DraftJob(
+        Id,
+        Name,
+        CreatorId,
+        Templates,
+        Positions,
+        CreatedAt,
+        LastModifiedAt) =
+      member val Id: Guid = Id with get, set
+      member val Name: string option = Name with get, set
+      member val CreatorId: Guid = CreatorId with  get, set
+      member val Templates: Template list = Templates with get, set
+      member val Positions: DraftPosition list = Positions with get, set
+      member val CreatedAt: DateTimeOffset  = CreatedAt with get, set
+      member val LastModifiedAt: DateTimeOffset = LastModifiedAt with get, set
+      new() = DraftJob(Guid.Empty, None, Guid.Empty, [], [], DateTimeOffset.MinValue, DateTimeOffset.MinValue)
 
 // Jobs
 type ContactedOutcome =

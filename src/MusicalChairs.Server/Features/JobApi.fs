@@ -79,14 +79,7 @@ let createJobApi (deps: IJobApiDeps) : IJobApi =
                       |> AsyncResult.mapError (fun _ -> "Unauthorized")
 
                   let newDraft =
-                      { DraftJob.Id = Guid.NewGuid()
-                        Name = None
-                        Positions = []
-                        Templates = []
-                        CreatorId = userId
-                        CreatedAt = DateTimeOffset.UtcNow
-                        LastModifiedAt = DateTimeOffset.UtcNow }
-
+                      DraftJob(Guid.NewGuid(), None, userId, [], [], DateTimeOffset.UtcNow, DateTimeOffset.UtcNow)
                   session.Store(newDraft)
                   do! session.SaveChangesAsync()
 

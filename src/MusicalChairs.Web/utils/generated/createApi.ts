@@ -18,16 +18,15 @@ export function createApi(url: string): { jobAPi: { createDraft: (() => Promise<
         resetPassword: (arg_3: ResetPasswordRequest): Promise<FSharpResult$2_$union<void, ResetPasswordError_$union>> => startAsPromise(_userApi.resetPassword(arg_3)),
     };
     const _jobApi: IJobApi = Remoting_buildProxy_64DC51C<IJobApi>(builder, IJobApi_$reflection());
-    const jobApi: { createDraft: (() => Promise<FSharpResult$2_$union<DraftJobDto, string>>), getDraftJob: ((arg0: string) => Promise<FSharpResult$2_$union<DraftJobDto, string>>), getJob: ((arg0: string) => Promise<FSharpResult$2_$union<ActiveJobDto, string>>), myJobs: (() => Promise<FSharpResult$2_$union<MyJobsResponse, void>>), startJob: ((arg0: string) => Promise<FSharpResult$2_$union<void, string>>), updateDraft: ((arg0: UpdateJobDraftRequest) => Promise<FSharpResult$2_$union<void, string>>) } = {
-        createDraft: (): Promise<FSharpResult$2_$union<DraftJobDto, string>> => startAsPromise(_jobApi.createDraft()),
-        getDraftJob: (arg_8: string): Promise<FSharpResult$2_$union<DraftJobDto, string>> => startAsPromise(_jobApi.getDraftJob(arg_8)),
-        getJob: (arg_7: string): Promise<FSharpResult$2_$union<ActiveJobDto, string>> => startAsPromise(_jobApi.getJob(arg_7)),
-        myJobs: (): Promise<FSharpResult$2_$union<MyJobsResponse, void>> => startAsPromise(_jobApi.myJobs()),
-        startJob: (arg_11: string): Promise<FSharpResult$2_$union<void, string>> => startAsPromise(_jobApi.startJob(arg_11)),
-        updateDraft: (arg_10: UpdateJobDraftRequest): Promise<FSharpResult$2_$union<void, string>> => startAsPromise(_jobApi.updateDraft(arg_10)),
-    };
     return {
-        jobAPi: jobApi,
+        jobAPi: {
+            createDraft: (): Promise<FSharpResult$2_$union<DraftJobDto, string>> => startAsPromise(_jobApi.createDraft()),
+            getDraftJob: (arg_8: string): Promise<FSharpResult$2_$union<DraftJobDto, string>> => startAsPromise(_jobApi.getDraftJob(arg_8)),
+            getJob: (arg_7: string): Promise<FSharpResult$2_$union<ActiveJobDto, string>> => startAsPromise(_jobApi.getJob(arg_7)),
+            myJobs: (): Promise<FSharpResult$2_$union<MyJobsResponse, void>> => startAsPromise(_jobApi.myJobs()),
+            startJob: (arg_11: string): Promise<FSharpResult$2_$union<void, string>> => startAsPromise(_jobApi.startJob(arg_11)),
+            updateDraft: (arg_10: UpdateJobDraftRequest): Promise<FSharpResult$2_$union<void, string>> => startAsPromise(_jobApi.updateDraft(arg_10)),
+        },
         userApi: userApi,
     };
 }
