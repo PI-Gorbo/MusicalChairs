@@ -59,7 +59,10 @@ export default defineNuxtConfig({
     ],
     app: {
         head: {
-            title: 'Musical Chairs'
+            title: 'Musical Chairs',
+            link: [
+                { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+            ]
         },
         pageTransition: {
             name: 'slide',

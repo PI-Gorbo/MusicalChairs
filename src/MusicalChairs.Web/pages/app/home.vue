@@ -33,24 +33,26 @@
                         </CardContent>
                     </template>
                     <template #mobile>
-                        <h5>Fringe Festival</h5>
-                        <div
-                            class="prose-sm flex *:px-2 divide-x divide-muted-foreground"
-                        >
-                            <div>
-                                <FontAwesomeIcon
-                                    :icon="faCheck"
-                                    class="text-primary"
-                                />
-                                Tenor (1/1)
-                            </div>
-                            <div class="text-wrap">
-                                <FontAwesomeIcon
-                                    :icon="faExclamationCircle"
-                                    shake
-                                    class="text-secondary"
-                                />
-                                Soprano (0/1) - Confirm Required
+                        <div class="flex flex-col flex-1 select-none">
+                            <h5>Fringe Festival</h5>
+                            <div
+                                class="prose-sm flex *:px-2 divide-x divide-muted-foreground"
+                            >
+                                <div>
+                                    <FontAwesomeIcon
+                                        :icon="faCheck"
+                                        class="text-primary"
+                                    />
+                                    Tenor (1/1)
+                                </div>
+                                <div class="text-wrap">
+                                    <FontAwesomeIcon
+                                        :icon="faExclamationCircle"
+                                        shake
+                                        class="text-secondary"
+                                    />
+                                    Soprano (0/1) - Confirm Required
+                                </div>
                             </div>
                         </div>
                     </template>

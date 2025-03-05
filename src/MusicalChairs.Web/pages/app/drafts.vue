@@ -33,7 +33,9 @@
                         <h4>{{ draftJobDto.item.name ?? "UNTITLED" }}</h4>
                     </CardHeader>
                     <CardContent class="p-0">
-                        <Badge class="bg-background text-foreground">
+                        <Badge
+                            class="bg-background text-foreground hover:bg-background"
+                        >
                             <TimeAgo
                                 :time="new Date(draftJobDto.item.createdAt)"
                                 v-slot="{ timeAge }"
@@ -44,32 +46,26 @@
                     </CardContent>
                 </template>
                 <template #mobile="draftJobDto">
-                    <h5>Fringe Festival</h5>
-                    <div
-                        class="prose-sm flex *:px-2 divide-x divide-muted-foreground"
-                    >
-                        <div>
-                            <FontAwesomeIcon
-                                :icon="faCheck"
-                                class="text-primary"
-                            />
-                            Tenor (1/1)
-                        </div>
-                        <div class="text-wrap">
-                            <FontAwesomeIcon
-                                :icon="faExclamationCircle"
-                                shake
-                                class="text-secondary"
-                            />
-                            Soprano (0/1) - Confirm Required
+                    <div class="flex flex-col flex-1 select-none">
+                        <header class="select-none prose">
+                            <h5>{{ draftJobDto.item.name ?? "UNTITLED" }}</h5>
+                        </header>
+                        <div class="">
+                            <Badge
+                                class="bg-background text-foreground hover:bg-background"
+                            >
+                                <UseTimeAgo
+                                    v-slot="{ timeAgo }"
+                                    :time="new Date(draftJobDto.item.createdAt)"
+                                >
+                                    Created {{ timeAgo }}
+                                </UseTimeAgo>
+                            </Badge>
                         </div>
                     </div>
                 </template>
             </AdaptableItemList>
         </section>
-        <div>
-            {{ jobStore.state.myJobs.draftJobs }}
-        </div>
     </div>
 </template>
 <script setup lang="ts">
@@ -81,6 +77,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { cn } from "~/utils";
 import { toast } from "vue-sonner";
+import { UseTimeAgo } from "@vueuse/components";
 
 definePageMeta({
     requiresAuth: true,

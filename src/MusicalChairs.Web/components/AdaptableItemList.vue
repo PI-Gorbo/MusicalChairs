@@ -6,9 +6,8 @@
         >
             <template v-for="(item, index) in props.items">
                 <article v-ripple class="flex items-center">
-                    <div class="prose flex-1 select-none">
-                        <slot name="mobile" :item="item" :index="index" />
-                    </div>
+                    <slot name="mobile" :item="item" :index="index" />
+                    
                     <FontAwesomeIcon
                         :icon="faChevronRight"
                         class="text-muted-foreground"
