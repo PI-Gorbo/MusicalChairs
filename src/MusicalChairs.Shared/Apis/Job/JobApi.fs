@@ -2,9 +2,18 @@ module MusicalChairs.Shared.Apis.JobApi
 
 open System
 open MusicalChairs.Shared.Apis.Job
-type ActiveJobDto = { id: Guid; name: string }
 
-type DraftJobDto = { id: Guid; name: string option }
+type ActiveJobDto =
+    { id: Guid
+      name: string
+      createdAt: DateTimeOffset
+      lastModifiedAt: DateTimeOffset }
+
+type DraftJobDto =
+    { id: Guid
+      name: string option
+      createdAt: DateTimeOffset
+      lastModifiedAt: DateTimeOffset }
 
 type MyJobsResponse =
     { activeJobs: ActiveJobDto list

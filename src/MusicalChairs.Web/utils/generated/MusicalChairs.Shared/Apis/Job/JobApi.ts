@@ -10,29 +10,37 @@ import { FSharpResult$2, FSharpResult$2_$union } from "../../../fable_modules/fa
 export class ActiveJobDto extends Record implements IEquatable<ActiveJobDto>, IComparable<ActiveJobDto> {
     readonly id: string;
     readonly name: string;
-    constructor(id: string, name: string) {
+    readonly createdAt: Date;
+    readonly lastModifiedAt: Date;
+    constructor(id: string, name: string, createdAt: Date, lastModifiedAt: Date) {
         super();
         this.id = id;
         this.name = name;
+        this.createdAt = createdAt;
+        this.lastModifiedAt = lastModifiedAt;
     }
 }
 
 export function ActiveJobDto_$reflection(): TypeInfo {
-    return record_type("MusicalChairs.Shared.Apis.JobApi.ActiveJobDto", [], ActiveJobDto, () => [["id", class_type("System.Guid")], ["name", string_type]]);
+    return record_type("MusicalChairs.Shared.Apis.JobApi.ActiveJobDto", [], ActiveJobDto, () => [["id", class_type("System.Guid")], ["name", string_type], ["createdAt", class_type("System.DateTimeOffset")], ["lastModifiedAt", class_type("System.DateTimeOffset")]]);
 }
 
 export class DraftJobDto extends Record implements IEquatable<DraftJobDto>, IComparable<DraftJobDto> {
     readonly id: string;
     readonly name: Option<string>;
-    constructor(id: string, name: Option<string>) {
+    readonly createdAt: Date;
+    readonly lastModifiedAt: Date;
+    constructor(id: string, name: Option<string>, createdAt: Date, lastModifiedAt: Date) {
         super();
         this.id = id;
         this.name = name;
+        this.createdAt = createdAt;
+        this.lastModifiedAt = lastModifiedAt;
     }
 }
 
 export function DraftJobDto_$reflection(): TypeInfo {
-    return record_type("MusicalChairs.Shared.Apis.JobApi.DraftJobDto", [], DraftJobDto, () => [["id", class_type("System.Guid")], ["name", option_type(string_type)]]);
+    return record_type("MusicalChairs.Shared.Apis.JobApi.DraftJobDto", [], DraftJobDto, () => [["id", class_type("System.Guid")], ["name", option_type(string_type)], ["createdAt", class_type("System.DateTimeOffset")], ["lastModifiedAt", class_type("System.DateTimeOffset")]]);
 }
 
 export class MyJobsResponse extends Record implements IEquatable<MyJobsResponse>, IComparable<MyJobsResponse> {

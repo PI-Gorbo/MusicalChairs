@@ -13,10 +13,13 @@
                 </Button>
             </DialogContent>
         </Dialog>
+        <Toaster class="pointer-events-auto"/>
     </main>
 </template>
 
 <script setup lang="ts">
+import { Toaster } from "vue-sonner";
+
 const appState = useAppStateStore();
 function reloadPage() {
     window.location.reload();

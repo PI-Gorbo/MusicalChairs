@@ -19,6 +19,7 @@ open MusicalChairs.Domain.Job
 open MusicalChairs.Domain.User
 open MusicalChairs.Server
 open MusicalChairs.Server.Configuration
+open MusicalChairs.Server.Features.JobApi
 open MusicalChairs.Server.Features.UserApi
 open MusicalChairs.Server.Utils.LambdaUtils
 open Weasel.Core
@@ -148,12 +149,18 @@ let main args =
 
 
     // Grab a logger.
-    let webApp =
+    let userApi =
         Remoting.createApi ()
         |> Remoting.fromContext (fun ctx -> createUserApiDeps ctx (ctx.GetService<IDocumentSession>()) |> createUserApi)
         |> Remoting.withErrorHandler (errorHandler app.Logger)
 
+    let jobApi =
+        Remoting.createApi ()
+        |> Remoting.fromContext (fun ctx -> createJobDeps ctx (ctx.GetService<IDocumentSession>()) |> createJobApi)
+        |> Remoting.withErrorHandler (errorHandler app.Logger)
+
     app.UseCors() |> ignore
-    app.UseRemoting(webApp)
+    app.UseRemoting(userApi)
+    app.UseRemoting(jobApi)
     app.Run()
     0 // Exit code

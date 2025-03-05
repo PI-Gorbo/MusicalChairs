@@ -30,7 +30,9 @@ type DraftJob =
       Name: string option
       CreatorId: Guid
       Templates: Template list
-      Positions: DraftPosition list }
+      Positions: DraftPosition list
+      CreatedAt: DateTimeOffset
+      LastModifiedAt: DateTimeOffset  }
 
 // Jobs
 type ContactedOutcome =

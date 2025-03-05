@@ -14,14 +14,20 @@
                     </div>
                 </nav>
                 <section class="flex-1 overflow-y-auto">
-                    <div class="max-h-full h-full px-2">
+                    <div
+                        class="max-h-full h-full px-2"
+                        v-if="fetchingJobStore.status.value === 'success'"
+                    >
                         <NuxtPage />
                     </div>
+                    <div
+                        v-else
+                        class="max-h-full h-full flex items-center justify-center px-2"
+                    >
+                        <FontAwesomeIcon :icon="faSpinner" class="fa-spin" />
+                    </div>
                 </section>
-                <footer
-                    v-if="displayMode.isMobile.value"
-                    class="w-full"
-                >
+                <footer v-if="displayMode.isMobile.value" class="w-full">
                     <AppNavigationTabs />
                 </footer>
             </div>
@@ -30,13 +36,13 @@
 </template>
 
 <script setup lang="ts">
-import {
-    faAddressBook,
-    faCircleUser,
-    faPersonRunning,
-} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import AppNavigationTabs from "../components/AppNavigationTabs.vue";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 const displayMode = useDisplayMode();
+const jobStore = useJobStore();
+const fetchingJobStore = useAsyncData("init-job-store", async () =>
+    jobStore.refresh().then(() => true)
+);
 </script>

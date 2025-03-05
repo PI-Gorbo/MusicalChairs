@@ -1,5 +1,5 @@
 <template>
-    <Button :v-bind="props" @click="onClick">
+    <Button :v-bind="$attrs" @click="onClick" :class="cn([props.class])">
         <span v-if="!isLoading">
             <FontAwesomeIcon v-if="props.async.icon" :icon="props.async.icon" />
             {{ props.async.label }}
@@ -15,7 +15,7 @@
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faSpinner, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import type { Props } from "./ui/button/Button.vue";
-
+import { cn } from "~/utils";
 interface AsyncButtonProps extends Props {
     async: (
         | {
