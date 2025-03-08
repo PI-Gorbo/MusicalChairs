@@ -3,7 +3,7 @@
         <div class="max-w-page w-full">
             <section>
                 <header class="prose"><h3>Actve Jobs</h3></header>
-                <AdaptableItemList :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
+                <AdaptableItemList :items="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" :keyMap="(i) => i">
                     <template #web>
                         <CardHeader class="p-0 select-none">
                             <h4>Fringe Festival</h4>

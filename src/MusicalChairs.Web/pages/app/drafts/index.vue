@@ -27,26 +27,42 @@
             />
         </div>
         <section>
-            <AdaptableItemList :items="jobStore.state.myJobs.draftJobs">
+            <AdaptableItemList
+                :items="jobStore.state.myJobs.draftJobs"
+                :keyMap="(item) => item.id"
+            >
                 <template #web="draftJobDto">
-                    <CardHeader class="p-0 select-none">
-                        <h4>{{ draftJobDto.item.name ?? "UNTITLED" }}</h4>
-                    </CardHeader>
-                    <CardContent class="p-0">
-                        <Badge
-                            class="bg-background text-foreground hover:bg-background"
-                        >
-                            <TimeAgo
-                                :time="new Date(draftJobDto.item.createdAt)"
-                                v-slot="{ timeAge }"
+                    <NuxtLink
+                        :to="{
+                            name: 'app-drafts-id',
+                            params: { id: draftJobDto.item.id },
+                        }"
+                    >
+                        <CardHeader class="p-0 select-none">
+                            <h4>{{ draftJobDto.item.name ?? "UNTITLED" }}</h4>
+                        </CardHeader>
+                        <CardContent class="p-0">
+                            <Badge
+                                class="bg-background text-foreground hover:bg-background"
                             >
-                                Created {{ timeAge }}
-                            </TimeAgo>
-                        </Badge>
-                    </CardContent>
+                                <TimeAgo
+                                    :time="new Date(draftJobDto.item.createdAt)"
+                                    v-slot="{ timeAge }"
+                                >
+                                    Created {{ timeAge }}
+                                </TimeAgo>
+                            </Badge>
+                        </CardContent>
+                    </NuxtLink>
                 </template>
                 <template #mobile="draftJobDto">
-                    <div class="flex flex-col flex-1 select-none">
+                    <NuxtLink
+                        :to="{
+                            name: 'app-drafts-id',
+                            params: { id: draftJobDto.item.id },
+                        }"
+                        class="flex flex-col flex-1 select-none"
+                    >
                         <header class="select-none prose">
                             <h5>{{ draftJobDto.item.name ?? "UNTITLED" }}</h5>
                         </header>
@@ -62,7 +78,7 @@
                                 </UseTimeAgo>
                             </Badge>
                         </div>
-                    </div>
+                    </NuxtLink>
                 </template>
             </AdaptableItemList>
         </section>
@@ -78,6 +94,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { cn } from "~/utils";
 import { toast } from "vue-sonner";
 import { UseTimeAgo } from "@vueuse/components";
+import { item } from "~/utils/generated/fable_modules/fable-library-ts.4.24.0/Array";
 
 definePageMeta({
     requiresAuth: true,
